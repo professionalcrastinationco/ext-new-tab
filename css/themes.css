@@ -490,8 +490,44 @@ body {
         gap: 8px;
         align-items: stretch;
     }
-    
+
     .theme-dropdown {
         width: 100%;
     }
+}
+
+/* ========== Drag and Drop Styles ========== */
+.dragging {
+    opacity: 0.5;
+    cursor: grabbing !important;
+}
+
+.drag-over {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgb(59, 130, 246) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Dark mode drag and drop */
+.dark .drag-over {
+    background-color: rgba(59, 130, 246, 0.15);
+    border-color: rgb(59, 130, 246) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Make cards and links have grab cursor in edit mode */
+.bookmark-card[draggable="true"] {
+    cursor: grab;
+}
+
+.bookmark-card[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.quick-link[draggable="true"] {
+    cursor: grab;
+}
+
+.quick-link[draggable="true"]:active {
+    cursor: grabbing;
 }

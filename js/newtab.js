@@ -693,9 +693,12 @@
 
     createCardElement(card, cardIndex) {
       const cardDiv = document.createElement('div');
-      cardDiv.className = 'group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70';
+      cardDiv.className = 'bookmark-card group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70';
       cardDiv.dataset.cardId = card.id;
       cardDiv.dataset.dragType = 'card';
+      if (this.editMode) {
+        cardDiv.draggable = true;
+      }
 
       const title = card.title || 'Untitled';
       const links = (card.links || []).slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -770,9 +773,12 @@
 
     createLinkElement(card, link, cardIndex, linkIndex) {
       const linkDiv = document.createElement('div');
-      linkDiv.className = 'flex group/link';
+      linkDiv.className = 'quick-link flex group/link';
       linkDiv.dataset.linkId = link.id;
       linkDiv.dataset.dragType = 'link';
+      if (this.editMode) {
+        linkDiv.draggable = true;
+      }
 
       // Check if link has sub-links
       const hasSubLinks = link.subLinks && link.subLinks.length > 0;
@@ -792,12 +798,12 @@
         // Create split button structure for links with sub-links
         linkDiv.innerHTML = `
           <a href="${link.url || '#'}" target="_blank" rel="noopener noreferrer"
-             class="relative flex-1 py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-s-lg border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+             class="relative flex-1 py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-s-lg border border-gray-200 bg-gray-50 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
             <span class="size-4 ${colorClasses}">${iconHtml}</span>
             <span>${escapeHtml(link.title || 'Link')}</span>
           </a>
           <div class="hs-dropdown relative [--placement:bottom-right] inline-flex">
-            <button type="button" class="hs-dropdown-toggle relative -ms-px py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-e-lg border border-gray-200 bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-hidden focus:bg-gray-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+            <button type="button" class="hs-dropdown-toggle relative -ms-px py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-e-lg border border-gray-200 bg-gray-50 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
               <svg class="hs-dropdown-open:rotate-180 size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9 6 6 6-6"></path>
               </svg>
@@ -861,7 +867,7 @@
         // Simple button for links without sub-links
         linkDiv.innerHTML = `
           <a href="${link.url || '#'}" target="_blank" rel="noopener noreferrer"
-             class="flex-1 py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800">
+             class="flex-1 py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-gray-50 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
             <span class="size-4 ${colorClasses}">${iconHtml}</span>
             <span>${escapeHtml(link.title || 'Link')}</span>
           </a>

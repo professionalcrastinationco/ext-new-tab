@@ -50,11 +50,19 @@
     }
 
     applyTheme(theme) {
-      // Remove any data-theme (we only set for non-dark)
+      // Remove existing theme attributes and classes
       document.documentElement.removeAttribute('data-theme');
-      if (theme !== 'dark') {
+      document.documentElement.classList.remove('dark');
+
+      // Apply theme based on type
+      if (theme === 'dark') {
+        // For dark theme, add the 'dark' class for Tailwind
+        document.documentElement.classList.add('dark');
+      } else {
+        // For light themes, use data-theme attribute
         document.documentElement.setAttribute('data-theme', theme);
       }
+
       this.currentTheme = theme;
 
       const selector = document.getElementById('theme-selector');
