@@ -1,0 +1,17 @@
+{
+  "name": "chrome-ext-newtab-tests",
+  "version": "1.0.0",
+  "description": "Automated tests for Chrome Extension New Tab settings button",
+  "main": "test-settings-button.js",
+  "scripts": {
+    "test": "node test-settings-button.js",
+    "test:watch": "nodemon test-settings-button.js",
+    "install:deps": "npm install puppeteer"
+  },
+  "devDependencies": {
+    "puppeteer": "^21.0.0"
+  },
+  "optionalDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
