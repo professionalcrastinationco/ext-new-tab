@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Bookmarks</title>
+    <link rel="stylesheet" href="lib/pico.min.css">
+    <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+    <!-- Google Search Field -->
+    <div class="search-container">
+        <div class="search-box">
+            <input
+                type="text"
+                class="search-input"
+                id="searchInput"
+                placeholder="Search Google or type a URL"
+                autocomplete="off"
+            />
+            <span class="search-icon">🔍</span>
+        </div>
+    </div>
+
+    <!-- Icon Dock (position determined by settings) -->
+    <div class="dock dock-bottom" id="dock"></div>
+
+    <!-- Settings Button -->
+    <button class="settings-btn" id="settingsBtn">⚙️</button>
+
+    <!-- Edit Category Modal -->
+    <dialog id="category-modal">
+        <article style="max-width: 500px;">
+            <header>
+                <button aria-label="Close" rel="prev" id="close-category-modal">×</button>
+                <h3 id="category-modal-title">Edit Category</h3>
+            </header>
+            <form id="category-form">
+                <label for="category-name">
+                    Category Name
+                    <input type="text" id="category-name" name="name" placeholder="Work, Personal, etc." required>
+                </label>
+                <label for="category-icon">
+                    Icon Emoji
+                    <input type="text" id="category-icon" name="icon" placeholder="💼" maxlength="2">
+                    <small style="color: #94a3b8;">Choose an emoji to represent this category</small>
+                </label>
+                <input type="hidden" id="category-id" name="categoryId">
+                <footer style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" class="secondary" id="cancel-category-btn" style="margin: 0;">Cancel</button>
+                    <button type="submit" style="margin: 0;">Save</button>
+                </footer>
+            </form>
+        </article>
+    </dialog>
+
+    <!-- Edit Bookmark Modal -->
+    <dialog id="link-modal">
+        <article style="max-width: 500px;">
+            <header>
+                <button aria-label="Close" rel="prev" id="close-link-modal">×</button>
+                <h3 id="link-modal-title">Edit Bookmark</h3>
+            </header>
+            <form id="link-form">
+                <label for="link-url">
+                    URL
+                    <input type="url" id="link-url" name="url" placeholder="https://example.com" required>
+                </label>
+                <label for="link-title">
+                    Title
+                    <input type="text" id="link-title" name="title" placeholder="Example Site" required>
+                </label>
+                <label for="link-category">
+                    Category
+                    <select id="link-category" name="category" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </label>
+                <input type="hidden" id="link-id" name="linkId">
+                <input type="hidden" id="link-original-category" name="originalCategory">
+                <footer style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" class="secondary" id="cancel-link-btn" style="margin: 0;">Cancel</button>
+                    <button type="submit" style="margin: 0;">Save</button>
+                </footer>
+            </form>
+        </article>
+    </dialog>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button class="close-settings-btn" id="closeSettingsBtn">×</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>Appearance</h3>
+                <div class="setting-item">
+                    <label for="dockPositionSelect">Dock Position</label>
+                    <select id="dockPositionSelect">
+                        <option value="bottom">Bottom</option>
+                        <option value="top">Top</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Bookmarks</h3>
+                <div class="setting-item">
+                    <label for="openInNewTabSelect">Open links in</label>
+                    <select id="openInNewTabSelect">
+                        <option value="true">New Tab</option>
+                        <option value="false">Same Tab</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Categories</h3>
+                <button class="manage-categories-btn" id="manageCategoriesBtn">
+                    Manage Categories
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="import-export.js"></script>
+    <script src="context-menu.js"></script>
+    <script src="newtab.js"></script>
+</body>
+</html>

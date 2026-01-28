@@ -1,0 +1,689 @@
+/* newtab.css - New tab page styles */
+
+/* ==========================================================================
+   CSS Variables & Reset
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+body {
+    background-color: #0f172a;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   Search Box
+   ========================================================================== */
+
+.search-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px;
+    padding: 0 2rem;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1.25rem 3.5rem 1.25rem 1.5rem;
+    font-size: 1.125rem;
+    background-color: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 50px;
+    color: #f1f5f9;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.search-input::placeholder {
+    color: #64748b;
+}
+
+.search-input:focus {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 1.25rem;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Dock - Shared Styles
+   ========================================================================== */
+
+.dock {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 50px;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 100;
+}
+
+/* Bottom dock positioning */
+.dock-bottom {
+    bottom: 20px;
+}
+
+/* Top dock positioning */
+.dock-top {
+    top: 20px;
+}
+
+.dock-icon {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Bottom dock - icons move up on hover */
+.dock-bottom .dock-icon:hover {
+    transform: scale(1.2) translateY(-8px);
+}
+
+/* Top dock - icons move down on hover */
+.dock-top .dock-icon:hover {
+    transform: scale(1.2) translateY(8px);
+}
+
+/* Hover bridge for bottom dock - fills gap between icon and card above */
+.dock-bottom .dock-icon::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 30px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.dock-bottom .dock-icon:hover::before {
+    pointer-events: all;
+}
+
+/* Hover bridge for top dock - fills gap between icon and card below */
+.dock-top .dock-icon::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 30px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.dock-top .dock-icon:hover::before {
+    pointer-events: all;
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+}
+
+.dock-icon:hover .icon-circle {
+    transform: scale(1.05);
+}
+
+.empty-dock {
+    color: #64748b;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* ==========================================================================
+   Bookmark Cards (Floating)
+   ========================================================================== */
+
+.bookmark-card {
+    position: absolute;
+    left: 50%;
+    background-color: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-width: 400px;
+    max-width: 520px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1000;
+}
+
+/* Bottom dock card - appears above icon */
+.dock-bottom .bookmark-card {
+    bottom: calc(100% + 20px);
+    transform: translateX(-50%) translateY(20px);
+    border-top: 2px solid rgba(6, 182, 212, 0.5);
+}
+
+.dock-bottom .dock-icon:hover .bookmark-card {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dock-bottom .bookmark-card:hover {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Top dock card - appears below icon */
+.dock-top .bookmark-card {
+    top: calc(100% + 20px);
+    transform: translateX(-50%) translateY(-20px);
+    border-bottom: 2px solid rgba(6, 182, 212, 0.5);
+}
+
+.dock-top .dock-icon:hover .bookmark-card {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dock-top .bookmark-card:hover {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Arrow pointing down to icon (for bottom dock) */
+.dock-bottom .bookmark-card::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(30, 41, 59, 0.95);
+}
+
+/* Arrow pointing up to icon (for top dock) */
+.dock-top .bookmark-card::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(30, 41, 59, 0.95);
+}
+
+.card-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #334155;
+}
+
+.bookmark-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.bookmark-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background-color: transparent;
+    border-radius: 8px;
+    color: #f1f5f9;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    min-width: 0;
+}
+
+.bookmark-link:hover {
+    background-color: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(51, 65, 85, 0.5);
+}
+
+.bookmark-favicon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.bookmark-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1;
+}
+
+/* ==========================================================================
+   Settings Button
+   ========================================================================== */
+
+.settings-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #f1f5f9;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.settings-btn:hover {
+    background-color: rgba(30, 41, 59, 0.9);
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+/* ==========================================================================
+   Settings Modal
+   ========================================================================== */
+
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-modal.show {
+    display: flex;
+}
+
+.settings-content {
+    background-color: rgba(30, 41, 59, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.settings-header h2 {
+    color: #f1f5f9;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-settings-btn {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.close-settings-btn:hover {
+    color: #f1f5f9;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #334155;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.setting-item label {
+    color: #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.setting-item select {
+    background-color: rgba(51, 65, 85, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 6px;
+    color: #f1f5f9;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.manage-categories-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.manage-categories-btn:hover {
+    background-color: #0284c7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+}
+
+/* ==========================================================================
+   Dialog/Modal Styling
+   ========================================================================== */
+
+dialog {
+    background-color: rgba(30, 41, 59, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    color: #f1f5f9;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+dialog article {
+    margin: 0;
+    padding: 2rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+dialog header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    border: none;
+}
+
+dialog header h3 {
+    color: #f1f5f9;
+    margin: 0;
+}
+
+dialog header button[aria-label="Close"] {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    width: auto;
+    height: auto;
+}
+
+dialog header button[aria-label="Close"]:hover {
+    color: #f1f5f9;
+}
+
+dialog label {
+    display: block;
+    margin-bottom: 1rem;
+    color: #f1f5f9;
+}
+
+dialog input[type="text"],
+dialog input[type="url"],
+dialog select {
+    background-color: rgba(51, 65, 85, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    border-radius: 8px;
+    color: #f1f5f9;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+dialog input[type="text"]:focus,
+dialog input[type="url"]:focus,
+dialog select:focus {
+    outline: none;
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+dialog button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+dialog button[type="submit"] {
+    background-color: #0ea5e9;
+    color: white;
+}
+
+dialog button[type="submit"]:hover {
+    background-color: #0284c7;
+}
+
+dialog button.secondary {
+    background-color: #334155;
+    color: #f1f5f9;
+}
+
+dialog button.secondary:hover {
+    background-color: #475569;
+}
+
+/* ==========================================================================
+   Context Menu
+   ========================================================================== */
+
+.contextMenu {
+    --menu-border: rgba(255, 255, 255, 0.08);
+    --menu-bg: linear-gradient(
+        45deg,
+        rgba(10, 20, 28, 0.2) 0%,
+        rgba(10, 20, 28, 0.7) 100%
+    );
+    --item-border: rgba(255, 255, 255, 0.1);
+    --item-color: #fff;
+    --item-bg-hover: rgba(255, 255, 255, 0.1);
+
+    height: 0;
+    overflow: hidden;
+    background: var(--menu-bg);
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top: var(--top);
+    left: var(--left);
+    animation: menuAnimation 0.4s 0s both;
+    transform-origin: left;
+    list-style: none;
+    margin: 4px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 999999999;
+    box-shadow: 0 0 0 1px var(--menu-border), 0 2px 2px rgb(0 0 0 / 3%),
+        0 4px 4px rgb(0 0 0 / 4%), 0 10px 8px rgb(0 0 0 / 5%),
+        0 15px 15px rgb(0 0 0 / 6%), 0 30px 30px rgb(0 0 0 / 7%),
+        0 70px 65px rgb(0 0 0 / 9%);
+}
+
+.contextMenu-item {
+    padding: 4px;
+}
+
+.contextMenu-item[data-divider="top"] {
+    border-top: 1px solid;
+}
+
+.contextMenu-item[data-divider="bottom"] {
+    border-bottom: 1px solid;
+}
+
+.contextMenu-item[data-divider="top-bottom"] {
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.contextMenu-item[data-divider] {
+    border-color: var(--item-border);
+}
+
+.contextMenu-button {
+    color: var(--item-color);
+    background: 0;
+    border: 0;
+    white-space: nowrap;
+    width: 100%;
+    border-radius: 4px;
+    padding: 6px 24px 6px 7px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+    animation: menuItemAnimation 0.2s 0s both;
+    font-family: system-ui, -apple-system, sans-serif;
+    cursor: pointer;
+}
+
+.contextMenu-button:hover {
+    background-color: var(--item-bg-hover);
+}
+
+.contextMenu[data-theme="light"] {
+    --menu-bg: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.85) 100%
+    );
+    --menu-border: rgba(0, 0, 0, 0.08);
+    --item-border: rgba(0, 0, 0, 0.1);
+    --item-color: rgb(10, 20, 28);
+    --item-bg-hover: rgba(10, 20, 28, 0.09);
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes menuAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        height: var(--height);
+        opacity: 1;
+        border-radius: 8px;
+        transform: scale(1);
+    }
+}
+
+@keyframes menuItemAnimation {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
