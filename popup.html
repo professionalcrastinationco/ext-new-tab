@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Bookmark</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="form-container">
+    <h2>Quick Bookmark</h2>
+
+    <div id="message" class="message"></div>
+
+    <form id="bookmark-form">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Loading...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL</label>
+        <input type="url" id="url" name="url" required readonly>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="openInNewTab" name="openInNewTab" checked>
+        <label for="openInNewTab">Open links in new tab</label>
+      </div>
+
+      <div class="button-group">
+        <button type="button" class="btn-secondary" id="cancel-btn">Cancel</button>
+        <button type="submit" class="btn-primary" id="save-btn">Save Bookmark</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="empty-state" class="empty-state" style="display: none;">
+    <p>No categories found.</p>
+    <p><a href="#" id="open-newtab">Open new tab page</a> to create categories first.</p>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
