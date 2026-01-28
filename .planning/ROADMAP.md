@@ -14,7 +14,7 @@ None
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: CSS Consolidation** - Extract inline styles, create shared stylesheet, remove duplication
+- [x] **Phase 1: CSS Consolidation** - Extract inline styles, create shared stylesheet, remove duplication
 - [ ] **Phase 2: UI Polish** - Fix spacing issues, improve layouts, add empty state feedback
 - [ ] **Phase 3: Modal Standardization** - Convert custom modals to native dialog element
 
@@ -27,8 +27,8 @@ None
 **Plans**: TBD
 
 Plans:
-- [ ] 01-01: Extract inline CSS to external stylesheet
-- [ ] 01-02: Consolidate duplicated utilities (escapeHtml, getFaviconUrl)
+- [x] 01-01: Extract inline CSS to external stylesheet
+- [x] 01-02: Consolidate duplicated utilities (escapeHtml, getFaviconUrl)
 
 ### Phase 2: UI Polish
 **Goal**: Fix visual issues identified in PROJECT.md — search icon spacing, dock category padding, manage page layout, theme unification, empty states
@@ -59,6 +59,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. CSS Consolidation | 0/2 | Not started | - |
+| 1. CSS Consolidation | 2/2 | Complete | 2026-01-28 |
 | 2. UI Polish | 0/4 | Not started | - |
 | 3. Modal Standardization | 0/2 | Not started | - |
