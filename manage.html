@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Categories - Quick Bookmarks</title>
+  <link rel="stylesheet" href="lib/pico.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a href="newtab.html" class="back-button">← Back to Dock</a>
+
+  <main class="container">
+    <header>
+      <div class="header-content">
+        <h1>Manage Categories & Bookmarks</h1>
+        <div class="header-actions">
+          <button id="quick-add-btn" class="secondary">+ Quick Add</button>
+          <button id="import-btn" class="secondary">Import</button>
+          <button id="export-btn" class="secondary">Export</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="categories-container">
+      <!-- Categories rendered here via ui.js -->
+    </div>
+
+    <button id="add-category-btn" class="contrast">+ Add Category</button>
+  </main>
+
+  <!-- Add/Edit Link Modal -->
+  <dialog id="link-modal">
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev" id="close-link-modal"></button>
+        <h3 id="link-modal-title">Add Link</h3>
+      </header>
+      <form id="link-form">
+        <label for="link-url">
+          URL
+          <input type="url" id="link-url" name="url" placeholder="https://example.com" required>
+        </label>
+        <label for="link-title">
+          Title
+          <input type="text" id="link-title" name="title" placeholder="Example Site" required>
+        </label>
+        <label for="link-category">
+          Category
+          <select id="link-category" name="category" required>
+            <!-- Populated dynamically -->
+          </select>
+        </label>
+        <input type="hidden" id="link-id" name="linkId">
+        <input type="hidden" id="link-original-category" name="originalCategory">
+        <footer>
+          <button type="button" class="secondary" id="cancel-link-btn">Cancel</button>
+          <button type="submit">Save</button>
+        </footer>
+      </form>
+    </article>
+  </dialog>
+
+  <!-- Category Name Modal -->
+  <dialog id="category-modal">
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev" id="close-category-modal"></button>
+        <h3 id="category-modal-title">Add Category</h3>
+      </header>
+      <form id="category-form">
+        <label for="category-name">
+          Category Name
+          <input type="text" id="category-name" name="name" placeholder="Work, Personal, etc." required>
+        </label>
+        <label for="category-icon">
+          Icon Emoji
+          <input type="text" id="category-icon" name="icon" placeholder="💼" maxlength="2">
+          <small>Choose an emoji to represent this category</small>
+        </label>
+        <input type="hidden" id="category-id" name="categoryId">
+        <footer>
+          <button type="button" class="secondary" id="cancel-category-btn">Cancel</button>
+          <button type="submit">Save</button>
+        </footer>
+      </form>
+    </article>
+  </dialog>
+
+  <!-- Confirm Delete Modal -->
+  <dialog id="confirm-modal">
+    <article>
+      <header>
+        <h3>Confirm Delete</h3>
+      </header>
+      <p id="confirm-message"></p>
+      <footer>
+        <button type="button" class="secondary" id="cancel-confirm-btn">Cancel</button>
+        <button type="button" class="contrast" id="confirm-delete-btn">Delete</button>
+      </footer>
+    </article>
+  </dialog>
+
+  <!-- Import File Input (hidden) -->
+  <input type="file" id="import-file-input" accept="application/json" style="display: none;">
+
+  <script src="storage.js"></script>
+  <script src="ui.js"></script>
+  <script src="import-export.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
