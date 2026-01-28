@@ -39,7 +39,7 @@ Plans:
 Plans:
 - [x] 02-01: Fix search box and dock spacing issues
 - [x] 02-02: Improve manage page button layout
-- [ ] 02-03: Unify dark theme across popup and new tab
+- [x] 02-03: Unify dark theme across popup and new tab
 - [ ] 02-04: Add empty state visual feedback
 
 ### Phase 3: Modal Standardization
@@ -60,5 +60,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. CSS Consolidation | 2/2 | Complete | 2026-01-28 |
-| 2. UI Polish | 2/4 | In progress | - |
+| 2. UI Polish | 3/4 | In progress | - |
 | 3. Modal Standardization | 0/2 | Not started | - |
