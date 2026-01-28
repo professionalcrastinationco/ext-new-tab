@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
-**Current focus:** Planning v1.1
+**Current focus:** v1.1 Icons & Chrome Integration
 
 ## Current Position
 
-Phase: Milestone complete
-Plan: N/A
-Status: Ready to plan v1.1
-Last activity: 2026-01-28 — v1.0 milestone complete
+Phase: 4 of 5 (Phosphor Icons)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-28 — Milestone v1.1 created
 
-Progress: v1.0 complete
+Progress: ░░░░░░░░░░ 0%
 
 ## Performance Metrics
 
@@ -37,15 +37,15 @@ None.
 
 ### Blockers/Concerns
 
-None - ready for next milestone planning.
+None.
+
+### Roadmap Evolution
+
+- v1.0 shipped: UI Polish, 3 phases (Phase 1-3)
+- v1.1 created: Icons & Chrome Integration, 2 phases (Phase 4-5)
 
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: v1.0 milestone complete
+Stopped at: Milestone v1.1 initialization
 Resume file: None
-
-## Next Milestone Goals
-
-- Integrate Phosphor Icons (replace emoji icons)
-- Integrate with Chrome bookmark system
