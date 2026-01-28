@@ -154,7 +154,7 @@ function createBookmarkCard(category, openInNewTab) {
         list.style.textAlign = 'center';
         list.style.color = '#64748b';
         list.style.fontSize = '0.875rem';
-        list.textContent = 'No bookmarks yet';
+        list.innerHTML = '📭 No bookmarks yet. Right-click to add!';
     } else {
         const sortedLinks = [...category.links].sort((a, b) => a.order - b.order);
         sortedLinks.forEach(bookmark => {
@@ -226,7 +226,7 @@ function renderDock(data) {
     if (!data.categories || data.categories.length === 0) {
         const emptyMessage = document.createElement('div');
         emptyMessage.className = 'empty-dock';
-        emptyMessage.textContent = 'No categories. Open settings to manage.';
+        emptyMessage.innerHTML = '📂 No categories yet. Click ⚙️ to get started!';
         dockElement.appendChild(emptyMessage);
         return;
     }

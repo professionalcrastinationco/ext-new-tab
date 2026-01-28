@@ -66,8 +66,22 @@ header h1 {
 .empty-state {
   text-align: center;
   color: var(--muted-color);
-  padding: 3rem 1rem;
+  padding: 3rem 2rem;
   font-size: 1.1rem;
+  background-color: var(--card-background-color);
+  border: 1px dashed var(--muted-border-color);
+  border-radius: var(--border-radius);
+  margin: 2rem 0;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-state p {
+  margin: 0.5rem 0;
 }
 
 /* Category */
@@ -172,7 +186,11 @@ header h1 {
   grid-column: 1 / -1;
   text-align: center;
   color: var(--muted-color);
-  margin: 1rem 0;
+  padding: 2rem 1rem;
+  font-size: 0.95rem;
+  background-color: var(--card-sectionning-background-color, rgba(0,0,0,0.03));
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--muted-border-color);
 }
 
 /* Link Item */
