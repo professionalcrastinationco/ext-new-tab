@@ -87,15 +87,15 @@
     </dialog>
 
     <!-- Settings Modal -->
-    <div class="settings-modal" id="settingsModal">
-        <div class="settings-content">
-            <div class="settings-header">
-                <h2>Settings</h2>
-                <button class="close-settings-btn" id="closeSettingsBtn">×</button>
-            </div>
+    <dialog id="settings-modal">
+        <article style="max-width: 500px;">
+            <header>
+                <button aria-label="Close" rel="prev" id="close-settings-modal">×</button>
+                <h3>Settings</h3>
+            </header>
 
             <div class="settings-section">
-                <h3>Appearance</h3>
+                <h4>Appearance</h4>
                 <div class="setting-item">
                     <label for="dockPositionSelect">Dock Position</label>
                     <select id="dockPositionSelect">
@@ -106,7 +106,7 @@
             </div>
 
             <div class="settings-section">
-                <h3>Bookmarks</h3>
+                <h4>Bookmarks</h4>
                 <div class="setting-item">
                     <label for="openInNewTabSelect">Open links in</label>
                     <select id="openInNewTabSelect">
@@ -117,13 +117,13 @@
             </div>
 
             <div class="settings-section">
-                <h3>Categories</h3>
+                <h4>Categories</h4>
                 <button class="manage-categories-btn" id="manageCategoriesBtn">
                     Manage Categories
                 </button>
             </div>
-        </div>
-    </div>
+        </article>
+    </dialog>
 
     <script src="utils.js"></script>
     <script src="storage.js"></script>

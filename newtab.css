@@ -354,74 +354,22 @@ body {
 }
 
 /* ==========================================================================
-   Settings Modal
+   Settings Modal (now uses native dialog)
    ========================================================================== */
 
-.settings-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-}
-
-.settings-modal.show {
-    display: flex;
-}
-
-.settings-content {
-    background-color: rgba(30, 41, 59, 0.98);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 16px;
-    padding: 2rem;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-
-.settings-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.settings-header h2 {
-    color: #f1f5f9;
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.close-settings-btn {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.25rem;
-    line-height: 1;
-}
-
-.close-settings-btn:hover {
-    color: #f1f5f9;
-}
-
 .settings-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
-.settings-section h3 {
+.settings-section:last-child {
+    margin-bottom: 0;
+}
+
+.settings-section h4 {
     color: #f1f5f9;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
 }
 
 .setting-item {
@@ -434,9 +382,14 @@ body {
     margin-bottom: 0.75rem;
 }
 
+.setting-item:last-child {
+    margin-bottom: 0;
+}
+
 .setting-item label {
     color: #f1f5f9;
     font-size: 0.95rem;
+    margin-bottom: 0;
 }
 
 .setting-item select {
@@ -446,6 +399,7 @@ body {
     color: #f1f5f9;
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+    width: auto;
 }
 
 .manage-categories-btn {

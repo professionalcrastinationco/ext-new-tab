@@ -96,19 +96,20 @@ function attachEventListeners() {
     });
 
     // Settings button
+    const settingsModal = document.getElementById('settings-modal');
     document.getElementById('settingsBtn').addEventListener('click', () => {
-        document.getElementById('settingsModal').classList.add('show');
+        settingsModal.showModal();
     });
 
     // Close settings
-    document.getElementById('closeSettingsBtn').addEventListener('click', () => {
-        document.getElementById('settingsModal').classList.remove('show');
+    document.getElementById('close-settings-modal').addEventListener('click', () => {
+        settingsModal.close();
     });
 
-    // Click outside modal to close
-    document.getElementById('settingsModal').addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) {
-            document.getElementById('settingsModal').classList.remove('show');
+    // Click outside modal to close (backdrop click)
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+            settingsModal.close();
         }
     });
 
