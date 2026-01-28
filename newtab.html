@@ -125,6 +125,20 @@
         </article>
     </dialog>
 
+    <!-- Confirm Delete Modal -->
+    <dialog id="confirm-modal">
+        <article style="max-width: 400px;">
+            <header>
+                <h3>Confirm Delete</h3>
+            </header>
+            <p id="confirm-message"></p>
+            <footer style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                <button type="button" class="secondary" id="cancel-confirm-btn" style="margin: 0;">Cancel</button>
+                <button type="button" class="contrast" id="confirm-delete-btn" style="margin: 0;">Delete</button>
+            </footer>
+        </article>
+    </dialog>
+
     <script src="utils.js"></script>
     <script src="storage.js"></script>
     <script src="import-export.js"></script>

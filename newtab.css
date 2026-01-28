@@ -531,6 +531,15 @@ dialog button.secondary:hover {
     background-color: #475569;
 }
 
+dialog button.contrast {
+    background-color: #dc2626;
+    color: white;
+}
+
+dialog button.contrast:hover {
+    background-color: #b91c1c;
+}
+
 /* ==========================================================================
    Context Menu
    ========================================================================== */

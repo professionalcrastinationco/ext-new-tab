@@ -181,7 +181,8 @@ function createBookmarkCard(category, openInNewTab) {
                         divider: "top",
                         events: {
                             click: async () => {
-                                if (confirm(`Delete "${bookmark.title}"?`)) {
+                                const confirmed = await showConfirmDialog(`Delete "${bookmark.title}"?`);
+                                if (confirmed) {
                                     await deleteLink(category.id, bookmark.id);
                                     currentData = await loadData();
                                     renderDock(currentData);
@@ -262,7 +263,8 @@ function renderDock(data) {
                                 ? `Delete "${category.name}" and all ${category.links.length} bookmark(s)?`
                                 : `Delete "${category.name}"?`;
 
-                            if (confirm(message)) {
+                            const confirmed = await showConfirmDialog(message);
+                            if (confirmed) {
                                 await deleteCategory(category.id);
                                 currentData = await loadData();
                                 renderDock(currentData);
@@ -316,6 +318,39 @@ function showLinkModal(link, categoryId) {
 
     modal.showModal();
     urlInput.focus();
+}
+
+// Show confirm dialog (replaces native confirm())
+function showConfirmDialog(message) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        const messageEl = document.getElementById('confirm-message');
+        const confirmBtn = document.getElementById('confirm-delete-btn');
+        const cancelBtn = document.getElementById('cancel-confirm-btn');
+
+        messageEl.textContent = message;
+
+        const handleConfirm = () => {
+            cleanup();
+            resolve(true);
+        };
+
+        const handleCancel = () => {
+            cleanup();
+            resolve(false);
+        };
+
+        const cleanup = () => {
+            confirmBtn.removeEventListener('click', handleConfirm);
+            cancelBtn.removeEventListener('click', handleCancel);
+            modal.close();
+        };
+
+        confirmBtn.addEventListener('click', handleConfirm);
+        cancelBtn.addEventListener('click', handleCancel);
+
+        modal.showModal();
+    });
 }
 
 // Initialize on DOM ready
