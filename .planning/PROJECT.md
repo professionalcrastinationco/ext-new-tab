@@ -8,46 +8,48 @@ A Chrome extension that replaces the new tab page with a macOS-inspired dock sho
 
 Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
 
+## Current State
+
+**Shipped:** v1.0 UI Polish (2026-01-28)
+
+Polished Chrome extension with:
+- Consolidated CSS in external stylesheets (newtab.css, popup.css, styles.css)
+- Shared utilities in utils.js
+- Unified dark slate theme with cyan accents
+- Native HTML5 `<dialog>` modals
+- Emoji-enriched empty states
+
+**Codebase:** 5,492 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
+
 ## Requirements
 
 ### Validated
 
-- ✓ New tab page with macOS-style dock UI — existing
-- ✓ Quick-add popup for current page — existing
-- ✓ Categories with emoji icons — existing
-- ✓ Drag-and-drop reordering — existing
-- ✓ Import/export functionality — existing
-- ✓ Settings (dock position, link behavior) — existing
-- ✓ Right-click context menu — existing
-- ✓ Google search integration — existing
-- ✓ Chrome storage sync — existing
+- New tab page with macOS-style dock UI — v1.0
+- Quick-add popup for current page — v1.0
+- Categories with emoji icons — v1.0
+- Drag-and-drop reordering — v1.0
+- Import/export functionality — v1.0
+- Settings (dock position, link behavior) — v1.0
+- Right-click context menu — v1.0
+- Google search integration — v1.0
+- Chrome storage sync — v1.0
+- Consolidated external stylesheets — v1.0
+- Unified dark theme across popup and new tab — v1.0
+- Native `<dialog>` modals — v1.0
+- Empty state visual feedback — v1.0
 
 ### Active
 
-- [ ] Fix search icon spacing in Google search box
-- [ ] Adjust spacing/padding on dock category icons
-- [ ] Unify theme (dark) across popup and new tab
-- [ ] Improve manage page button layout
-- [ ] Standardize modals to use native `<dialog>` element
-- [ ] Add empty state visual feedback for dock
+- [ ] Integrate Phosphor Icons (replace emoji icons)
+- [ ] Integrate with Chrome bookmark system
 
 ### Out of Scope
 
 - Firefox/Safari support — Chrome-only per constraint
 - Build step or bundler — keeping vanilla JS architecture
-- Test framework — codebase is stable, manual testing sufficient for now
+- Test framework — codebase is stable, manual testing sufficient
 - Backend/cloud sync — Chrome storage sync is adequate
-
-## Context
-
-**Current state:** Functional Chrome extension with all core features working. UI needs polish to feel professional.
-
-**Architecture:** Vanilla JavaScript modules loaded via script tags, Pico CSS for base styling, no build step. Manifest V3 compliant.
-
-**Tech debt identified:**
-- Duplicated utility functions across files (escapeHtml, getFaviconUrl)
-- 660 lines of inline CSS in newtab.html
-- Mixed modal patterns (custom div vs native dialog)
 
 ## Constraints
 
@@ -59,9 +61,11 @@ Fast access to frequently used bookmarks from the new tab page without navigatin
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Keep vanilla JS | User preference, avoid complexity | — Pending |
-| Chrome only | User preference, simplify testing | — Pending |
-| Focus on UI polish first | User's primary pain point | — Pending |
+| Keep vanilla JS | User preference, avoid complexity | Good |
+| Chrome only | User preference, simplify testing | Good |
+| Focus on UI polish first | User's primary pain point | Good |
+| Translucent glassmorphism style | Modern macOS aesthetic | Good |
+| Native `<dialog>` for modals | Better accessibility, standard API | Good |
 
 ---
-*Last updated: 2026-01-28 after initialization*
+*Last updated: 2026-01-28 after v1.0 milestone*
