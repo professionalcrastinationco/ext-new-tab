@@ -152,22 +152,26 @@ header h1 {
   transform: translateY(-2px);
 }
 
-/* Empty state */
+/* ==========================================================================
+   Glass Empty States
+   ========================================================================== */
+
 .empty-state {
   text-align: center;
-  color: var(--muted-color);
-  padding: 3rem 2rem;
-  font-size: 1.1rem;
-  background-color: var(--card-background-color);
-  border: 1px dashed var(--muted-border-color);
-  border-radius: var(--border-radius);
-  margin: 2rem 0;
+  color: var(--color-text-muted);
+  padding: var(--space-10) var(--space-8);
+  font-size: var(--font-size-lg);
+  background: rgba(51, 65, 85, 0.2);
+  border: 1px dashed rgba(148, 163, 184, 0.3);
+  border-radius: var(--radius-lg);
+  margin: var(--space-8) 0;
 }
 
 .empty-state-icon {
   font-size: 3rem;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
   display: block;
+  opacity: 0.7;
 }
 
 .empty-state p {
@@ -213,15 +217,16 @@ header h1 {
 
 .drag-handle {
   cursor: move;
-  color: var(--drag-handle-color);
+  color: var(--color-text-subtle);
   font-size: 1.2rem;
   user-select: none;
-  padding: 0.25rem;
+  padding: var(--space-1);
   line-height: 1;
+  transition: color var(--transition-fast);
 }
 
 .drag-handle:hover {
-  color: var(--primary);
+  color: var(--color-accent);
 }
 
 .category-name {
@@ -300,31 +305,36 @@ header h1 {
 .empty-links {
   grid-column: 1 / -1;
   text-align: center;
-  color: var(--muted-color);
-  padding: 2rem 1rem;
-  font-size: 0.95rem;
-  background-color: var(--card-sectionning-background-color, rgba(0,0,0,0.03));
-  border-radius: var(--border-radius);
-  border: 1px dashed var(--muted-border-color);
+  color: var(--color-text-muted);
+  padding: var(--space-8) var(--space-4);
+  font-size: var(--font-size-base);
+  background: rgba(51, 65, 85, 0.15);
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(148, 163, 184, 0.2);
 }
 
-/* Link Item */
+/* ==========================================================================
+   Glass Link Items
+   ========================================================================== */
+
 .link-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem;
-  border: 1px solid var(--muted-border-color);
-  border-radius: var(--border-radius);
-  background: var(--card-background-color);
-  transition: all 0.2s;
-  gap: 0.5rem;
+  padding: var(--space-3);
+  background: rgba(51, 65, 85, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  gap: var(--space-2);
   cursor: move;
 }
 
 .link-item:hover {
-  border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: rgba(51, 65, 85, 0.5);
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
 }
 
 .link-item.dragging {
@@ -334,29 +344,29 @@ header h1 {
 .link-content {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex: 1;
   min-width: 0;
   text-decoration: none;
-  color: var(--color);
+  color: var(--color-text);
 }
 
 .link-content:hover {
-  color: var(--primary);
+  color: var(--color-accent);
 }
 
 .favicon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .link-title {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 .link-actions {
@@ -382,8 +392,32 @@ header h1 {
   margin-top: 1rem;
 }
 
-/* Modal adjustments */
+/* ==========================================================================
+   Glass Dialog/Modal Styling
+   ========================================================================== */
+
+dialog {
+  background: var(--glass-bg-heavy) !important;
+  backdrop-filter: blur(var(--glass-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur)) !important;
+  border: var(--glass-border) !important;
+  border-radius: var(--radius-xl) !important;
+  color: var(--color-text) !important;
+  box-shadow: var(--glass-shadow-elevated) !important;
+  padding: 0 !important;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
 dialog article {
+  margin: 0 !important;
+  padding: var(--space-8) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   max-width: 500px;
 }
 
@@ -391,24 +425,86 @@ dialog article header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-6);
+  padding: 0;
+  border: none;
 }
 
 dialog article header h3 {
+  color: var(--color-text);
   margin: 0;
+  font-size: var(--font-size-xl);
 }
 
 dialog article footer {
   display: flex;
   justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: 0;
+  border: none;
+  background: none;
 }
 
-dialog article footer button {
-  margin: 0;
+/* Dialog buttons */
+dialog button {
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
   min-width: 80px;
-  padding: 0.6rem 1rem;
+}
+
+dialog button[type="submit"],
+dialog button.primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+dialog button[type="submit"]:hover,
+dialog button.primary:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+dialog button.secondary,
+dialog button[type="button"]:not(.primary):not(.contrast) {
+  background: rgba(51, 65, 85, 0.8);
+  color: var(--color-text);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+dialog button.secondary:hover,
+dialog button[type="button"]:not(.primary):not(.contrast):hover {
+  background: rgba(71, 85, 105, 0.8);
+}
+
+dialog button.contrast {
+  background: #dc2626;
+  color: white;
+}
+
+dialog button.contrast:hover {
+  background: #b91c1c;
+}
+
+/* Close button in header */
+dialog header button[aria-label="Close"] {
+  background: none !important;
+  border: none !important;
+  color: var(--color-text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-1);
+  min-width: auto;
+  line-height: 1;
+}
+
+dialog header button[aria-label="Close"]:hover {
+  color: var(--color-text);
+  transform: none;
 }
 
 /* Form adjustments */
@@ -490,25 +586,28 @@ input::placeholder {
 }
 
 /* ==========================================================================
-   Back Navigation
+   Glass Back Button
    ========================================================================== */
 
 .back-button {
   position: fixed;
   top: 20px;
   left: 20px;
-  padding: 0.5rem 1rem;
-  background-color: var(--secondary);
-  color: var(--color);
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur-subtle));
+  color: var(--color-text);
   text-decoration: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+  border-radius: var(--radius-md);
+  border: var(--glass-border);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
   z-index: 1000;
 }
 
 .back-button:hover {
-  background-color: var(--secondary-hover);
+  background: var(--glass-bg-medium);
+  border-color: rgba(6, 182, 212, 0.3);
   transform: translateY(-2px);
 }
 
