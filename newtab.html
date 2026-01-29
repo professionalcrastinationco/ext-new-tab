@@ -147,6 +147,39 @@
         </article>
     </dialog>
 
+    <!-- Quick Link Modal -->
+    <dialog id="quick-link-modal">
+        <article style="max-width: 500px;">
+            <header>
+                <button aria-label="Close" rel="prev" id="close-quick-link-modal">×</button>
+                <h3 id="quick-link-modal-title">Edit Quick Link</h3>
+            </header>
+            <form id="quick-link-form">
+                <label for="quick-link-title">
+                    Title
+                    <input type="text" id="quick-link-title" name="title" placeholder="My Site" required>
+                </label>
+                <label for="quick-link-url">
+                    URL
+                    <input type="url" id="quick-link-url" name="url" placeholder="https://example.com" required>
+                </label>
+                <label>
+                    Icon
+                    <div class="icon-picker quick-link-icon-picker" id="quick-link-icon-picker">
+                        <!-- Icons populated by JavaScript -->
+                    </div>
+                    <input type="hidden" id="quick-link-icon" name="icon" value="globe">
+                    <small style="color: #94a3b8;">Click to select an icon</small>
+                </label>
+                <input type="hidden" id="quick-link-id" name="linkId">
+                <footer style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" class="secondary" id="cancel-quick-link-btn" style="margin: 0;">Cancel</button>
+                    <button type="submit" style="margin: 0;">Save</button>
+                </footer>
+            </form>
+        </article>
+    </dialog>
+
     <script src="icons.js"></script>
     <script src="utils.js"></script>
     <script src="storage.js"></script>

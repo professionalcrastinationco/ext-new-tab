@@ -4,6 +4,7 @@ let currentData = null;
 // Context menu icons (sized for menu)
 const editIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-right:7px">${ICON_PENCIL_SIMPLE}</span>`;
 const deleteIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-right:7px">${ICON_TRASH}</span>`;
+const addIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-right:7px">${ICON_PLUS}</span>`;
 
 // Helper to render category icon (supports both emoji and Phosphor names)
 function renderCategoryIcon(icon) {
@@ -61,6 +62,40 @@ function populateIconPicker(selectedIcon) {
     };
 }
 
+// Populate quick link icon picker grid (includes both brand and category icons)
+function populateQuickLinkIconPicker(selectedIcon) {
+    const picker = document.getElementById('quick-link-icon-picker');
+    const hiddenInput = document.getElementById('quick-link-icon');
+    if (!picker || !hiddenInput) return;
+
+    hiddenInput.value = selectedIcon || 'globe';
+
+    // Combine quick access icons and category icons
+    const allIcons = {
+        ...(typeof QUICK_ACCESS_ICONS !== 'undefined' ? QUICK_ACCESS_ICONS : {}),
+        ...CATEGORY_ICONS
+    };
+    const iconNames = Object.keys(allIcons);
+
+    picker.innerHTML = iconNames.map(name => `
+        <button type="button"
+                class="icon-picker-item${hiddenInput.value === name ? ' selected' : ''}"
+                data-icon="${name}"
+                title="${name.replace(/-/g, ' ')}">
+            ${allIcons[name]}
+        </button>
+    `).join('');
+
+    picker.onclick = (e) => {
+        const item = e.target.closest('.icon-picker-item');
+        if (!item) return;
+
+        picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        hiddenInput.value = item.dataset.icon;
+    };
+}
+
 // Render quick access links
 function renderQuickLinks(quickLinks, openInNewTab) {
     const container = document.getElementById('quickLinks');
@@ -85,6 +120,32 @@ function renderQuickLinks(quickLinks, openInNewTab) {
             linkEl.rel = 'noopener noreferrer';
         }
 
+        // Add context menu for edit/delete
+        linkEl.addEventListener('contextmenu', (e) => {
+            showContextMenu(e, [
+                {
+                    content: `${editIcon}Edit Quick Link`,
+                    events: {
+                        click: () => showQuickLinkModal(link)
+                    }
+                },
+                {
+                    content: `${deleteIcon}Delete Quick Link`,
+                    divider: "top",
+                    events: {
+                        click: async () => {
+                            const confirmed = await showConfirmDialog(`Delete "${link.title}"?`);
+                            if (confirmed) {
+                                await deleteQuickLink(link.id);
+                                currentData = await loadData();
+                                renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
+                            }
+                        }
+                    }
+                }
+            ], 'dark');
+        });
+
         const iconEl = document.createElement('div');
         iconEl.className = 'quick-link-icon';
         iconEl.innerHTML = renderQuickLinkIcon(link.icon);
@@ -96,6 +157,21 @@ function renderQuickLinks(quickLinks, openInNewTab) {
         linkEl.appendChild(iconEl);
         linkEl.appendChild(titleEl);
         container.appendChild(linkEl);
+    });
+
+    // Add context menu to container for adding new links
+    container.addEventListener('contextmenu', (e) => {
+        // Only show add menu if clicking on container itself, not on a link
+        if (e.target === container || e.target.classList.contains('quick-links-empty')) {
+            showContextMenu(e, [
+                {
+                    content: `${addIcon}Add Quick Link`,
+                    events: {
+                        click: () => showQuickLinkModal(null)
+                    }
+                }
+            ], 'dark');
+        }
     });
 }
 
@@ -229,6 +305,38 @@ function attachEventListeners() {
     document.getElementById('manageCategoriesBtn').addEventListener('click', () => {
         // Open the old management interface
         window.location.href = 'manage.html';
+    });
+
+    // Quick link modal handlers
+    document.getElementById('close-quick-link-modal').addEventListener('click', () => {
+        document.getElementById('quick-link-modal').close();
+    });
+
+    document.getElementById('cancel-quick-link-btn').addEventListener('click', () => {
+        document.getElementById('quick-link-modal').close();
+    });
+
+    document.getElementById('quick-link-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const title = formData.get('title').trim();
+        const url = formData.get('url').trim();
+        const icon = formData.get('icon')?.trim() || 'globe';
+        const linkId = formData.get('linkId');
+
+        if (!title || !url) return;
+
+        if (linkId) {
+            // Update existing
+            await updateQuickLink(linkId, { title, url, icon });
+        } else {
+            // Add new
+            await addQuickLink({ title, url, icon });
+        }
+
+        document.getElementById('quick-link-modal').close();
+        currentData = await loadData();
+        renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
     });
 }
 
@@ -423,6 +531,34 @@ function showLinkModal(link, categoryId) {
 
     modal.showModal();
     urlInput.focus();
+}
+
+// Show quick link edit modal
+function showQuickLinkModal(link = null) {
+    const modal = document.getElementById('quick-link-modal');
+    const titleInput = document.getElementById('quick-link-title');
+    const urlInput = document.getElementById('quick-link-url');
+    const linkIdInput = document.getElementById('quick-link-id');
+    const modalTitle = document.getElementById('quick-link-modal-title');
+
+    if (link) {
+        // Editing existing link
+        modalTitle.textContent = 'Edit Quick Link';
+        titleInput.value = link.title;
+        urlInput.value = link.url;
+        linkIdInput.value = link.id;
+        populateQuickLinkIconPicker(link.icon);
+    } else {
+        // Adding new link
+        modalTitle.textContent = 'Add Quick Link';
+        titleInput.value = '';
+        urlInput.value = '';
+        linkIdInput.value = '';
+        populateQuickLinkIconPicker('globe');
+    }
+
+    modal.showModal();
+    titleInput.focus();
 }
 
 // Show confirm dialog (replaces native confirm())
