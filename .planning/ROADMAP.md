@@ -59,7 +59,7 @@
 
 Plans:
 - [x] 05-01: Design Tokens Foundation (tokens.css + manage.html background)
-- [ ] 05-02: Glass Components (categories, buttons, inputs)
+- [x] 05-02: Glass Components (categories, buttons, inputs)
 - [ ] 05-03: Modals & Link Items (dialogs, links, empty states)
 
 ---
@@ -76,4 +76,4 @@ Plans:
 | 2. UI Polish | v1.0 | 4/4 | Complete | 2026-01-28 |
 | 3. Modal Standardization | v1.0 | 1/1 | Complete | 2026-01-28 |
 | 4. Phosphor Icons | v1.1 | 3/3 | Complete | 2026-01-28 |
-| 5. UI Glassmorphism Polish | v1.2 | 1/3 | In progress | - |
+| 5. UI Glassmorphism Polish | v1.2 | 2/3 | In progress | - |

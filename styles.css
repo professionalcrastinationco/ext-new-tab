@@ -1,5 +1,80 @@
 /* styles.css - Custom styles on top of Pico CSS */
 
+/* ==========================================================================
+   Phosphor Icon Base Styles
+   ========================================================================== */
+
+.ph-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.ph-icon svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+/* Icon sizes */
+.ph-icon-sm svg { width: 14px; height: 14px; }
+.ph-icon-md svg { width: 18px; height: 18px; }
+.ph-icon-lg svg { width: 24px; height: 24px; }
+.ph-icon-xl svg { width: 32px; height: 32px; }
+
+/* ==========================================================================
+   Icon Picker Component
+   ========================================================================== */
+
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 12px;
+  background: var(--card-sectionning-background-color, rgba(0, 0, 0, 0.05));
+  border-radius: var(--border-radius);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+
+.icon-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: 2px solid transparent;
+  color: var(--muted-color);
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.icon-picker-item:hover {
+  background: var(--secondary-hover);
+  color: var(--color);
+}
+
+.icon-picker-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-focus);
+  color: var(--primary);
+}
+
+.icon-picker-item svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+
 :root {
   --category-border: var(--muted-border-color);
   --drag-handle-color: #999;
@@ -38,28 +113,43 @@ header h1 {
 }
 
 .header-actions button {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: all var(--transition-base);
   margin: 0;
   min-width: 100px;
-  padding: 0.6rem 1rem;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-}
-
-.header-actions button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Primary action button styling */
 .header-actions button.primary-action {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  color: var(--primary-inverse);
+  background: var(--color-primary);
+  color: white;
+  border: none;
 }
 
 .header-actions button.primary-action:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
+  background: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+/* Secondary buttons (Import, Export) */
+.header-actions button.secondary,
+.header-actions button:not(.primary-action) {
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur-subtle));
+  color: var(--color-text);
+  border: var(--glass-border);
+}
+
+.header-actions button.secondary:hover,
+.header-actions button:not(.primary-action):hover {
+  background: var(--glass-bg-medium);
+  border-color: rgba(6, 182, 212, 0.3);
+  transform: translateY(-2px);
 }
 
 /* Empty state */
@@ -84,13 +174,17 @@ header h1 {
   margin: 0.5rem 0;
 }
 
-/* Category */
+/* Category - Glassmorphism Style */
 .category {
-  margin-bottom: 2rem;
-  border: 1px solid var(--category-border);
-  border-radius: var(--border-radius);
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
   padding: 0;
   cursor: default;
+  overflow: hidden;
 }
 
 .category.dragging {
@@ -101,10 +195,10 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--category-border);
-  background: var(--card-background-color);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: rgba(51, 65, 85, 0.3);
+  border-radius: 0;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -131,9 +225,10 @@ header h1 {
 }
 
 .category-name {
-  margin: 0;
-  font-size: 1.3rem;
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
   font-weight: 600;
+  margin: 0;
 }
 
 .category-actions {
@@ -144,38 +239,58 @@ header h1 {
 }
 
 .icon-btn {
-  background: none;
+  background: transparent;
   border: none;
-  padding: 0.5rem;
-  margin: 0;
+  padding: var(--space-2);
   cursor: pointer;
-  font-size: 1.1rem;
+  color: var(--color-text-muted);
   opacity: 0.7;
-  transition: all 0.2s ease;
-  min-width: 36px;
-  min-height: 36px;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  min-width: 36px;
+  min-height: 36px;
+  margin: 0;
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  display: block;
 }
 
 .icon-btn:hover {
   opacity: 1;
-  background: var(--secondary-hover);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
 }
 
 .add-link-btn {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-base);
   margin: 0;
   margin-left: 0.25rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
   white-space: nowrap;
+  cursor: pointer;
+}
+
+.add-link-btn:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
 }
 
 /* Links Grid */
 .links-grid {
-  padding: 1.5rem;
+  padding: var(--space-6);
+  background: transparent;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
@@ -300,6 +415,35 @@ dialog article footer button {
 form label {
   display: block;
   margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   Glass Input Override for Pico CSS
+   ========================================================================== */
+
+input[type="text"],
+input[type="url"],
+select {
+  background: rgba(51, 65, 85, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--color-text) !important;
+  padding: var(--space-3) !important;
+  font-size: var(--font-size-base) !important;
+  font-family: var(--font-family) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+select:focus {
+  outline: none !important;
+  border-color: rgba(6, 182, 212, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1) !important;
+}
+
+input::placeholder {
+  color: var(--color-text-subtle) !important;
 }
 
 /* Responsive */
