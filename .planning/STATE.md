@@ -9,10 +9,10 @@ See: .planning/PROJECT.md (updated 2026-01-28)
 
 ## Current Position
 
-Phase: 6.1 - Real Brand Logos (v1.3 COMPLETE)
-Plan: 1/1 complete
+Phase: 6.2 - Icon Fixes (v1.3)
+Plan: 1 of 1 in current phase
 Status: Phase complete
-Last activity: 2026-01-29 - Completed 06.1-01-PLAN.md
+Last activity: 2026-01-29 - Completed 06.2-01-PLAN.md
 
 Progress: ██████████ 100%
 
@@ -61,9 +61,10 @@ None.
 - v1.2.1 shipped: UI Consistency Fix, 1 phase (Phase 5.1) — category card glassmorphism
 - v1.3 shipped: Quick Access Icons, 1 phase (Phase 6) — customizable icon strip below search bar
 - Phase 6.1 added: Real Brand Logos — replace custom icons with official monochrome Claude, ChatGPT, GitHub logos
+- Phase 6.2 inserted after Phase 6.1: Icon Fixes — Kanban for Iceberg, Claude logo for Claude, consistent sizing (URGENT)
 
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: Phase 6.1 complete, v1.3 ready to ship
+Stopped at: Phase 6.2 complete, ready for milestone completion
 Resume file: None

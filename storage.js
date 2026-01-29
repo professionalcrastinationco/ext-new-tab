@@ -18,7 +18,7 @@ const DEFAULT_QUICK_LINKS = [
   { id: 'ql_claude', title: 'Claude', url: 'https://claude.ai', icon: 'claude', order: 0 },
   { id: 'ql_chatgpt', title: 'ChatGPT', url: 'https://chat.openai.com', icon: 'chatgpt', order: 1 },
   { id: 'ql_github', title: 'GitHub', url: 'https://github.com', icon: 'github', order: 2 },
-  { id: 'ql_iceberg', title: 'Iceberg', url: 'https://iceberg.pm', icon: 'iceberg', order: 3 }
+  { id: 'ql_iceberg', title: 'Iceberg', url: 'https://iceberg.pm', icon: 'kanban', order: 3 }
 ];
 
 // Load all data from chrome.storage.sync

@@ -6,15 +6,15 @@
 - ✅ **v1.1 Icons** (Phase 4) — SHIPPED 2026-01-28
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
 - ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
-- 🔄 [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1) — In Progress
+- 🔄 [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1, 6.2) — In Progress
 
 ---
 
 ## Current Status
 
 **Current Milestone:** v1.3 Quick Access Icons
-**Current Phase:** 6.1 - Real Brand Logos
-**Status:** Not planned yet
+**Current Phase:** 6.2 - Icon Fixes
+**Status:** Complete
 
 ---
 
@@ -33,7 +33,7 @@ Plans:
 - [x] 06-02: UI Component & Rendering (HTML/CSS/JS display)
 - [x] 06-03: Edit Modal & Settings (context menu + modal for add/edit/delete)
 
-### Phase 6.1: Real Brand Logos
+### Phase 6.1: Real Brand Logos ✅
 
 **Goal:** Replace custom Phosphor-style brand icons with official monochrome versions of Claude, ChatGPT, and GitHub logos while maintaining the current color palette
 **Depends on:** Phase 6
@@ -41,6 +41,15 @@ Plans:
 
 Plans:
 - [x] 06.1-01: Replace brand icon SVGs with official logos
+
+### Phase 6.2: Icon Fixes (INSERTED) ✅
+
+**Goal:** Replace Iceberg icon with Kanban icon, replace Anthropic "A" logo with Claude logo, ensure consistent icon sizing
+**Depends on:** Phase 6.1
+**Plans:** 1
+
+Plans:
+- [x] 06.2-01: Icon updates (Claude starburst + Kanban icon)
 
 ## Completed Milestones (v1.2.1)
 
@@ -124,3 +133,4 @@ Plans:
 | 5.1 Category Card Glassmorphism | v1.2.1 | 1/1 | ✅ Shipped | 2026-01-28 |
 | 6. Quick Access Icons | v1.3 | 3/3 | ✅ Complete | 2026-01-28 |
 | 6.1 Real Brand Logos | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
+| 6.2 Icon Fixes | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
