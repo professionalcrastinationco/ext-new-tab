@@ -9,14 +9,14 @@ See: .planning/PROJECT.md (updated 2026-01-28)
 
 ## Current Position
 
-Phase: 6 - Quick Access Icons (v1.3 SHIPPED)
-Plan: All complete
-Status: Milestone shipped
-Last activity: 2026-01-29 - v1.3 milestone complete
+Phase: 6.1 - Real Brand Logos (v1.3 COMPLETE)
+Plan: 1/1 complete
+Status: Phase complete
+Last activity: 2026-01-29 - Completed 06.1-01-PLAN.md
 
 Progress: ██████████ 100%
 
-**Next:** Plan next milestone or done
+**Next:** `/gsd:complete-milestone`
 
 ## Performance Metrics
 
@@ -60,9 +60,10 @@ None.
 - v1.2 shipped: Glassmorphism Polish, 1 phase (Phase 5)
 - v1.2.1 shipped: UI Consistency Fix, 1 phase (Phase 5.1) — category card glassmorphism
 - v1.3 shipped: Quick Access Icons, 1 phase (Phase 6) — customizable icon strip below search bar
+- Phase 6.1 added: Real Brand Logos — replace custom icons with official monochrome Claude, ChatGPT, GitHub logos
 
 ## Session Continuity
 
 Last session: 2026-01-29
-Stopped at: v1.3 Quick Access Icons milestone shipped
+Stopped at: Phase 6.1 complete, v1.3 ready to ship
 Resume file: None

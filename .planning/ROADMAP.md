@@ -6,24 +6,23 @@
 - ✅ **v1.1 Icons** (Phase 4) — SHIPPED 2026-01-28
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
 - ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
-- ✅ [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6) — SHIPPED 2026-01-29
+- 🔄 [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1) — In Progress
 
 ---
 
 ## Current Status
 
-All planned milestones complete. Extension is feature-complete for current needs.
+**Current Milestone:** v1.3 Quick Access Icons
+**Current Phase:** 6.1 - Real Brand Logos
+**Status:** Not planned yet
 
 ---
 
-## Completed Milestones (v1.3)
-
-<details>
-<summary>✅ v1.3 Quick Access Icons (Phase 6) — SHIPPED 2026-01-29</summary>
+## Current Milestone (v1.3)
 
 **Milestone Goal:** Add customizable quick access icons/links for frequently used websites directly under the search bar.
 
-### Phase 6: Quick Access Icons
+### Phase 6: Quick Access Icons ✅
 
 **Goal:** Add user-editable quick access icon strip below the search bar with custom SVG icons matching the extension's visual style
 **Depends on:** Phase 5.1
@@ -34,7 +33,14 @@ Plans:
 - [x] 06-02: UI Component & Rendering (HTML/CSS/JS display)
 - [x] 06-03: Edit Modal & Settings (context menu + modal for add/edit/delete)
 
-</details>
+### Phase 6.1: Real Brand Logos
+
+**Goal:** Replace custom Phosphor-style brand icons with official monochrome versions of Claude, ChatGPT, and GitHub logos while maintaining the current color palette
+**Depends on:** Phase 6
+**Plans:** 1
+
+Plans:
+- [x] 06.1-01: Replace brand icon SVGs with official logos
 
 ## Completed Milestones (v1.2.1)
 
@@ -116,4 +122,5 @@ Plans:
 | 4. Phosphor Icons | v1.1 | 3/3 | Complete | 2026-01-28 |
 | 5. UI Glassmorphism Polish | v1.2 | 3/3 | ✅ Shipped | 2026-01-28 |
 | 5.1 Category Card Glassmorphism | v1.2.1 | 1/1 | ✅ Shipped | 2026-01-28 |
-| 6. Quick Access Icons | v1.3 | 3/3 | ✅ Shipped | 2026-01-29 |
+| 6. Quick Access Icons | v1.3 | 3/3 | ✅ Complete | 2026-01-28 |
+| 6.1 Real Brand Logos | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
