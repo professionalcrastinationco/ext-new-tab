@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
-**Current focus:** v1.1 Icons & Chrome Integration
+**Current focus:** v1.2 Glassmorphism Polish
 
 ## Current Position
 
-Phase: 4 of 5 (Phosphor Icons)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-01-28 — Milestone v1.1 created
+Phase: 5 of 5 (UI Glassmorphism Polish)
+Plan: 05-01 (Design Tokens Foundation) - COMPLETE
+Status: In progress
+Last activity: 2026-01-28 - Completed 05-01-PLAN.md
 
-Progress: ░░░░░░░░░░ 0%
+Progress: ██░░░░░░░░ 20% (1/5 plans in Phase 5)
 
 ## Performance Metrics
 
@@ -42,10 +42,11 @@ None.
 ### Roadmap Evolution
 
 - v1.0 shipped: UI Polish, 3 phases (Phase 1-3)
-- v1.1 created: Icons & Chrome Integration, 2 phases (Phase 4-5)
+- v1.1 shipped: Icons, 1 phase (Phase 4) — Chrome Bookmarks integration researched but skipped
+- v1.2 created: Glassmorphism Polish, 1 phase (Phase 5)
 
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Milestone v1.1 initialization
+Stopped at: Completed 05-01-PLAN.md (Design Tokens Foundation)
 Resume file: None

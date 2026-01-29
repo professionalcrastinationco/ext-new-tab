@@ -5,7 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manage Categories - Quick Bookmarks</title>
   <link rel="stylesheet" href="lib/pico.min.css">
+  <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Override Pico CSS defaults with design tokens */
+    :root {
+      --pico-background-color: var(--color-base);
+      --pico-card-background-color: var(--glass-bg-light);
+      --pico-muted-border-color: var(--color-border);
+    }
+    body {
+      background-color: var(--color-base);
+    }
+  </style>
 </head>
 <body>
   <a href="newtab.html" class="back-button">← Back to Dock</a>
@@ -73,10 +85,13 @@
           Category Name
           <input type="text" id="category-name" name="name" placeholder="Work, Personal, etc." required>
         </label>
-        <label for="category-icon">
-          Icon Emoji
-          <input type="text" id="category-icon" name="icon" placeholder="💼" maxlength="2">
-          <small>Choose an emoji to represent this category</small>
+        <label>
+          Icon
+          <div class="icon-picker" id="icon-picker">
+            <!-- Icons populated by JavaScript -->
+          </div>
+          <input type="hidden" id="category-icon" name="icon" value="briefcase">
+          <small>Click to select an icon</small>
         </label>
         <input type="hidden" id="category-id" name="categoryId">
         <footer>
@@ -104,6 +119,7 @@
   <!-- Import File Input (hidden) -->
   <input type="file" id="import-file-input" accept="application/json" style="display: none;">
 
+  <script src="icons.js"></script>
   <script src="utils.js"></script>
   <script src="storage.js"></script>
   <script src="ui.js"></script>

@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Quick Bookmarks - Design Tokens
+   ==========================================================================
+   Unified CSS custom properties for consistent styling across the extension.
+   Based on newtab.css glassmorphism patterns and context menu implementation.
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     Color Palette (Slate-based)
+     ========================================================================== */
+  --color-base: #0f172a;                      /* Body background */
+  --color-surface-1: rgba(30, 41, 59, 0.6);   /* Primary surfaces */
+  --color-surface-2: rgba(30, 41, 59, 0.8);   /* Elevated surfaces */
+  --color-surface-3: rgba(51, 65, 85, 0.5);   /* Tertiary surfaces */
+
+  --color-border: rgba(148, 163, 184, 0.2);   /* Default borders */
+  --color-border-focus: rgba(6, 182, 212, 0.5); /* Focus state */
+
+  --color-text: #f1f5f9;                      /* Primary text */
+  --color-text-muted: #94a3b8;                /* Secondary text */
+  --color-text-subtle: #64748b;               /* Tertiary text */
+
+  --color-primary: #0ea5e9;                   /* Primary actions */
+  --color-primary-hover: #0284c7;             /* Primary hover */
+  --color-accent: #22d3ee;                    /* Accent/highlight */
+
+  /* ==========================================================================
+     Glassmorphism Effects
+     ========================================================================== */
+  --glass-blur: 20px;
+  --glass-blur-subtle: 10px;
+  --glass-blur-heavy: 30px;
+
+  --glass-bg-light: rgba(30, 41, 59, 0.6);
+  --glass-bg-medium: rgba(30, 41, 59, 0.8);
+  --glass-bg-heavy: rgba(30, 41, 59, 0.95);
+
+  --glass-border: 1px solid rgba(148, 163, 184, 0.2);
+  --glass-border-glow: 1px solid rgba(6, 182, 212, 0.5);
+
+  /* Layered shadow (from context menu - the best one) */
+  --glass-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 2px 2px rgb(0 0 0 / 3%),
+    0 4px 4px rgb(0 0 0 / 4%),
+    0 10px 8px rgb(0 0 0 / 5%),
+    0 15px 15px rgb(0 0 0 / 6%),
+    0 30px 30px rgb(0 0 0 / 7%),
+    0 70px 65px rgb(0 0 0 / 9%);
+
+  --glass-shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+  /* ==========================================================================
+     Spacing (8px grid)
+     ========================================================================== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ==========================================================================
+     Border Radius
+     ========================================================================== */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-pill: 50px;
+  --radius-circle: 50%;
+
+  /* ==========================================================================
+     Typography
+     ========================================================================== */
+  --font-family: system-ui, -apple-system, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  /* ==========================================================================
+     Transitions
+     ========================================================================== */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
