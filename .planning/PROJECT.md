@@ -10,7 +10,7 @@ Fast access to frequently used bookmarks from the new tab page without navigatin
 
 ## Current State
 
-**Shipped:** v1.2 Glassmorphism Polish (2026-01-28)
+**Shipped:** v1.2.1 UI Consistency Fix (2026-01-28)
 
 Polished Chrome extension with:
 - Unified design tokens system (`tokens.css`) with 32 CSS custom properties
@@ -20,6 +20,7 @@ Polished Chrome extension with:
 - Visual consistency between manage.html and newtab.html
 - Phosphor Icons throughout (40+ icon options for categories)
 - Native HTML5 `<dialog>` modals with Promise-based API
+- Category cards match context menu glassmorphism (gradient, layered shadows)
 
 **Codebase:** ~7,500 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
 
@@ -79,4 +80,4 @@ Polished Chrome extension with:
 | Pico CSS override at :root | Maintain base while customizing | ✓ Good |
 
 ---
-*Last updated: 2026-01-28 after v1.2 milestone*
+*Last updated: 2026-01-28 after v1.2.1 milestone*

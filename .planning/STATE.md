@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
-**Current focus:** UI consistency fix — category cards must match context menu glassmorphism
+**Current focus:** Feature complete — all milestones shipped (v1.0 → v1.2.1)
 
 ## Current Position
 
@@ -56,10 +56,10 @@ None.
 - v1.0 shipped: UI Polish, 3 phases (Phase 1-3)
 - v1.1 shipped: Icons, 1 phase (Phase 4) — Chrome Bookmarks integration researched but skipped
 - v1.2 shipped: Glassmorphism Polish, 1 phase (Phase 5)
-- Phase 5.1 inserted after Phase 5: Category card glassmorphism fix (URGENT) — cards don't match context menu styling
+- v1.2.1 shipped: UI Consistency Fix, 1 phase (Phase 5.1) — category card glassmorphism
 
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Phase 5.1 complete — category card glassmorphism shipped
+Stopped at: v1.2.1 milestone complete — all features shipped
 Resume file: None

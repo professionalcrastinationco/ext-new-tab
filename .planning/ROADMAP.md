@@ -5,7 +5,7 @@
 - ✅ [v1.0 UI Polish](milestones/v1.0-ROADMAP.md) (Phases 1-3) — SHIPPED 2026-01-28
 - ✅ **v1.1 Icons** (Phase 4) — SHIPPED 2026-01-28
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
-- ✅ **v1.2.1 UI Consistency Fix** (Phase 5.1) — SHIPPED 2026-01-28
+- ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
 
 ## Completed Milestones (v1.2.1)
 

@@ -1,5 +1,31 @@
 # Project Milestones: Quick Bookmarks
 
+## v1.2.1 UI Consistency Fix (Shipped: 2026-01-28)
+
+**Delivered:** Category card glassmorphism now matches context menu styling for visual consistency.
+
+**Phases completed:** 5.1 (1 plan total)
+
+**Key accomplishments:**
+
+- Updated bookmark card background from solid rgba to gradient matching context menu
+- Applied layered shadow system for consistent depth
+- Replaced explicit border with inner glow via box-shadow
+- Updated arrow pseudo-elements to match gradient colors
+
+**Stats:**
+
+- 1 file modified (newtab.css)
+- +346 / -18 lines changed
+- 1 phase, 1 plan, 2 tasks
+- Same-day completion (2026-01-28)
+
+**Git range:** `feat(5.1-01)`
+
+**What's next:** Feature complete for current needs
+
+---
+
 ## v1.2 Glassmorphism Polish (Shipped: 2026-01-28)
 
 **Delivered:** Unified visual design with consistent glassmorphism styling across all extension surfaces.
