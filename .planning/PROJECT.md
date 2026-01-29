@@ -10,7 +10,7 @@ Fast access to frequently used bookmarks from the new tab page without navigatin
 
 ## Current State
 
-**Shipped:** v1.2.1 UI Consistency Fix (2026-01-28)
+**Shipped:** v1.3 Quick Access Icons (2026-01-29)
 
 Polished Chrome extension with:
 - Unified design tokens system (`tokens.css`) with 32 CSS custom properties
@@ -21,8 +21,10 @@ Polished Chrome extension with:
 - Phosphor Icons throughout (40+ icon options for categories)
 - Native HTML5 `<dialog>` modals with Promise-based API
 - Category cards match context menu glassmorphism (gradient, layered shadows)
+- Quick access icons strip below search bar with brand icons (Claude, ChatGPT, GitHub, Iceberg)
+- User-editable quick links with add/edit/delete via context menu and modal
 
-**Codebase:** ~7,500 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
+**Codebase:** ~6,700 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
 
 ## Requirements
 
@@ -46,6 +48,9 @@ Polished Chrome extension with:
 - ✓ Design tokens system (tokens.css) — v1.2
 - ✓ Glassmorphism styling across all components — v1.2
 - ✓ Visual consistency between manage.html and newtab.html — v1.2
+- ✓ Quick access icons strip below search bar — v1.3
+- ✓ User-editable quick links (add/edit/delete) — v1.3
+- ✓ Brand icons (Claude, ChatGPT, GitHub, Iceberg) — v1.3
 
 ### Active
 
@@ -78,6 +83,8 @@ Polished Chrome extension with:
 | Skip Chrome Bookmarks API | Complexity vs benefit; sync already works | ✓ Good |
 | Design tokens system | Maintainable, consistent styling | ✓ Good |
 | Pico CSS override at :root | Maintain base while customizing | ✓ Good |
+| Brand icons for quick access | Professional appearance for frequently used sites | ✓ Good |
+| Data migration for quickLinks | Existing users automatically get new feature | ✓ Good |
 
 ---
-*Last updated: 2026-01-28 after v1.2.1 milestone*
+*Last updated: 2026-01-29 after v1.3 milestone*
