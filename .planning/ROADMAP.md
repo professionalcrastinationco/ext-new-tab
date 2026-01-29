@@ -6,19 +6,21 @@
 - ✅ **v1.1 Icons** (Phase 4) — SHIPPED 2026-01-28
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
 - ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
-- 🔄 [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1, 6.2) — In Progress
+- ✅ [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1, 6.2) — SHIPPED 2026-01-29
 
 ---
 
 ## Current Status
 
-**Current Milestone:** v1.3 Quick Access Icons
-**Current Phase:** 6.2 - Icon Fixes
-**Status:** Complete
+**Current Milestone:** None (feature complete)
+**Status:** All milestones shipped
 
 ---
 
-## Current Milestone (v1.3)
+## Completed Milestones (v1.3)
+
+<details>
+<summary>✅ v1.3 Quick Access Icons (Phase 6, 6.1, 6.2) — SHIPPED 2026-01-29</summary>
 
 **Milestone Goal:** Add customizable quick access icons/links for frequently used websites directly under the search bar.
 
@@ -50,6 +52,8 @@ Plans:
 
 Plans:
 - [x] 06.2-01: Icon updates (Claude starburst + Kanban icon)
+
+</details>
 
 ## Completed Milestones (v1.2.1)
 

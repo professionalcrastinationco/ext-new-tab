@@ -21,8 +21,9 @@ Polished Chrome extension with:
 - Phosphor Icons throughout (40+ icon options for categories)
 - Native HTML5 `<dialog>` modals with Promise-based API
 - Category cards match context menu glassmorphism (gradient, layered shadows)
-- Quick access icons strip below search bar with brand icons (Claude, ChatGPT, GitHub, Iceberg)
+- Quick access icons strip below search bar with official brand icons
 - User-editable quick links with add/edit/delete via context menu and modal
+- Official brand logos: Claude starburst, ChatGPT hexagon, GitHub octocat, Kanban board
 
 **Codebase:** ~6,700 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
 
@@ -50,7 +51,7 @@ Polished Chrome extension with:
 - ✓ Visual consistency between manage.html and newtab.html — v1.2
 - ✓ Quick access icons strip below search bar — v1.3
 - ✓ User-editable quick links (add/edit/delete) — v1.3
-- ✓ Brand icons (Claude, ChatGPT, GitHub, Iceberg) — v1.3
+- ✓ Brand icons (Claude starburst, ChatGPT hexagon, GitHub octocat, Kanban) — v1.3
 
 ### Active
 
@@ -85,6 +86,8 @@ Polished Chrome extension with:
 | Pico CSS override at :root | Maintain base while customizing | ✓ Good |
 | Brand icons for quick access | Professional appearance for frequently used sites | ✓ Good |
 | Data migration for quickLinks | Existing users automatically get new feature | ✓ Good |
+| Official brand logos | Professional appearance, authentic representation | ✓ Good |
+| Claude starburst from Simple Icons | Authentic AI assistant branding | ✓ Good |
 
 ---
-*Last updated: 2026-01-29 after v1.3 milestone*
+*Last updated: 2026-01-29 after v1.3 milestone complete*
