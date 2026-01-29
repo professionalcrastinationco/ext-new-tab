@@ -1,5 +1,58 @@
 # Project Milestones: Quick Bookmarks
 
+## v1.2 Glassmorphism Polish (Shipped: 2026-01-28)
+
+**Delivered:** Unified visual design with consistent glassmorphism styling across all extension surfaces.
+
+**Phases completed:** 5 (3 plans total)
+
+**Key accomplishments:**
+
+- Created unified design tokens system (`tokens.css`) with slate colors, glassmorphism effects, 8px spacing grid
+- Applied glassmorphism styling to category cards with blur, semi-transparent backgrounds, and subtle borders
+- Unified button styles: primary cyan, secondary glass effect throughout manage.html
+- Styled dialogs/modals with glass background, blur, and elevated shadows
+- Added subtle glass effects to link items with hover lift animations
+- Achieved visual consistency between manage.html and newtab.html
+
+**Stats:**
+
+- 12 files created/modified
+- +2,035 / -118 lines changed
+- 1 phase, 3 plans
+- Same-day completion (2026-01-28)
+
+**Git range:** `feat(05-01)` → `feat(05-03)`
+
+**What's next:** TBD (feature complete for current needs)
+
+---
+
+## v1.1 Icons (Shipped: 2026-01-28)
+
+**Delivered:** Replaced emoji icons with professional Phosphor Icons throughout the extension.
+
+**Phases completed:** 4 (3 plans total)
+
+**Key accomplishments:**
+
+- Added Phosphor Icons library and icon module
+- Converted manifest icons to PNG format
+- Replaced all UI icons across all pages (newtab, popup, manage)
+- Created category icon picker component with 40+ icon options
+
+**Stats:**
+
+- Phase 4
+- 3 plans completed
+- Same-day completion (2026-01-28)
+
+**Git range:** `feat(04-01)` → `feat(04-03)`
+
+**What's next:** v1.2 Glassmorphism Polish
+
+---
+
 ## v1.0 UI Polish (Shipped: 2026-01-28)
 
 **Delivered:** Polished the functional Chrome extension with consolidated CSS, unified dark theme, and standardized modals.

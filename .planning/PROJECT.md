@@ -10,16 +10,18 @@ Fast access to frequently used bookmarks from the new tab page without navigatin
 
 ## Current State
 
-**Shipped:** v1.0 UI Polish (2026-01-28)
+**Shipped:** v1.2 Glassmorphism Polish (2026-01-28)
 
 Polished Chrome extension with:
-- Consolidated CSS in external stylesheets (newtab.css, popup.css, styles.css)
-- Shared utilities in utils.js
-- Unified dark slate theme with cyan accents
-- Native HTML5 `<dialog>` modals
-- Emoji-enriched empty states
+- Unified design tokens system (`tokens.css`) with 32 CSS custom properties
+- Glassmorphism styling across all components (blur, semi-transparent backgrounds, layered shadows)
+- Primary cyan / secondary glass button hierarchy
+- Glass-styled dialogs, link items, and empty states
+- Visual consistency between manage.html and newtab.html
+- Phosphor Icons throughout (40+ icon options for categories)
+- Native HTML5 `<dialog>` modals with Promise-based API
 
-**Codebase:** 5,492 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
+**Codebase:** ~7,500 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
 
 ## Requirements
 
@@ -38,11 +40,15 @@ Polished Chrome extension with:
 - Unified dark theme across popup and new tab — v1.0
 - Native `<dialog>` modals — v1.0
 - Empty state visual feedback — v1.0
+- ✓ Phosphor Icons library integration — v1.1
+- ✓ Category icon picker with 40+ icons — v1.1
+- ✓ Design tokens system (tokens.css) — v1.2
+- ✓ Glassmorphism styling across all components — v1.2
+- ✓ Visual consistency between manage.html and newtab.html — v1.2
 
 ### Active
 
-- [ ] Integrate Phosphor Icons (replace emoji icons)
-- [ ] Integrate with Chrome bookmark system
+(None — feature complete for current needs)
 
 ### Out of Scope
 
@@ -50,6 +56,7 @@ Polished Chrome extension with:
 - Build step or bundler — keeping vanilla JS architecture
 - Test framework — codebase is stable, manual testing sufficient
 - Backend/cloud sync — Chrome storage sync is adequate
+- Chrome Bookmarks API integration — researched, complexity outweighs benefits (chrome.storage.sync already syncs)
 
 ## Constraints
 
@@ -61,11 +68,15 @@ Polished Chrome extension with:
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Keep vanilla JS | User preference, avoid complexity | Good |
-| Chrome only | User preference, simplify testing | Good |
-| Focus on UI polish first | User's primary pain point | Good |
-| Translucent glassmorphism style | Modern macOS aesthetic | Good |
-| Native `<dialog>` for modals | Better accessibility, standard API | Good |
+| Keep vanilla JS | User preference, avoid complexity | ✓ Good |
+| Chrome only | User preference, simplify testing | ✓ Good |
+| Focus on UI polish first | User's primary pain point | ✓ Good |
+| Translucent glassmorphism style | Modern macOS aesthetic | ✓ Good |
+| Native `<dialog>` for modals | Better accessibility, standard API | ✓ Good |
+| Phosphor Icons over emoji | Professional appearance, scalable | ✓ Good |
+| Skip Chrome Bookmarks API | Complexity vs benefit; sync already works | ✓ Good |
+| Design tokens system | Maintainable, consistent styling | ✓ Good |
+| Pico CSS override at :root | Maintain base while customizing | ✓ Good |
 
 ---
-*Last updated: 2026-01-28 after v1.0 milestone*
+*Last updated: 2026-01-28 after v1.2 milestone*

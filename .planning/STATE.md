@@ -5,18 +5,30 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
-**Current focus:** v1.2 Glassmorphism Polish
+**Current focus:** Feature complete — no active milestone
 
 ## Current Position
 
-Phase: 5 of 5 (UI Glassmorphism Polish)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-01-28 - Completed 05-03-PLAN.md
+Phase: All complete (5 phases shipped)
+Plan: N/A
+Status: ✅ v1.2 Glassmorphism Polish shipped
+Last activity: 2026-01-28 - v1.2 milestone complete
 
-Progress: ██████████ 100% (3/3 plans in Phase 5)
+Progress: ██████████ 100% (all milestones shipped)
 
 ## Performance Metrics
+
+**v1.2 Summary:**
+- Phase: 5
+- Plans: 3
+- Files modified: 12
+- Lines: +2,035 / -118
+- Timeline: Same day (2026-01-28)
+
+**v1.1 Summary:**
+- Phase: 4
+- Plans: 3
+- Timeline: Same day (2026-01-28)
 
 **v1.0 Summary:**
 - Total phases: 3
@@ -43,10 +55,10 @@ None.
 
 - v1.0 shipped: UI Polish, 3 phases (Phase 1-3)
 - v1.1 shipped: Icons, 1 phase (Phase 4) — Chrome Bookmarks integration researched but skipped
-- v1.2 created: Glassmorphism Polish, 1 phase (Phase 5)
+- v1.2 shipped: Glassmorphism Polish, 1 phase (Phase 5)
 
 ## Session Continuity
 
 Last session: 2026-01-28
-Stopped at: Phase 5 complete - v1.2 milestone ready
+Stopped at: v1.2 milestone complete — feature complete
 Resume file: None
