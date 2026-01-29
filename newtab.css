@@ -167,6 +167,83 @@ body {
 }
 
 /* ==========================================================================
+   Quick Access Links
+   ========================================================================== */
+
+.quick-links-container {
+    position: absolute;
+    top: calc(50% + 60px);  /* Below search box */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.quick-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.quick-link:hover {
+    color: #f1f5f9;
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.quick-link-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(51, 65, 85, 0.6);
+    border-radius: 10px;
+    padding: 6px;
+    transition: all 0.2s ease;
+}
+
+.quick-link:hover .quick-link-icon {
+    background-color: rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+}
+
+.quick-link-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.quick-link-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Empty state for quick links */
+.quick-links-empty {
+    color: #64748b;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+/* ==========================================================================
    Dock - Shared Styles
    ========================================================================== */
 

@@ -1,14 +1,111 @@
 // newtab.js - Dock UI for Quick Bookmarks
 let currentData = null;
 
-// SVG Icons for context menu
-const editIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
+// Context menu icons (sized for menu)
+const editIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-right:7px">${ICON_PENCIL_SIMPLE}</span>`;
+const deleteIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-right:7px">${ICON_TRASH}</span>`;
 
-const deleteIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none" style="margin-right: 7px" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+// Helper to render category icon (supports both emoji and Phosphor names)
+function renderCategoryIcon(icon) {
+    if (!icon) return CATEGORY_ICONS.folder || '📁';
+    // Check if it's a Phosphor icon name (in CATEGORY_ICONS)
+    if (CATEGORY_ICONS[icon]) {
+        return CATEGORY_ICONS[icon];
+    }
+    // Otherwise treat as emoji/text
+    return icon;
+}
+
+// Helper to render quick link icon
+function renderQuickLinkIcon(iconName) {
+    // Check QUICK_ACCESS_ICONS first, then fall back to CATEGORY_ICONS
+    if (typeof QUICK_ACCESS_ICONS !== 'undefined' && QUICK_ACCESS_ICONS[iconName]) {
+        return QUICK_ACCESS_ICONS[iconName];
+    }
+    if (CATEGORY_ICONS[iconName]) {
+        return CATEGORY_ICONS[iconName];
+    }
+    // Fallback to globe
+    return CATEGORY_ICONS['globe'] || ICON_GLOBE;
+}
+
+// Populate icon picker grid
+function populateIconPicker(selectedIcon) {
+    const picker = document.getElementById('icon-picker');
+    const hiddenInput = document.getElementById('category-icon');
+
+    // Set hidden input value
+    hiddenInput.value = selectedIcon || 'briefcase';
+
+    // Get category icons from icons.js
+    const iconNames = Object.keys(CATEGORY_ICONS);
+
+    picker.innerHTML = iconNames.map(name => `
+        <button type="button"
+                class="icon-picker-item${hiddenInput.value === name ? ' selected' : ''}"
+                data-icon="${name}"
+                title="${name.replace(/-/g, ' ')}">
+            ${CATEGORY_ICONS[name]}
+        </button>
+    `).join('');
+
+    // Click handler for icon selection
+    picker.onclick = (e) => {
+        const item = e.target.closest('.icon-picker-item');
+        if (!item) return;
+
+        // Update selection
+        picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        hiddenInput.value = item.dataset.icon;
+    };
+}
+
+// Render quick access links
+function renderQuickLinks(quickLinks, openInNewTab) {
+    const container = document.getElementById('quickLinks');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (!quickLinks || quickLinks.length === 0) {
+        container.innerHTML = '<span class="quick-links-empty">No quick links. Right-click to add!</span>';
+        return;
+    }
+
+    // Sort by order
+    const sortedLinks = [...quickLinks].sort((a, b) => a.order - b.order);
+
+    sortedLinks.forEach(link => {
+        const linkEl = document.createElement('a');
+        linkEl.className = 'quick-link';
+        linkEl.href = link.url;
+        if (openInNewTab) {
+            linkEl.target = '_blank';
+            linkEl.rel = 'noopener noreferrer';
+        }
+
+        const iconEl = document.createElement('div');
+        iconEl.className = 'quick-link-icon';
+        iconEl.innerHTML = renderQuickLinkIcon(link.icon);
+
+        const titleEl = document.createElement('span');
+        titleEl.className = 'quick-link-title';
+        titleEl.textContent = link.title;
+
+        linkEl.appendChild(iconEl);
+        linkEl.appendChild(titleEl);
+        container.appendChild(linkEl);
+    });
+}
 
 async function init() {
+    // Set Phosphor icons
+    document.getElementById('settingsIcon').innerHTML = ICON_GEAR;
+
     currentData = await loadData();
     renderDock(currentData);
+    renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
     loadSettings(currentData.settings);
     attachEventListeners();
 
@@ -16,6 +113,7 @@ async function init() {
     window.addEventListener('storageUpdated', async (e) => {
         currentData = e.detail || await loadData();
         renderDock(currentData);
+        renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
         loadSettings(currentData.settings);
     });
 }
@@ -155,7 +253,7 @@ function createBookmarkCard(category, openInNewTab) {
         list.style.textAlign = 'center';
         list.style.color = '#64748b';
         list.style.fontSize = '0.875rem';
-        list.innerHTML = '📭 No bookmarks yet. Right-click to add!';
+        list.innerHTML = `<span class="ph-icon" style="margin-right:6px">${ICON_FOLDER_OPEN}</span>No bookmarks yet. Right-click to add!`;
     } else {
         const sortedLinks = [...category.links].sort((a, b) => a.order - b.order);
         sortedLinks.forEach(bookmark => {
@@ -228,7 +326,7 @@ function renderDock(data) {
     if (!data.categories || data.categories.length === 0) {
         const emptyMessage = document.createElement('div');
         emptyMessage.className = 'empty-dock';
-        emptyMessage.innerHTML = '📂 No categories yet. Click ⚙️ to get started!';
+        emptyMessage.innerHTML = `<span class="ph-icon" style="margin-right:6px">${ICON_FOLDER_OPEN}</span>No categories yet. Click <span class="ph-icon" style="margin:0 4px">${ICON_GEAR}</span> to get started!`;
         dockElement.appendChild(emptyMessage);
         return;
     }
@@ -242,7 +340,13 @@ function renderDock(data) {
 
         const iconCircle = document.createElement('div');
         iconCircle.className = 'icon-circle';
-        iconCircle.textContent = category.icon || '📁';
+        const iconContent = renderCategoryIcon(category.icon);
+        // Check if it's an SVG (Phosphor) or text (emoji)
+        if (iconContent.startsWith('<svg')) {
+            iconCircle.innerHTML = iconContent;
+        } else {
+            iconCircle.textContent = iconContent;
+        }
 
         // Add context menu to icon for category actions
         iconCircle.addEventListener('contextmenu', (e) => {
@@ -286,12 +390,13 @@ function renderDock(data) {
 function showCategoryModal(category) {
     const modal = document.getElementById('category-modal');
     const nameInput = document.getElementById('category-name');
-    const iconInput = document.getElementById('category-icon');
     const idInput = document.getElementById('category-id');
 
     nameInput.value = category.name;
-    iconInput.value = category.icon || '';
     idInput.value = category.id;
+
+    // Populate icon picker with current selection
+    populateIconPicker(category.icon);
 
     modal.showModal();
     nameInput.focus();

@@ -22,11 +22,16 @@
         </div>
     </div>
 
+    <!-- Quick Access Links -->
+    <div class="quick-links-container" id="quickLinks">
+        <!-- Populated by JavaScript -->
+    </div>
+
     <!-- Icon Dock (position determined by settings) -->
     <div class="dock dock-bottom" id="dock"></div>
 
     <!-- Settings Button -->
-    <button class="settings-btn" id="settingsBtn">⚙️</button>
+    <button class="settings-btn" id="settingsBtn"><span id="settingsIcon"></span></button>
 
     <!-- Edit Category Modal -->
     <dialog id="category-modal">
@@ -40,10 +45,13 @@
                     Category Name
                     <input type="text" id="category-name" name="name" placeholder="Work, Personal, etc." required>
                 </label>
-                <label for="category-icon">
-                    Icon Emoji
-                    <input type="text" id="category-icon" name="icon" placeholder="💼" maxlength="2">
-                    <small style="color: #94a3b8;">Choose an emoji to represent this category</small>
+                <label>
+                    Icon
+                    <div class="icon-picker" id="icon-picker">
+                        <!-- Icons populated by JavaScript -->
+                    </div>
+                    <input type="hidden" id="category-icon" name="icon" value="briefcase">
+                    <small style="color: #94a3b8;">Click to select an icon</small>
                 </label>
                 <input type="hidden" id="category-id" name="categoryId">
                 <footer style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
@@ -139,6 +147,7 @@
         </article>
     </dialog>
 
+    <script src="icons.js"></script>
     <script src="utils.js"></script>
     <script src="storage.js"></script>
     <script src="import-export.js"></script>
