@@ -5,16 +5,18 @@
 See: .planning/PROJECT.md (updated 2026-01-28)
 
 **Core value:** Fast access to frequently used bookmarks from the new tab page without navigating Chrome's bookmarks menu.
-**Current focus:** Feature complete — all milestones shipped (v1.0 → v1.2.1)
+**Current focus:** v1.3 Quick Access Icons — customizable website shortcuts under search bar
 
 ## Current Position
 
-Phase: 5.1 - Category Card Glassmorphism (INSERTED)
-Plan: 1 of 1 complete
-Status: ✅ Phase complete
-Last activity: 2026-01-28 - Completed 5.1-01-PLAN.md
+Phase: 6 - Quick Access Icons
+Plan: 1 of 3 complete
+Status: In progress
+Last activity: 2026-01-29 - Completed 06-01-PLAN.md
 
-Progress: ██████████ 100%
+Progress: ███░░░░░░░ 33%
+
+**Next:** Execute 06-02-PLAN.md (UI Components)
 
 ## Performance Metrics
 
@@ -57,9 +59,10 @@ None.
 - v1.1 shipped: Icons, 1 phase (Phase 4) — Chrome Bookmarks integration researched but skipped
 - v1.2 shipped: Glassmorphism Polish, 1 phase (Phase 5)
 - v1.2.1 shipped: UI Consistency Fix, 1 phase (Phase 5.1) — category card glassmorphism
+- Phase 6 added: Quick Access Icons — customizable icon strip below search bar
 
 ## Session Continuity
 
-Last session: 2026-01-28
-Stopped at: v1.2.1 milestone complete — all features shipped
+Last session: 2026-01-29
+Stopped at: Completed 06-01-PLAN.md (Data Layer & Icons)
 Resume file: None
