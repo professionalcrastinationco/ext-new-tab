@@ -11,6 +11,85 @@
 }
 
 /* ==========================================================================
+   Phosphor Icon Base Styles
+   ========================================================================== */
+
+.ph-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.ph-icon svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
+
+/* Icon sizes */
+.ph-icon-sm svg { width: 14px; height: 14px; }
+.ph-icon-md svg { width: 18px; height: 18px; }
+.ph-icon-lg svg { width: 24px; height: 24px; }
+.ph-icon-xl svg { width: 32px; height: 32px; }
+
+/* Icon button SVG styling */
+.icon-btn svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    display: block;
+}
+
+/* ==========================================================================
+   Icon Picker Component
+   ========================================================================== */
+
+.icon-picker {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    padding: 12px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0.5rem;
+}
+
+.icon-picker-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: transparent;
+    border: 2px solid transparent;
+    color: #94a3b8;
+    transition: all 0.15s ease;
+    padding: 0;
+}
+
+.icon-picker-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+}
+
+.icon-picker-item.selected {
+    border-color: #22d3ee;
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+}
+
+.icon-picker-item svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* ==========================================================================
    Base Styles
    ========================================================================== */
 
@@ -59,7 +138,8 @@ body {
 
 .search-input {
     flex: 1;
-    padding: 1.25rem 1rem 1.25rem 1.5rem;
+    padding: 1.2rem 1rem 1.25rem 1.25rem !important;
+    margin: 0 0 0 0 !important;
     font-size: 1.125rem;
     background: transparent;
     border: none;
@@ -80,6 +160,12 @@ body {
     pointer-events: none;
 }
 
+.search-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
 /* ==========================================================================
    Dock - Shared Styles
    ========================================================================== */
@@ -91,11 +177,11 @@ body {
     display: flex;
     gap: 1rem;
     padding: 0.75rem 1.25rem;
-    background-color: rgba(30, 41, 59, 0.7);
-    backdrop-filter: blur(20px);
+    /* background-color: rgba(30, 41, 59, 0.7); */
+    /* backdrop-filter: blur(20px); */
     border-radius: 20px;
-    border: 1px solid rgba(51, 65, 85, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    /* border: 1px solid rgba(51, 65, 85, 0.5); */
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); */
     z-index: 100;
 }
 
@@ -169,7 +255,7 @@ body {
     justify-content: center;
     font-size: 1.875rem;
     line-height: 1;
-    background-color: rgba(51, 65, 85, 0.5);
+    /* background-color: rgba(51, 65, 85, 0.5); */
     border-radius: 14px;
     transition: all 0.3s ease;
 }
@@ -195,14 +281,24 @@ body {
 .bookmark-card {
     position: absolute;
     left: 50%;
-    background-color: rgba(30, 41, 59, 0.95);
+    background: linear-gradient(
+        45deg,
+        rgba(10, 20, 28, 0.3) 0%,
+        rgba(10, 20, 28, 0.8) 100%
+    );
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 12px;
     padding: 1.5rem;
     min-width: 400px;
     max-width: 520px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 2px 2px rgb(0 0 0 / 3%),
+        0 4px 4px rgb(0 0 0 / 4%),
+        0 10px 8px rgb(0 0 0 / 5%),
+        0 15px 15px rgb(0 0 0 / 6%),
+        0 30px 30px rgb(0 0 0 / 7%),
+        0 70px 65px rgb(0 0 0 / 9%);
     opacity: 0;
     pointer-events: none;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -258,7 +354,7 @@ body {
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid rgba(30, 41, 59, 0.95);
+    border-top: 10px solid rgba(10, 20, 28, 0.8);
 }
 
 /* Arrow pointing up to icon (for top dock) */
@@ -272,7 +368,7 @@ body {
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(30, 41, 59, 0.95);
+    border-bottom: 10px solid rgba(10, 20, 28, 0.8);
 }
 
 .card-header {
@@ -353,6 +449,12 @@ body {
     background-color: rgba(30, 41, 59, 0.9);
     border-color: rgba(6, 182, 212, 0.5);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.settings-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
 }
 
 /* ==========================================================================

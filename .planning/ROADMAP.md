@@ -5,6 +5,23 @@
 - ✅ [v1.0 UI Polish](milestones/v1.0-ROADMAP.md) (Phases 1-3) — SHIPPED 2026-01-28
 - ✅ **v1.1 Icons** (Phase 4) — SHIPPED 2026-01-28
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
+- ✅ **v1.2.1 UI Consistency Fix** (Phase 5.1) — SHIPPED 2026-01-28
+
+## Completed Milestones (v1.2.1)
+
+<details>
+<summary>✅ v1.2.1 UI Consistency Fix (Phase 5.1) — SHIPPED 2026-01-28</summary>
+
+### Phase 5.1: Category Card Glassmorphism
+
+**Goal:** Match category card styling to the context menu glassmorphism effect
+**Plans:** 1
+
+- [x] 5.1-01: Bookmark card glassmorphism update
+
+</details>
+
+---
 
 ## Completed Milestones
 
@@ -69,3 +86,4 @@ Plans:
 | 3. Modal Standardization | v1.0 | 1/1 | Complete | 2026-01-28 |
 | 4. Phosphor Icons | v1.1 | 3/3 | Complete | 2026-01-28 |
 | 5. UI Glassmorphism Polish | v1.2 | 3/3 | ✅ Shipped | 2026-01-28 |
+| 5.1 Category Card Glassmorphism | v1.2.1 | 1/1 | ✅ Shipped | 2026-01-28 |
