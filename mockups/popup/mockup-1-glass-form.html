@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Mockup 1: Glass Form</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-surface-2: rgba(30, 41, 59, 0.8);
+      --color-surface-3: rgba(51, 65, 85, 0.5);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-border-focus: rgba(6, 182, 212, 0.5);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #64748b;
+      --color-primary: #0ea5e9;
+      --color-primary-hover: #0284c7;
+      --color-accent: #22d3ee;
+      --color-success: #22c55e;
+      --color-error: #ef4444;
+      --glass-blur: 20px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-pill: 50px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 360px;
+      background-color: var(--color-base);
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+      padding: 20px;
+    }
+
+    /* Header with gradient accent */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    .header-text h1 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .header-text p {
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+
+    /* Success Message */
+    .message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      font-size: 13px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .message.success {
+      display: flex;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--color-success);
+    }
+
+    .message.error {
+      display: flex;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: var(--color-error);
+    }
+
+    .message svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Glass Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .glass-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--color-surface-1);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 14px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .glass-input:focus {
+      background: var(--color-surface-2);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+
+    .glass-input::placeholder {
+      color: var(--color-text-subtle);
+    }
+
+    /* Select Dropdown */
+    .glass-select {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--color-surface-1);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 14px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+      transition: all 0.2s ease;
+    }
+
+    .glass-select:focus {
+      background-color: var(--color-surface-2);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+      outline: none;
+    }
+
+    .glass-select option {
+      background: #1e293b;
+      color: var(--color-text);
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      background: var(--color-surface-1);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+    }
+
+    .checkbox-group:hover {
+      background: var(--color-surface-2);
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .checkbox-label {
+      font-size: 14px;
+      color: var(--color-text);
+      cursor: pointer;
+      flex: 1;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary), #0284c7);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface-1);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-surface-2);
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Design Label */
+    .design-label {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background: var(--color-primary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <svg viewBox="0 0 256 256">
+        <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Quick Bookmark</h1>
+      <p>Save to your collection</p>
+    </div>
+  </header>
+
+  <!-- Success message (toggle display to show) -->
+  <div class="message success" style="display: none;">
+    <svg viewBox="0 0 256 256">
+      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
+    </svg>
+    <span>Bookmark saved successfully!</span>
+  </div>
+
+  <form>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input type="text" class="glass-input" placeholder="Page title" value="Quick Bookmarks Extension">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="glass-select">
+        <option value="">Select a category</option>
+        <option value="dev" selected>Development</option>
+        <option value="ai">AI Tools</option>
+        <option value="design">Design</option>
+        <option value="social">Social</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">URL</label>
+      <input type="url" class="glass-input" placeholder="https://example.com" value="https://github.com/user/quick-bookmarks">
+    </div>
+
+    <label class="checkbox-group">
+      <input type="checkbox" class="checkbox" checked>
+      <span class="checkbox-label">Open links in new tab</span>
+    </label>
+
+    <div class="button-group">
+      <button type="button" class="btn btn-secondary">Cancel</button>
+      <button type="submit" class="btn btn-primary">
+        <svg viewBox="0 0 256 256">
+          <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/>
+        </svg>
+        Save
+      </button>
+    </div>
+  </form>
+
+  <div class="design-label">Mockup 1: Glass Form</div>
+</body>
+</html>

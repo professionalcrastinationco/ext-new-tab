@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Mockup 2: Sidebar Layout</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-surface-2: rgba(30, 41, 59, 0.8);
+      --color-surface-3: rgba(51, 65, 85, 0.5);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-border-focus: rgba(6, 182, 212, 0.5);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #64748b;
+      --color-primary: #0ea5e9;
+      --color-primary-hover: #0284c7;
+      --color-accent: #22d3ee;
+      --glass-blur: 20px;
+      --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 2px 2px rgb(0 0 0 / 3%), 0 4px 4px rgb(0 0 0 / 4%),
+        0 10px 8px rgb(0 0 0 / 5%), 0 15px 15px rgb(0 0 0 / 6%),
+        0 30px 30px rgb(0 0 0 / 7%), 0 70px 65px rgb(0 0 0 / 9%);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--color-base);
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+      backdrop-filter: blur(var(--glass-blur));
+      border-right: 1px solid var(--color-border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sidebar-logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      width: 100%;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--color-text);
+    }
+
+    .nav-item.active {
+      background: rgba(14, 165, 233, 0.15);
+      color: var(--color-primary);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 12px 0;
+    }
+
+    /* Sidebar Actions */
+    .sidebar-actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface-1);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-surface-2);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 32px 40px;
+      overflow-y: auto;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: var(--color-surface-1);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--color-border);
+      border-radius: 50px;
+      width: 280px;
+    }
+
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--color-text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box input::placeholder {
+      color: var(--color-text-subtle);
+    }
+
+    .search-box svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--color-text-subtle);
+    }
+
+    /* Categories Grid */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+    }
+
+    .category-card {
+      background: linear-gradient(45deg, rgba(10, 20, 28, 0.3) 0%, rgba(10, 20, 28, 0.8) 100%);
+      backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-lg);
+      box-shadow: var(--glass-shadow);
+      overflow: hidden;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(51, 65, 85, 0.2);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .category-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .category-icon {
+      width: 28px;
+      height: 28px;
+      background: rgba(34, 211, 238, 0.15);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-accent);
+    }
+
+    .category-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .category-name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .category-count {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      background: rgba(148, 163, 184, 0.15);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .category-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+    }
+
+    .icon-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Links List */
+    .links-list {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(51, 65, 85, 0.2);
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .link-item:hover {
+      background: rgba(51, 65, 85, 0.4);
+      transform: translateX(4px);
+    }
+
+    .link-favicon {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background: var(--color-surface-3);
+    }
+
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-title {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-url {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-add-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      background: transparent;
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .link-add-btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      background: rgba(34, 211, 238, 0.05);
+    }
+
+    .link-add-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* Add Category Card */
+    .add-category-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      background: rgba(51, 65, 85, 0.15);
+      border: 2px dashed rgba(148, 163, 184, 0.25);
+      border-radius: var(--radius-lg);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-category-card:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text);
+      background: rgba(51, 65, 85, 0.25);
+    }
+
+    .add-category-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .add-category-content svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+    }
+
+    .design-label {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg width="20" height="20" viewBox="0 0 256 256" fill="white">
+          <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/>
+        </svg>
+      </div>
+      <span class="sidebar-title">Quick Bookmarks</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active">
+        <svg viewBox="0 0 256 256">
+          <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/>
+        </svg>
+        Categories
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 256 256">
+          <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/>
+        </svg>
+        Recent
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 256 256">
+          <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Z"/>
+        </svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-actions">
+      <button class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor">
+          <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+        </svg>
+        Quick Add
+      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary" style="flex: 1;">Import</button>
+        <button class="btn btn-secondary" style="flex: 1;">Export</button>
+      </div>
+      <a href="#" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor">
+          <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/>
+        </svg>
+        Back to Dock
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="content-header">
+      <h1 class="page-title">Categories</h1>
+      <div class="search-box">
+        <svg viewBox="0 0 256 256">
+          <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/>
+        </svg>
+        <input type="text" placeholder="Search bookmarks...">
+      </div>
+    </header>
+
+    <div class="categories-grid">
+      <!-- Category 1 -->
+      <div class="category-card">
+        <div class="category-header">
+          <div class="category-title">
+            <div class="category-icon">
+              <svg viewBox="0 0 256 256">
+                <path d="M69.12,94.15,28.5,128l40.62,33.85a8,8,0,1,1-10.24,12.29l-48-40a8,8,0,0,1,0-12.29l48-40a8,8,0,0,1,10.24,12.3Zm176,27.7-48-40a8,8,0,1,0-10.24,12.3L227.5,128l-40.62,33.85a8,8,0,1,0,10.24,12.29l48-40a8,8,0,0,0,0-12.29ZM162.73,32.48a8,8,0,0,0-10.25,4.79l-64,176a8,8,0,0,0,4.79,10.26A8.14,8.14,0,0,0,96,224a8,8,0,0,0,7.52-5.27l64-176A8,8,0,0,0,162.73,32.48Z"/>
+              </svg>
+            </div>
+            <span class="category-name">Development</span>
+            <span class="category-count">4 links</span>
+          </div>
+          <div class="category-actions">
+            <button class="icon-btn">
+              <svg viewBox="0 0 256 256">
+                <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+              </svg>
+            </button>
+            <button class="icon-btn">
+              <svg viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="links-list">
+          <div class="link-item">
+            <img class="link-favicon" src="https://github.com/favicon.ico" alt="">
+            <div class="link-info">
+              <div class="link-title">GitHub</div>
+              <div class="link-url">github.com</div>
+            </div>
+          </div>
+          <div class="link-item">
+            <img class="link-favicon" src="https://stackoverflow.com/favicon.ico" alt="">
+            <div class="link-info">
+              <div class="link-title">Stack Overflow</div>
+              <div class="link-url">stackoverflow.com</div>
+            </div>
+          </div>
+          <div class="link-item">
+            <img class="link-favicon" src="https://developer.mozilla.org/favicon.ico" alt="">
+            <div class="link-info">
+              <div class="link-title">MDN Web Docs</div>
+              <div class="link-url">developer.mozilla.org</div>
+            </div>
+          </div>
+          <button class="link-add-btn">
+            <svg viewBox="0 0 256 256">
+              <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+            </svg>
+            Add Link
+          </button>
+        </div>
+      </div>
+
+      <!-- Category 2 -->
+      <div class="category-card">
+        <div class="category-header">
+          <div class="category-title">
+            <div class="category-icon">
+              <svg viewBox="0 0 256 256">
+                <path d="M197.58,129.06l-51.61-19-19-51.65a15.92,15.92,0,0,0-29.88,0L78.07,110l-51.65,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0l19-51.61,51.65-19a15.92,15.92,0,0,0,0-29.88ZM140.39,163a15.87,15.87,0,0,0-9.43,9.43l-19,51.46L93,172.39A15.87,15.87,0,0,0,83.61,163l-51.46-19,51.46-19A15.87,15.87,0,0,0,93,115.61l19-51.46,19,51.46a15.87,15.87,0,0,0,9.43,9.43l51.46,19ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"/>
+              </svg>
+            </div>
+            <span class="category-name">AI Tools</span>
+            <span class="category-count">3 links</span>
+          </div>
+          <div class="category-actions">
+            <button class="icon-btn">
+              <svg viewBox="0 0 256 256">
+                <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+              </svg>
+            </button>
+            <button class="icon-btn">
+              <svg viewBox="0 0 256 256">
+                <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="links-list">
+          <div class="link-item">
+            <div class="link-favicon" style="background: #000;"></div>
+            <div class="link-info">
+              <div class="link-title">Claude</div>
+              <div class="link-url">claude.ai</div>
+            </div>
+          </div>
+          <div class="link-item">
+            <div class="link-favicon" style="background: #10a37f;"></div>
+            <div class="link-info">
+              <div class="link-title">ChatGPT</div>
+              <div class="link-url">chat.openai.com</div>
+            </div>
+          </div>
+          <div class="link-item">
+            <div class="link-favicon" style="background: #4285f4;"></div>
+            <div class="link-info">
+              <div class="link-title">Gemini</div>
+              <div class="link-url">gemini.google.com</div>
+            </div>
+          </div>
+          <button class="link-add-btn">
+            <svg viewBox="0 0 256 256">
+              <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+            </svg>
+            Add Link
+          </button>
+        </div>
+      </div>
+
+      <!-- Add New Category -->
+      <div class="add-category-card">
+        <div class="add-category-content">
+          <svg viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+          </svg>
+          <span>Add New Category</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="design-label">Mockup 2: Sidebar Layout</div>
+</body>
+</html>

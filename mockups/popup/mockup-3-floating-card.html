@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Mockup 3: Floating Card</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-surface-2: rgba(30, 41, 59, 0.8);
+      --color-surface-3: rgba(51, 65, 85, 0.5);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-border-focus: rgba(6, 182, 212, 0.5);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #64748b;
+      --color-primary: #0ea5e9;
+      --color-primary-hover: #0284c7;
+      --color-accent: #22d3ee;
+      --glass-blur: 20px;
+      --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 2px 2px rgb(0 0 0 / 3%), 0 4px 4px rgb(0 0 0 / 4%),
+        0 10px 8px rgb(0 0 0 / 5%), 0 15px 15px rgb(0 0 0 / 6%),
+        0 30px 30px rgb(0 0 0 / 7%), 0 70px 65px rgb(0 0 0 / 9%);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 340px;
+      background-color: var(--color-base);
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+      padding: 16px;
+    }
+
+    /* Main Floating Card - Like newtab bookmark cards */
+    .bookmark-card {
+      background: linear-gradient(
+        45deg,
+        rgba(10, 20, 28, 0.3) 0%,
+        rgba(10, 20, 28, 0.8) 100%
+      );
+      backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-xl);
+      border-top: 2px solid rgba(6, 182, 212, 0.5);
+      box-shadow: var(--glass-shadow);
+      overflow: hidden;
+    }
+
+    /* Card Header */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .page-favicon {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-md);
+      background: var(--color-surface-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-favicon img {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .page-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .page-title {
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .page-url {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .close-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+    }
+
+    .close-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 16px 18px;
+    }
+
+    /* Form Fields */
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .field-label svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(51, 65, 85, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 13px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .field-input:focus {
+      background: rgba(51, 65, 85, 0.6);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+    }
+
+    .field-input::placeholder {
+      color: var(--color-text-subtle);
+    }
+
+    .field-select {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(51, 65, 85, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 13px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .field-select:focus {
+      background-color: rgba(51, 65, 85, 0.6);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+    }
+
+    .field-select option {
+      background: #1e293b;
+    }
+
+    /* Select Dropdown */
+    .field-select {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(51, 65, 85, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 13px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .field-select:focus {
+      background-color: rgba(51, 65, 85, 0.6);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+    }
+
+    .field-select option {
+      background: #1e293b;
+    }
+
+    /* Options Row */
+    .options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      margin-top: 4px;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .option-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .option-check input {
+      accent-color: var(--color-primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Card Footer */
+    .card-footer {
+      padding: 14px 18px;
+      background: rgba(51, 65, 85, 0.2);
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+      border: none;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+    }
+
+    .save-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Quick Actions (below card) */
+    .quick-actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .quick-action {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .quick-action:hover {
+      color: var(--color-accent);
+    }
+
+    .quick-action svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* Design Label */
+    .design-label {
+      position: fixed;
+      bottom: 8px;
+      right: 8px;
+      background: var(--color-primary);
+      color: white;
+      padding: 5px 10px;
+      border-radius: var(--radius-md);
+      font-size: 9px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main Bookmark Card -->
+  <div class="bookmark-card">
+    <div class="card-header">
+      <div class="page-favicon">
+        <img src="https://github.com/favicon.ico" alt="">
+      </div>
+      <div class="page-info">
+        <div class="page-title">anthropics/claude-code: Claude Code</div>
+        <div class="page-url">github.com/anthropics/claude-code</div>
+      </div>
+      <button class="close-btn">
+        <svg viewBox="0 0 256 256">
+          <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">
+          <svg viewBox="0 0 256 256">
+            <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+          </svg>
+          Title
+        </label>
+        <input type="text" class="field-input" value="anthropics/claude-code">
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <svg viewBox="0 0 256 256">
+            <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/>
+          </svg>
+          Category
+        </label>
+        <select class="field-select">
+          <option value="dev" selected>Development</option>
+          <option value="ai">AI Tools</option>
+          <option value="design">Design</option>
+          <option value="social">Social</option>
+        </select>
+      </div>
+
+      <div class="options-row">
+        <label class="option-check">
+          <input type="checkbox" checked>
+          Open in new tab
+        </label>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="save-btn">
+        <svg viewBox="0 0 256 256">
+          <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/>
+        </svg>
+        Save Bookmark
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <a href="#" class="quick-action">
+      <svg viewBox="0 0 256 256">
+        <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Z"/>
+      </svg>
+      Settings
+    </a>
+    <a href="#" class="quick-action">
+      <svg viewBox="0 0 256 256">
+        <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/>
+      </svg>
+      Manage
+    </a>
+  </div>
+
+  <div class="design-label">Mockup 3: Floating Card</div>
+
+</body>
+</html>

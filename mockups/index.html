@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Bookmarks - UI Mockups</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-primary: #0ea5e9;
+      --color-accent: #22d3ee;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--color-base);
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--color-text), var(--color-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--color-text-muted);
+      font-size: 1.1rem;
+    }
+
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--color-accent);
+    }
+
+    .mockups-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .mockup-card {
+      background: var(--color-surface-1);
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .mockup-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .mockup-preview {
+      height: 200px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mockup-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+      transform: scale(0.5);
+      transform-origin: center center;
+      width: 200%;
+      height: 200%;
+    }
+
+    .mockup-info {
+      padding: 20px;
+    }
+
+    .mockup-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .mockup-desc {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 8px 16px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn:hover {
+      background: #0284c7;
+    }
+
+    .view-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .instructions {
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+
+    .instructions h3 {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .instructions h3 svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--color-primary);
+    }
+
+    .instructions ul {
+      margin-left: 28px;
+      color: var(--color-text-muted);
+      line-height: 1.8;
+    }
+
+    .instructions li {
+      margin-bottom: 4px;
+    }
+
+    .instructions code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Quick Bookmarks UI Mockups</h1>
+      <p class="subtitle">Review and select designs for the Settings & Manager UI overhaul</p>
+    </header>
+
+    <div class="instructions">
+      <h3>
+        <svg viewBox="0 0 256 256">
+          <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm-8-80V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,172Z"/>
+        </svg>
+        How to Review
+      </h3>
+      <ul>
+        <li>Click "View Full" to open each mockup in a new tab</li>
+        <li>Compare the <strong>3 Manage page</strong> designs and the <strong>3 Popup</strong> designs</li>
+        <li>You can mix and match elements from different mockups</li>
+        <li>Let me know which design you prefer, or request revisions</li>
+      </ul>
+    </div>
+
+    <!-- Manage Page Mockups -->
+    <section class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 256 256">
+          <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/>
+        </svg>
+        Manage Page Designs
+      </h2>
+      <div class="mockups-grid">
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="manage/mockup-1-compact-header.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">1. Compact Header</h3>
+            <p class="mockup-desc">Single-line header with all actions. Centered content area. Clean category cards with grid links layout.</p>
+            <a href="manage/mockup-1-compact-header.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="manage/mockup-2-sidebar.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">2. Sidebar Layout</h3>
+            <p class="mockup-desc">Fixed sidebar with navigation and actions. Main content area with search bar. Category cards in a responsive grid.</p>
+            <a href="manage/mockup-2-sidebar.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="manage/mockup-3-minimal-centered.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">3. Minimal Centered</h3>
+            <p class="mockup-desc">Floating pill toolbar (like newtab search). Centered accordion-style categories with expand/collapse. Most similar to newtab aesthetic.</p>
+            <a href="manage/mockup-3-minimal-centered.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popup Mockups -->
+    <section class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 256 256">
+          <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200Z"/>
+        </svg>
+        Popup Designs
+      </h2>
+      <div class="mockups-grid">
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="popup/mockup-1-glass-form.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">1. Glass Form</h3>
+            <p class="mockup-desc">Full glassmorphism styling. Gradient logo header. Individual glass inputs with focus states. Checkbox in glass container.</p>
+            <a href="popup/mockup-1-glass-form.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="popup/mockup-2-compact-minimal.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">2. Compact Minimal</h3>
+            <p class="mockup-desc">Narrower width (320px). URL preview card at top. Stacked inputs in single container. iOS-style toggle switch. Most space-efficient.</p>
+            <a href="popup/mockup-2-compact-minimal.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="popup/mockup-3-floating-card.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">3. Floating Card</h3>
+            <p class="mockup-desc">Single floating card matching newtab bookmark cards. Cyan accent border. Category dropdown (updated). Most visually consistent with newtab.</p>
+            <a href="popup/mockup-3-floating-card.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Category Mockups -->
+    <section class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 256 256">
+          <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+        </svg>
+        Edit Category Modal Designs
+      </h2>
+      <div class="mockups-grid">
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-category-1-standard.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">1. Standard Dialog</h3>
+            <p class="mockup-desc">Traditional modal dialog with header, body, and footer. Icon picker grid with selection. Delete button in footer.</p>
+            <a href="modals/edit-category-1-standard.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-category-2-inline.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">2. Inline Expandable</h3>
+            <p class="mockup-desc">Edit panel expands within the category card. No modal overlay. Compact icon picker dropdown. Stays in context.</p>
+            <a href="modals/edit-category-2-inline.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-category-3-floating.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">3. Floating Card</h3>
+            <p class="mockup-desc">Floating card matching newtab style. Cyan accent border. Large icon preview. Compact icon grid. Most visually consistent.</p>
+            <a href="modals/edit-category-3-floating.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edit Bookmark Mockups -->
+    <section class="section">
+      <h2 class="section-title">
+        <svg viewBox="0 0 256 256">
+          <path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Z"/>
+        </svg>
+        Edit Bookmark Modal Designs
+      </h2>
+      <div class="mockups-grid">
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-bookmark-1-standard.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">1. Standard Dialog</h3>
+            <p class="mockup-desc">Traditional modal with favicon preview card. Individual input fields. Category dropdown. Checkbox in glass container.</p>
+            <a href="modals/edit-bookmark-1-standard.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-bookmark-2-inline.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">2. Inline Expandable</h3>
+            <p class="mockup-desc">Edit form expands within the link item. No modal overlay. Compact two-column grid layout. Stays in context of the list.</p>
+            <a href="modals/edit-bookmark-2-inline.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-preview">
+            <iframe src="modals/edit-bookmark-3-floating.html"></iframe>
+          </div>
+          <div class="mockup-info">
+            <h3 class="mockup-name">3. Floating Card</h3>
+            <p class="mockup-desc">Floating card matching newtab style. Favicon preview header. Icon labels on fields. Cyan accent border. Most visually consistent.</p>
+            <a href="modals/edit-bookmark-3-floating.html" target="_blank" class="view-btn">
+              View Full
+              <svg viewBox="0 0 256 256">
+                <path d="M224,104a8,8,0,0,1-16,0V59.31l-66.35,66.34a8,8,0,0,1-11.31-11.31L196.69,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

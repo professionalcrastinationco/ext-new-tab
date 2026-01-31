@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Bookmark Mockup 3: Floating Card</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-surface-2: rgba(30, 41, 59, 0.95);
+      --color-surface-3: rgba(51, 65, 85, 0.5);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-border-focus: rgba(6, 182, 212, 0.5);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #64748b;
+      --color-primary: #0ea5e9;
+      --color-primary-hover: #0284c7;
+      --color-accent: #22d3ee;
+      --color-danger: #ef4444;
+      --glass-blur: 20px;
+      --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 2px 2px rgb(0 0 0 / 3%), 0 4px 4px rgb(0 0 0 / 4%),
+        0 10px 8px rgb(0 0 0 / 5%), 0 15px 15px rgb(0 0 0 / 6%),
+        0 30px 30px rgb(0 0 0 / 7%), 0 70px 65px rgb(0 0 0 / 9%);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--color-base);
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Floating Card - Matches newtab style */
+    .edit-card {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      background: linear-gradient(
+        45deg,
+        rgba(10, 20, 28, 0.3) 0%,
+        rgba(10, 20, 28, 0.8) 100%
+      );
+      backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-xl);
+      border-top: 2px solid rgba(6, 182, 212, 0.5);
+      box-shadow: var(--glass-shadow);
+      overflow: hidden;
+    }
+
+    /* Card Header with favicon preview */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .favicon-preview {
+      width: 48px;
+      height: 48px;
+      background: rgba(51, 65, 85, 0.5);
+      border: 2px solid rgba(148, 163, 184, 0.2);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .favicon-preview img {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+    }
+
+    .header-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .header-label {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .header-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+    }
+
+    .close-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+    }
+
+    .close-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .field-label svg {
+      width: 12px;
+      height: 12px;
+      fill: currentColor;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(51, 65, 85, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 14px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .field-input:focus {
+      background: rgba(51, 65, 85, 0.6);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+
+    .field-select {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(51, 65, 85, 0.4);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: 14px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .field-select:focus {
+      background-color: rgba(51, 65, 85, 0.6);
+      border-color: var(--color-border-focus);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+
+    .field-select option {
+      background: #1e293b;
+    }
+
+    /* Options Row */
+    .options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      margin-top: 8px;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .option-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .option-check input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+    }
+
+    /* Card Footer */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(51, 65, 85, 0.2);
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+    }
+
+    .delete-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--color-danger);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .delete-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .save-btn {
+      padding: 10px 24px;
+      background: var(--color-primary);
+      border: none;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .save-btn:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+
+    .save-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .design-label {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 11px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop"></div>
+
+  <div class="edit-card">
+    <div class="card-header">
+      <div class="favicon-preview">
+        <img src="https://github.com/favicon.ico" alt="">
+      </div>
+      <div class="header-info">
+        <div class="header-label">Editing Bookmark</div>
+        <div class="header-title">anthropics/claude-code</div>
+      </div>
+      <button class="close-btn">
+        <svg viewBox="0 0 256 256">
+          <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">
+          <svg viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/></svg>
+          Title
+        </label>
+        <input type="text" class="field-input" value="anthropics/claude-code">
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <svg viewBox="0 0 256 256"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140a40,40,0,0,1-54.85,1.63,8,8,0,1,0-10.64,12,56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>
+          URL
+        </label>
+        <input type="url" class="field-input" value="https://github.com/anthropics/claude-code">
+      </div>
+
+      <div class="field">
+        <label class="field-label">
+          <svg viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/></svg>
+          Category
+        </label>
+        <select class="field-select">
+          <option value="dev" selected>Development</option>
+          <option value="ai">AI Tools</option>
+          <option value="design">Design</option>
+          <option value="social">Social</option>
+        </select>
+      </div>
+
+      <div class="options-row">
+        <label class="option-check">
+          <input type="checkbox" checked>
+          Open in new tab
+        </label>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="delete-btn">
+        <svg viewBox="0 0 256 256">
+          <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
+        </svg>
+        Delete
+      </button>
+      <button class="save-btn">
+        <svg viewBox="0 0 256 256">
+          <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
+        </svg>
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <div class="design-label">Edit Bookmark 3: Floating Card</div>
+</body>
+</html>

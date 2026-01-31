@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Mockup 3: Minimal Centered</title>
+  <style>
+    :root {
+      --color-base: #0f172a;
+      --color-surface-1: rgba(30, 41, 59, 0.6);
+      --color-surface-2: rgba(30, 41, 59, 0.8);
+      --color-surface-3: rgba(51, 65, 85, 0.5);
+      --color-border: rgba(148, 163, 184, 0.2);
+      --color-border-focus: rgba(6, 182, 212, 0.5);
+      --color-text: #f1f5f9;
+      --color-text-muted: #94a3b8;
+      --color-text-subtle: #64748b;
+      --color-primary: #0ea5e9;
+      --color-primary-hover: #0284c7;
+      --color-accent: #22d3ee;
+      --glass-blur: 20px;
+      --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 2px 2px rgb(0 0 0 / 3%), 0 4px 4px rgb(0 0 0 / 4%),
+        0 10px 8px rgb(0 0 0 / 5%), 0 15px 15px rgb(0 0 0 / 6%),
+        0 30px 30px rgb(0 0 0 / 7%), 0 70px 65px rgb(0 0 0 / 9%);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-pill: 50px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--color-base);
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--color-text);
+    }
+
+    /* Floating Toolbar - Like newtab search */
+    .floating-toolbar {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--color-surface-1);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--glass-shadow);
+      z-index: 100;
+    }
+
+    .toolbar-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-pill);
+      color: var(--color-text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+    }
+
+    .toolbar-btn.primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .toolbar-btn.primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .toolbar-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--color-border);
+    }
+
+    /* Main Content - Vertically Centered */
+    .main-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 100px 24px 40px;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    /* Page Title */
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--color-text);
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      margin-top: 8px;
+    }
+
+    /* Category List - Accordion Style */
+    .categories {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .category {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(30, 41, 59, 0.7) 100%);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .category:hover {
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    .category.expanded {
+      box-shadow: var(--glass-shadow);
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .category-header:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .category-expand {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      color: var(--color-text-subtle);
+      transition: transform 0.3s ease;
+    }
+
+    .category.expanded .category-expand {
+      transform: rotate(90deg);
+    }
+
+    .category-expand svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(34, 211, 238, 0.1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 14px;
+      color: var(--color-accent);
+    }
+
+    .category-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .category-info {
+      flex: 1;
+    }
+
+    .category-name {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .category-meta {
+      font-size: 12px;
+      color: var(--color-text-subtle);
+      margin-top: 2px;
+    }
+
+    .category-actions {
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .category-header:hover .category-actions {
+      opacity: 1;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-text);
+    }
+
+    .icon-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Links Content */
+    .category-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .category.expanded .category-content {
+      max-height: 500px;
+    }
+
+    .links-list {
+      padding: 0 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(51, 65, 85, 0.25);
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .link-item:hover {
+      background: rgba(51, 65, 85, 0.45);
+    }
+
+    .link-drag {
+      color: var(--color-text-subtle);
+      cursor: move;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .link-item:hover .link-drag {
+      opacity: 1;
+    }
+
+    .link-favicon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--color-surface-3);
+    }
+
+    .link-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-title {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-url {
+      font-size: 11px;
+      color: var(--color-text-subtle);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-actions {
+      display: flex;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .link-item:hover .link-actions {
+      opacity: 1;
+    }
+
+    .link-actions .icon-btn {
+      width: 28px;
+      height: 28px;
+    }
+
+    .link-actions .icon-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Add Link Button */
+    .add-link-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      color: var(--color-text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      gap: 6px;
+    }
+
+    .add-link-row:hover {
+      color: var(--color-accent);
+    }
+
+    .add-link-row svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    /* Add Category */
+    .add-category {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 24px;
+      background: transparent;
+      border: 2px dashed rgba(148, 163, 184, 0.2);
+      border-radius: var(--radius-lg);
+      color: var(--color-text-muted);
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .add-category:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text);
+      background: rgba(34, 211, 238, 0.03);
+    }
+
+    .add-category svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .design-label {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Toolbar -->
+  <nav class="floating-toolbar">
+    <a href="#" class="toolbar-btn">
+      <svg viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/>
+      </svg>
+      Dock
+    </a>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn primary">
+      <svg viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+      </svg>
+      Quick Add
+    </button>
+    <div class="toolbar-divider"></div>
+    <button class="toolbar-btn">
+      <svg viewBox="0 0 256 256">
+        <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"/>
+      </svg>
+      Import
+    </button>
+    <button class="toolbar-btn">
+      <svg viewBox="0 0 256 256">
+        <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/>
+      </svg>
+      Export
+    </button>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Manage Bookmarks</h1>
+        <p class="page-subtitle">Organize your categories and links</p>
+      </header>
+
+      <div class="categories">
+        <!-- Category 1 - Expanded -->
+        <div class="category expanded">
+          <div class="category-header">
+            <div class="category-expand">
+              <svg viewBox="0 0 256 256">
+                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/>
+              </svg>
+            </div>
+            <div class="category-icon">
+              <svg viewBox="0 0 256 256">
+                <path d="M69.12,94.15,28.5,128l40.62,33.85a8,8,0,1,1-10.24,12.29l-48-40a8,8,0,0,1,0-12.29l48-40a8,8,0,0,1,10.24,12.3Zm176,27.7-48-40a8,8,0,1,0-10.24,12.3L227.5,128l-40.62,33.85a8,8,0,1,0,10.24,12.29l48-40a8,8,0,0,0,0-12.29ZM162.73,32.48a8,8,0,0,0-10.25,4.79l-64,176a8,8,0,0,0,4.79,10.26A8.14,8.14,0,0,0,96,224a8,8,0,0,0,7.52-5.27l64-176A8,8,0,0,0,162.73,32.48Z"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <div class="category-name">Development</div>
+              <div class="category-meta">4 bookmarks</div>
+            </div>
+            <div class="category-actions">
+              <button class="icon-btn" title="Edit">
+                <svg viewBox="0 0 256 256">
+                  <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+                </svg>
+              </button>
+              <button class="icon-btn" title="Delete">
+                <svg viewBox="0 0 256 256">
+                  <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="category-content">
+            <div class="links-list">
+              <div class="link-item">
+                <span class="link-drag">⋮⋮</span>
+                <img class="link-favicon" src="https://github.com/favicon.ico" alt="">
+                <div class="link-info">
+                  <div class="link-title">GitHub</div>
+                  <div class="link-url">github.com</div>
+                </div>
+                <div class="link-actions">
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/></svg></button>
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/></svg></button>
+                </div>
+              </div>
+              <div class="link-item">
+                <span class="link-drag">⋮⋮</span>
+                <img class="link-favicon" src="https://stackoverflow.com/favicon.ico" alt="">
+                <div class="link-info">
+                  <div class="link-title">Stack Overflow</div>
+                  <div class="link-url">stackoverflow.com</div>
+                </div>
+                <div class="link-actions">
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/></svg></button>
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/></svg></button>
+                </div>
+              </div>
+              <div class="link-item">
+                <span class="link-drag">⋮⋮</span>
+                <img class="link-favicon" src="https://developer.mozilla.org/favicon.ico" alt="">
+                <div class="link-info">
+                  <div class="link-title">MDN Web Docs</div>
+                  <div class="link-url">developer.mozilla.org</div>
+                </div>
+                <div class="link-actions">
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/></svg></button>
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/></svg></button>
+                </div>
+              </div>
+              <div class="link-item">
+                <span class="link-drag">⋮⋮</span>
+                <img class="link-favicon" src="https://codepen.io/favicon.ico" alt="">
+                <div class="link-info">
+                  <div class="link-title">CodePen</div>
+                  <div class="link-url">codepen.io</div>
+                </div>
+                <div class="link-actions">
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/></svg></button>
+                  <button class="icon-btn"><svg viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/></svg></button>
+                </div>
+              </div>
+              <div class="add-link-row">
+                <svg viewBox="0 0 256 256">
+                  <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+                </svg>
+                Add bookmark
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 2 - Collapsed -->
+        <div class="category">
+          <div class="category-header">
+            <div class="category-expand">
+              <svg viewBox="0 0 256 256">
+                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/>
+              </svg>
+            </div>
+            <div class="category-icon">
+              <svg viewBox="0 0 256 256">
+                <path d="M197.58,129.06l-51.61-19-19-51.65a15.92,15.92,0,0,0-29.88,0L78.07,110l-51.65,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0l19-51.61,51.65-19a15.92,15.92,0,0,0,0-29.88Z"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <div class="category-name">AI Tools</div>
+              <div class="category-meta">3 bookmarks</div>
+            </div>
+            <div class="category-actions">
+              <button class="icon-btn" title="Edit">
+                <svg viewBox="0 0 256 256">
+                  <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+                </svg>
+              </button>
+              <button class="icon-btn" title="Delete">
+                <svg viewBox="0 0 256 256">
+                  <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="category-content">
+            <div class="links-list">
+              <!-- Links would go here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Category 3 - Collapsed -->
+        <div class="category">
+          <div class="category-header">
+            <div class="category-expand">
+              <svg viewBox="0 0 256 256">
+                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/>
+              </svg>
+            </div>
+            <div class="category-icon">
+              <svg viewBox="0 0 256 256">
+                <path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM216,192H40V64H216Z"/>
+              </svg>
+            </div>
+            <div class="category-info">
+              <div class="category-name">Design</div>
+              <div class="category-meta">5 bookmarks</div>
+            </div>
+            <div class="category-actions">
+              <button class="icon-btn" title="Edit">
+                <svg viewBox="0 0 256 256">
+                  <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120Z"/>
+                </svg>
+              </button>
+              <button class="icon-btn" title="Delete">
+                <svg viewBox="0 0 256 256">
+                  <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192Z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="category-content">
+            <div class="links-list">
+              <!-- Links would go here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Category -->
+        <button class="add-category">
+          <svg viewBox="0 0 256 256">
+            <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+          </svg>
+          Add New Category
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <div class="design-label">Mockup 3: Minimal Centered</div>
+
+  <script>
+    // Toggle category expansion
+    document.querySelectorAll('.category-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        if (e.target.closest('.category-actions')) return;
+        header.closest('.category').classList.toggle('expanded');
+      });
+    });
+  </script>
+</body>
+</html>
