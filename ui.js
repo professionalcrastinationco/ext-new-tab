@@ -1,6 +1,40 @@
 // ui.js - Presentation Layer for rendering and event handling
 
 let currentData = null;
+
+// Populate icon picker grid
+function populateIconPicker(selectedIcon) {
+    const picker = document.getElementById('icon-picker');
+    const hiddenInput = document.getElementById('category-icon');
+
+    if (!picker || !hiddenInput) return;
+
+    // Set hidden input value
+    hiddenInput.value = selectedIcon || 'briefcase';
+
+    // Get category icons from icons.js
+    const iconNames = Object.keys(CATEGORY_ICONS);
+
+    picker.innerHTML = iconNames.map(name => `
+        <button type="button"
+                class="icon-picker-item${hiddenInput.value === name ? ' selected' : ''}"
+                data-icon="${name}"
+                title="${name.replace(/-/g, ' ')}">
+            ${CATEGORY_ICONS[name]}
+        </button>
+    `).join('');
+
+    // Click handler for icon selection
+    picker.onclick = (e) => {
+        const item = e.target.closest('.icon-picker-item');
+        if (!item) return;
+
+        // Update selection
+        picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+        hiddenInput.value = item.dataset.icon;
+    };
+}
 let draggedElement = null;
 let draggedCategoryId = null;
 let draggedLinkId = null;
@@ -32,8 +66,8 @@ function renderCategories(data) {
             <h2 class="category-name">${escapeHtml(category.name)}</h2>
           </div>
           <div class="category-actions">
-            <button class="icon-btn edit-category-btn" data-category-id="${category.id}" title="Rename category">✏️</button>
-            <button class="icon-btn delete-category-btn" data-category-id="${category.id}" title="Delete category">🗑️</button>
+            <button class="icon-btn edit-category-btn" data-category-id="${category.id}" title="Rename category">${ICON_PENCIL_SIMPLE}</button>
+            <button class="icon-btn delete-category-btn" data-category-id="${category.id}" title="Delete category">${ICON_TRASH}</button>
             <button class="add-link-btn" data-category-id="${category.id}">+ Add Link</button>
           </div>
         </header>
@@ -65,8 +99,8 @@ function renderLink(link, categoryId, openInNewTab = true) {
         <span class="link-title">${escapeHtml(link.title)}</span>
       </a>
       <div class="link-actions">
-        <button class="icon-btn edit-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Edit link">✏️</button>
-        <button class="icon-btn delete-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Delete link">🗑️</button>
+        <button class="icon-btn edit-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Edit link">${ICON_PENCIL_SIMPLE}</button>
+        <button class="icon-btn delete-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Delete link">${ICON_TRASH}</button>
       </div>
     </div>
   `;
@@ -282,19 +316,20 @@ function showCategoryModal(category = null) {
   const form = document.getElementById('category-form');
   const title = document.getElementById('category-modal-title');
   const nameInput = document.getElementById('category-name');
-  const iconInput = document.getElementById('category-icon');
   const idInput = document.getElementById('category-id');
 
   if (category) {
     title.textContent = 'Edit Category';
     nameInput.value = category.name;
-    if (iconInput) iconInput.value = category.icon || '';
     idInput.value = category.id;
+    // Populate icon picker with current selection
+    populateIconPicker(category.icon);
   } else {
     title.textContent = 'Add Category';
     nameInput.value = '';
-    if (iconInput) iconInput.value = '';
     idInput.value = '';
+    // Populate icon picker with default
+    populateIconPicker('briefcase');
   }
 
   modal.showModal();

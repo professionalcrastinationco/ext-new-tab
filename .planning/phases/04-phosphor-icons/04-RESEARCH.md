@@ -143,31 +143,44 @@ Problems that look simple but have existing solutions:
 
 ## Common Pitfalls
 
-### Pitfall 1: Using Web Fonts in Chrome Extensions
+### Pitfall 1: SVG Manifest Icons (CRITICAL)
+**What goes wrong:** Extension icon appears broken or missing in toolbar, extensions page, Chrome Web Store
+**Why it happens:** Chrome explicitly does NOT support SVG for manifest icons - PNG is required
+**How to avoid:** Convert icons/icon16.svg, icon48.svg, icon128.svg to PNG format at those exact sizes
+**Warning signs:** Missing extension icon, "Icons should be PNG" errors during Chrome Web Store upload
+**Current status:** manifest.json currently uses SVG icons (icon16.svg, icon48.svg, icon128.svg) - MUST FIX
+
+### Pitfall 2: CSP Blocking Inline Event Handlers
+**What goes wrong:** Click handlers on SVG elements don't work, CSP errors in console
+**Why it happens:** MV3 CSP blocks inline event handlers like `onclick="..."`
+**How to avoid:** Use `addEventListener()` on parent element or wrapper, not SVG attributes
+**Warning signs:** "Refused to execute inline event handler" errors
+
+### Pitfall 3: Using Web Fonts in Chrome Extensions
 **What goes wrong:** Font files fail to load due to CSP restrictions
 **Why it happens:** Chrome extensions have strict CSP by default; `font-src` may be restricted
 **How to avoid:** Use inline SVG strings instead of web fonts
 **Warning signs:** Icons show as blank squares or fallback characters
 
-### Pitfall 2: External Resource Loading
+### Pitfall 4: External Resource Loading (CDN)
 **What goes wrong:** Icons don't render, console shows CSP violations
 **Why it happens:** Extensions can't load from CDNs by default
 **How to avoid:** Bundle all icons locally as inline strings
 **Warning signs:** `Refused to load` errors in console
 
-### Pitfall 3: SVG viewBox Mismatch
+### Pitfall 5: SVG viewBox Mismatch
 **What goes wrong:** Icons appear clipped or oversized
 **Why it happens:** Phosphor uses 256x256 viewBox, not 24x24
 **How to avoid:** Keep viewBox="0 0 256 256", adjust width/height attributes only
 **Warning signs:** Icons look cut off or have wrong proportions
 
-### Pitfall 4: Forgetting fill="currentColor"
+### Pitfall 6: Forgetting fill="currentColor"
 **What goes wrong:** Icons don't respond to CSS color changes
 **Why it happens:** Hardcoded fill colors override CSS
 **How to avoid:** Always use `fill="currentColor"` in SVG markup
 **Warning signs:** Icons stay black/colored when parent text color changes
 
-### Pitfall 5: Breaking Emoji Category Icons
+### Pitfall 7: Breaking Emoji Category Icons
 **What goes wrong:** Category icon picker stops working
 **Why it happens:** Replacing emoji storage model without migration
 **How to avoid:** Provide migration path OR keep emoji support alongside Phosphor

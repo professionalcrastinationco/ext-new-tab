@@ -178,11 +178,11 @@ body {
     display: flex;
     gap: 1.5rem;
     padding: 0.75rem 1.25rem;
-    background-color: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.15);
+    /* background-color: rgba(30, 41, 59, 0.5); */
+    /* backdrop-filter: blur(20px); */
+    /* border: 1px solid rgba(148, 163, 184, 0.15); */
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); */
 }
 
 .quick-link {
@@ -193,37 +193,37 @@ body {
     padding: 0.5rem;
     border-radius: 12px;
     text-decoration: none;
-    color: #94a3b8;
+    color: #314158;
     transition: all 0.2s ease;
     cursor: pointer;
 }
 
 .quick-link:hover {
     color: #f1f5f9;
-    background-color: rgba(255, 255, 255, 0.08);
+    /* background-color: rgba(255, 255, 255, 0.08); */
     transform: translateY(-2px);
 }
 
 .quick-link-icon {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(51, 65, 85, 0.6);
-    border-radius: 10px;
-    padding: 6px;
+    /* background-color: rgba(51, 65, 85, 0.6); */
+    border-radius: 100%;
+    /* padding: 6px; */
     transition: all 0.2s ease;
 }
 
 .quick-link:hover .quick-link-icon {
-    background-color: rgba(6, 182, 212, 0.2);
-    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+    /* background-color: rgba(6, 182, 212, 0.2); */
+    /* box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); */
 }
 
 .quick-link-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     fill: currentColor;
 }
 
@@ -234,6 +234,7 @@ body {
     max-width: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: none;
 }
 
 /* Empty state for quick links */
@@ -276,16 +277,19 @@ body {
     position: relative;
     cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #45556c;
 }
 
 /* Bottom dock - icons move up on hover */
 .dock-bottom .dock-icon:hover {
     transform: scale(1.2) translateY(-8px);
+    color: #90a1b9;
 }
 
 /* Top dock - icons move down on hover */
 .dock-top .dock-icon:hover {
     transform: scale(1.2) translateY(8px);
+    color: #90a1b9;
 }
 
 /* Hover bridge for bottom dock - fills gap between icon and card above */
@@ -296,7 +300,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    height: 30px;
+    height: 50px;
     opacity: 0;
     pointer-events: none;
     z-index: 999;
@@ -325,8 +329,8 @@ body {
 }
 
 .icon-circle {
-    width: 56px;
-    height: 56px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -506,9 +510,11 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: rgba(30, 41, 59, 0.7);
+    /* background-color: rgba(30, 41, 59, 0.7); */
+    background-color: transparent;
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(51, 65, 85, 0.5);
+    /* border: 1px solid rgba(51, 65, 85, 0.5); */
+    border: none;
     border-radius: 50%;
     width: 48px;
     height: 48px;

@@ -4,6 +4,12 @@ let currentTab = null;
 
 // Initialize popup
 async function initPopup() {
+  // Set empty state icon
+  const emptyIcon = document.getElementById('empty-icon');
+  if (emptyIcon && typeof ICON_FOLDER_OPEN !== 'undefined') {
+    emptyIcon.innerHTML = ICON_FOLDER_OPEN;
+  }
+
   try {
     // Get current active tab
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Bookmarks - Mockup 4: Side Bar Minimal</title>
+
+    <!-- Pico CSS for base styling and color variables -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f172a; /* Slate-950 */
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Fixed left sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 70px;
+            height: 100vh;
+            background-color: #1e293b; /* Slate-800 */
+            border-right: 1px solid #334155; /* Slate-700 */
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .category-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem 0;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .category-icon::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(180deg, #06b6d4 0%, #10b981 100%); /* Cyan-500 to Jade-500 */
+            transition: height 0.3s ease;
+        }
+
+        .category-icon:hover::before,
+        .category-icon.active::before {
+            height: 60%;
+        }
+
+        .category-icon:hover {
+            background-color: #334155; /* Slate-700 */
+        }
+
+        .category-icon.active {
+            background-color: #334155;
+        }
+
+        .icon-circle {
+            width: 45px;
+            height: 45px;
+            background-color: #3b82f6; /* Blue-500 */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-icon:hover .icon-circle {
+            background-color: #06b6d4; /* Cyan-500 */
+            transform: scale(1.1);
+        }
+
+        .category-icon.active .icon-circle {
+            background-color: #06b6d4;
+        }
+
+        /* Slide-out panel */
+        .bookmark-panel {
+            position: fixed;
+            left: 70px;
+            top: 0;
+            width: 320px;
+            height: 100vh;
+            background-color: #1e293b; /* Slate-800 */
+            border-right: 1px solid #334155;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 99;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .bookmark-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #f1f5f9; /* Slate-100 */
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #3b82f6; /* Blue-500 */
+        }
+
+        .bookmark-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .bookmark-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #334155; /* Slate-700 */
+            border-radius: 8px;
+            color: #f1f5f9;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.9375rem;
+        }
+
+        .bookmark-link:hover {
+            background-color: #1e40af; /* Blue-600 */
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .bookmark-favicon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .bookmark-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Main content area (empty in mockup) */
+        .main-content {
+            margin-left: 70px;
+            padding: 2rem;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b; /* Slate-500 */
+            font-size: 0.875rem;
+            opacity: 0.5;
+        }
+
+        /* Overlay when panel is open */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 98;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar"></div>
+    <div class="bookmark-panel" id="bookmarkPanel"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="main-content">
+        Hover or click a category icon to view bookmarks
+    </div>
+
+    <script>
+        // Sample data
+        const categories = [
+            {
+                id: 'work',
+                name: 'Work',
+                icon: '💼',
+                bookmarks: [
+                    { title: 'Gmail', url: 'https://mail.google.com' },
+                    { title: 'Google Calendar', url: 'https://calendar.google.com' },
+                    { title: 'Slack', url: 'https://slack.com' },
+                    { title: 'Notion', url: 'https://notion.so' },
+                    { title: 'Linear', url: 'https://linear.app' },
+                    { title: 'Figma', url: 'https://figma.com' }
+                ]
+            },
+            {
+                id: 'dev',
+                name: 'Dev Tools',
+                icon: '⚙️',
+                bookmarks: [
+                    { title: 'GitHub', url: 'https://github.com' },
+                    { title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+                    { title: 'CodePen', url: 'https://codepen.io' },
+                    { title: 'MDN', url: 'https://developer.mozilla.org' },
+                    { title: 'npm', url: 'https://npmjs.com' },
+                    { title: 'Vercel', url: 'https://vercel.com' },
+                    { title: 'Railway', url: 'https://railway.app' }
+                ]
+            },
+            {
+                id: 'social',
+                name: 'Social',
+                icon: '👥',
+                bookmarks: [
+                    { title: 'Twitter', url: 'https://twitter.com' },
+                    { title: 'LinkedIn', url: 'https://linkedin.com' },
+                    { title: 'Reddit', url: 'https://reddit.com' },
+                    { title: 'Hacker News', url: 'https://news.ycombinator.com' }
+                ]
+            },
+            {
+                id: 'reading',
+                name: 'Reading',
+                icon: '📚',
+                bookmarks: [
+                    { title: 'Medium', url: 'https://medium.com' },
+                    { title: 'Dev.to', url: 'https://dev.to' },
+                    { title: 'Substack', url: 'https://substack.com' }
+                ]
+            },
+            {
+                id: 'media',
+                name: 'Entertainment',
+                icon: '🎬',
+                bookmarks: [
+                    { title: 'YouTube', url: 'https://youtube.com' },
+                    { title: 'Netflix', url: 'https://netflix.com' },
+                    { title: 'Spotify', url: 'https://spotify.com' },
+                    { title: 'Twitch', url: 'https://twitch.tv' }
+                ]
+            }
+        ];
+
+        let currentCategory = null;
+
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+            } catch {
+                return '';
+            }
+        }
+
+        function showPanel(category) {
+            const panel = document.getElementById('bookmarkPanel');
+            const overlay = document.getElementById('overlay');
+
+            // Create panel content
+            const header = document.createElement('div');
+            header.className = 'panel-header';
+            header.textContent = category.name;
+
+            const list = document.createElement('div');
+            list.className = 'bookmark-list';
+
+            category.bookmarks.forEach(bookmark => {
+                const link = document.createElement('a');
+                link.className = 'bookmark-link';
+                link.href = bookmark.url;
+                link.target = '_blank';
+
+                const favicon = document.createElement('img');
+                favicon.className = 'bookmark-favicon';
+                favicon.src = getFaviconUrl(bookmark.url);
+                favicon.alt = '';
+
+                const title = document.createElement('span');
+                title.className = 'bookmark-title';
+                title.textContent = bookmark.title;
+
+                link.appendChild(favicon);
+                link.appendChild(title);
+                list.appendChild(link);
+            });
+
+            panel.innerHTML = '';
+            panel.appendChild(header);
+            panel.appendChild(list);
+            panel.classList.add('open');
+            overlay.classList.add('visible');
+
+            currentCategory = category.id;
+        }
+
+        function hidePanel() {
+            const panel = document.getElementById('bookmarkPanel');
+            const overlay = document.getElementById('overlay');
+
+            panel.classList.remove('open');
+            overlay.classList.remove('visible');
+
+            // Remove active state from all icons
+            document.querySelectorAll('.category-icon').forEach(icon => {
+                icon.classList.remove('active');
+            });
+
+            currentCategory = null;
+        }
+
+        function initializeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            categories.forEach(category => {
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'category-icon';
+                iconDiv.dataset.categoryId = category.id;
+
+                const iconCircle = document.createElement('div');
+                iconCircle.className = 'icon-circle';
+                iconCircle.textContent = category.icon;
+
+                iconDiv.appendChild(iconCircle);
+                sidebar.appendChild(iconDiv);
+
+                // Click to toggle panel
+                iconDiv.addEventListener('click', () => {
+                    if (currentCategory === category.id) {
+                        hidePanel();
+                    } else {
+                        // Remove active from all, add to current
+                        document.querySelectorAll('.category-icon').forEach(icon => {
+                            icon.classList.remove('active');
+                        });
+                        iconDiv.classList.add('active');
+                        showPanel(category);
+                    }
+                });
+
+                // Hover to show panel
+                iconDiv.addEventListener('mouseenter', () => {
+                    if (currentCategory !== category.id) {
+                        document.querySelectorAll('.category-icon').forEach(icon => {
+                            icon.classList.remove('active');
+                        });
+                        iconDiv.classList.add('active');
+                        showPanel(category);
+                    }
+                });
+            });
+
+            // Close panel when clicking overlay
+            overlay.addEventListener('click', hidePanel);
+        }
+
+        initializeSidebar();
+    </script>
+</body>
+</html>

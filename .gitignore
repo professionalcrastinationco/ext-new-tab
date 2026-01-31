@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Windows artifacts
+nul
+Thumbs.db
+
+# macOS
+.DS_Store
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Playwright MCP local config
+.playwright-mcp/

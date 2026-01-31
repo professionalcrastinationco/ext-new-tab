@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Bookmarks - Mockup 3: Floating Icons</title>
+
+    <!-- Pico CSS for base styling and color variables -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Slate-950 to Slate-800 */
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Container for all floating icons */
+        .floating-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Individual category with artistic positioning */
+        .floating-category {
+            position: absolute;
+            cursor: pointer;
+        }
+
+        /* Artful asymmetric positioning */
+        .floating-category:nth-child(1) { top: 20%; left: 15%; }
+        .floating-category:nth-child(2) { top: 35%; right: 20%; }
+        .floating-category:nth-child(3) { bottom: 30%; left: 25%; }
+        .floating-category:nth-child(4) { top: 55%; left: 50%; transform: translate(-50%, -50%); }
+        .floating-category:nth-child(5) { bottom: 20%; right: 15%; }
+
+        .icon-wrapper {
+            position: relative;
+        }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%); /* Cyan-500 to Azure-500 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: breathe 3s ease-in-out infinite;
+            box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+            transition: all 0.3s ease-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating-category:hover .icon-circle {
+            animation: none;
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Bookmark card that expands from icon */
+        .bookmark-card {
+            position: absolute;
+            top: 50%;
+            left: calc(100% + 20px);
+            transform: translateY(-50%) scale(0.8);
+            transform-origin: left center;
+            background-color: #1e293b; /* Slate-800 */
+            border-left: 4px solid #06b6d4; /* Cyan-500 accent */
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 300px;
+            max-width: 350px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease-out;
+            z-index: 10;
+        }
+
+        /* Hover bridge - prevents card from disappearing when moving mouse */
+        .icon-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: -20px;
+            bottom: 0;
+            z-index: 5;
+            opacity: 0;
+        }
+
+        .floating-category:hover .bookmark-card {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(-50%) scale(1);
+            transition-delay: 100ms; /* Slight delay to prevent accidental triggers */
+        }
+
+        .card-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #06b6d4; /* Cyan-500 */
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .bookmark-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .bookmark-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background-color: #334155; /* Slate-700 */
+            border-radius: 8px;
+            color: #f1f5f9;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .bookmark-link:hover {
+            background-color: #0ea5e9; /* Azure-500 */
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+        }
+
+        .bookmark-favicon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .bookmark-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Adjust cards on the right side to open leftward */
+        .floating-category:nth-child(2) .bookmark-card,
+        .floating-category:nth-child(5) .bookmark-card {
+            left: auto;
+            right: calc(100% + 20px);
+            transform-origin: right center;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-container" id="floatingContainer"></div>
+
+    <script>
+        // Sample data
+        const categories = [
+            {
+                id: 'work',
+                name: 'Work',
+                icon: '💼',
+                bookmarks: [
+                    { title: 'Gmail', url: 'https://mail.google.com' },
+                    { title: 'Google Calendar', url: 'https://calendar.google.com' },
+                    { title: 'Slack', url: 'https://slack.com' },
+                    { title: 'Notion', url: 'https://notion.so' },
+                    { title: 'Linear', url: 'https://linear.app' },
+                    { title: 'Figma', url: 'https://figma.com' }
+                ]
+            },
+            {
+                id: 'dev',
+                name: 'Dev Tools',
+                icon: '⚙️',
+                bookmarks: [
+                    { title: 'GitHub', url: 'https://github.com' },
+                    { title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+                    { title: 'CodePen', url: 'https://codepen.io' },
+                    { title: 'MDN', url: 'https://developer.mozilla.org' },
+                    { title: 'npm', url: 'https://npmjs.com' },
+                    { title: 'Vercel', url: 'https://vercel.com' },
+                    { title: 'Railway', url: 'https://railway.app' }
+                ]
+            },
+            {
+                id: 'social',
+                name: 'Social',
+                icon: '👥',
+                bookmarks: [
+                    { title: 'Twitter', url: 'https://twitter.com' },
+                    { title: 'LinkedIn', url: 'https://linkedin.com' },
+                    { title: 'Reddit', url: 'https://reddit.com' },
+                    { title: 'Hacker News', url: 'https://news.ycombinator.com' }
+                ]
+            },
+            {
+                id: 'reading',
+                name: 'Reading',
+                icon: '📚',
+                bookmarks: [
+                    { title: 'Medium', url: 'https://medium.com' },
+                    { title: 'Dev.to', url: 'https://dev.to' },
+                    { title: 'Substack', url: 'https://substack.com' }
+                ]
+            },
+            {
+                id: 'media',
+                name: 'Entertainment',
+                icon: '🎬',
+                bookmarks: [
+                    { title: 'YouTube', url: 'https://youtube.com' },
+                    { title: 'Netflix', url: 'https://netflix.com' },
+                    { title: 'Spotify', url: 'https://spotify.com' },
+                    { title: 'Twitch', url: 'https://twitch.tv' }
+                ]
+            }
+        ];
+
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+            } catch {
+                return '';
+            }
+        }
+
+        function createBookmarkCard(category) {
+            const card = document.createElement('div');
+            card.className = 'bookmark-card';
+
+            const header = document.createElement('div');
+            header.className = 'card-header';
+            header.textContent = category.name;
+
+            const list = document.createElement('div');
+            list.className = 'bookmark-list';
+
+            category.bookmarks.forEach(bookmark => {
+                const link = document.createElement('a');
+                link.className = 'bookmark-link';
+                link.href = bookmark.url;
+                link.target = '_blank';
+
+                const favicon = document.createElement('img');
+                favicon.className = 'bookmark-favicon';
+                favicon.src = getFaviconUrl(bookmark.url);
+                favicon.alt = '';
+
+                const title = document.createElement('span');
+                title.className = 'bookmark-title';
+                title.textContent = bookmark.title;
+
+                link.appendChild(favicon);
+                link.appendChild(title);
+                list.appendChild(link);
+            });
+
+            card.appendChild(header);
+            card.appendChild(list);
+
+            return card;
+        }
+
+        function initializeFloatingIcons() {
+            const container = document.getElementById('floatingContainer');
+
+            categories.forEach((category, index) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'floating-category';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'icon-wrapper';
+
+                const iconCircle = document.createElement('div');
+                iconCircle.className = 'icon-circle';
+                iconCircle.textContent = category.icon;
+
+                // Stagger breathing animation for artistic effect
+                iconCircle.style.animationDelay = `${index * 0.4}s`;
+
+                const card = createBookmarkCard(category);
+
+                wrapper.appendChild(iconCircle);
+                wrapper.appendChild(card);
+                categoryDiv.appendChild(wrapper);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        initializeFloatingIcons();
+    </script>
+</body>
+</html>

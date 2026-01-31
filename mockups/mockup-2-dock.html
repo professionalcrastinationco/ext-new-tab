@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Bookmarks - Mockup 2: Icon Dock</title>
+
+    <!-- Pico CSS for base styling and color variables -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f172a; /* Slate-950 */
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Google search field container */
+        .search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 600px;
+            padding: 0 2rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.25rem 3.5rem 1.25rem 1.5rem;
+            font-size: 1.125rem;
+            background-color: rgba(30, 41, 59, 0.6); /* Slate-800 with transparency */
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2); /* Slate-400 */
+            border-radius: 50px;
+            color: #f1f5f9; /* Slate-100 */
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: #64748b; /* Slate-500 */
+        }
+
+        .search-input:focus {
+            background-color: rgba(30, 41, 59, 0.8);
+            border-color: rgba(6, 182, 212, 0.5); /* Cyan-500 */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b; /* Slate-500 */
+            font-size: 1.25rem;
+            pointer-events: none;
+        }
+
+        /* macOS-inspired dock - shared styles */
+        .dock {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+            background-color: rgba(30, 41, 59, 0.7); /* Slate-800 with transparency */
+            backdrop-filter: blur(20px);
+            border-radius: 50px; /* Fully rounded ends like search box */
+            border: 1px solid rgba(51, 65, 85, 0.5); /* Slate-700 */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Bottom dock positioning */
+        .dock-bottom {
+            bottom: 20px;
+        }
+
+        /* Top dock positioning */
+        .dock-top {
+            top: 20px;
+        }
+
+        .dock-icon {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Bottom dock - icons move up on hover */
+        .dock-bottom .dock-icon:hover {
+            transform: scale(1.2) translateY(-8px);
+        }
+
+        /* Top dock - icons move down on hover */
+        .dock-top .dock-icon:hover {
+            transform: scale(1.2) translateY(8px);
+        }
+
+        /* Hover bridge for bottom dock - fills gap between icon and card above */
+        .dock-bottom .dock-icon::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 30px; /* Covers the 20px gap + extra */
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .dock-bottom .dock-icon:hover::before {
+            pointer-events: all;
+        }
+
+        /* Hover bridge for top dock - fills gap between icon and card below */
+        .dock-top .dock-icon::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 30px; /* Covers the 20px gap + extra */
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .dock-top .dock-icon:hover::before {
+            pointer-events: all;
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .dock-icon:hover .icon-circle {
+            transform: scale(1.05);
+        }
+
+        /* Floating card - shared styles */
+        .bookmark-card {
+            position: absolute;
+            left: 50%;
+            background-color: rgba(30, 41, 59, 0.95); /* Slate-800 with slight transparency */
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.2); /* Slate-400 */
+            border-radius: 12px;
+            padding: 1.5rem;
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+        }
+
+        /* Bottom dock card - appears above icon */
+        .dock-bottom .bookmark-card {
+            bottom: calc(100% + 20px);
+            transform: translateX(-50%) translateY(20px);
+            border-top: 2px solid rgba(6, 182, 212, 0.5); /* Cyan-500 accent */
+        }
+
+        .dock-bottom .dock-icon:hover .bookmark-card {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dock-bottom .bookmark-card:hover {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Top dock card - appears below icon */
+        .dock-top .bookmark-card {
+            top: calc(100% + 20px);
+            transform: translateX(-50%) translateY(-20px);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.5); /* Cyan-500 accent */
+        }
+
+        .dock-top .dock-icon:hover .bookmark-card {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dock-top .bookmark-card:hover {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .card-header {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #f1f5f9; /* Slate-100 */
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .bookmark-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .bookmark-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: #334155; /* Slate-700 */
+            border-radius: 8px;
+            color: #f1f5f9;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+        }
+
+        .bookmark-link:hover {
+            background-color: #0ea5e9; /* Azure-500 */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
+        }
+
+        .bookmark-favicon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .bookmark-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* A/B Test Labels */
+        .dock::after {
+            content: 'Bottom Dock';
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: rgba(148, 163, 184, 0.5);
+            white-space: nowrap;
+        }
+
+        .dock-top::after {
+            content: 'Top Dock';
+        }
+
+        /* Arrow pointing down to icon (for bottom dock) */
+        .dock-bottom .bookmark-card::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid rgba(30, 41, 59, 0.95);
+        }
+
+        /* Arrow pointing up to icon (for top dock) */
+        .dock-top .bookmark-card::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(30, 41, 59, 0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Search Field -->
+    <div class="search-container">
+        <div class="search-box">
+            <input
+                type="text"
+                class="search-input"
+                id="searchInput"
+                placeholder="Search Google or type a URL"
+                autocomplete="off"
+            />
+            <span class="search-icon">🔍</span>
+        </div>
+    </div>
+
+    <!-- Top Dock (for A/B testing) -->
+    <div class="dock dock-top" id="dockTop"></div>
+
+    <!-- Bottom Dock (original) -->
+    <div class="dock dock-bottom" id="dockBottom"></div>
+
+    <script>
+        // Handle search input
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                if (query) {
+                    // Check if it looks like a URL
+                    if (query.includes('.') && !query.includes(' ')) {
+                        // Add https:// if no protocol specified
+                        const url = query.startsWith('http') ? query : `https://${query}`;
+                        window.location.href = url;
+                    } else {
+                        // Search Google
+                        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                    }
+                }
+            }
+        });
+
+        // Sample data
+        const categories = [
+            {
+                id: 'work',
+                name: 'Work',
+                icon: '💼',
+                bookmarks: [
+                    { title: 'Gmail', url: 'https://mail.google.com' },
+                    { title: 'Google Calendar', url: 'https://calendar.google.com' },
+                    { title: 'Slack', url: 'https://slack.com' },
+                    { title: 'Notion', url: 'https://notion.so' },
+                    { title: 'Linear', url: 'https://linear.app' },
+                    { title: 'Figma', url: 'https://figma.com' }
+                ]
+            },
+            {
+                id: 'dev',
+                name: 'Dev Tools',
+                icon: '⚙️',
+                bookmarks: [
+                    { title: 'GitHub', url: 'https://github.com' },
+                    { title: 'Stack Overflow', url: 'https://stackoverflow.com' },
+                    { title: 'CodePen', url: 'https://codepen.io' },
+                    { title: 'MDN', url: 'https://developer.mozilla.org' },
+                    { title: 'npm', url: 'https://npmjs.com' },
+                    { title: 'Vercel', url: 'https://vercel.com' },
+                    { title: 'Railway', url: 'https://railway.app' }
+                ]
+            },
+            {
+                id: 'social',
+                name: 'Social',
+                icon: '👥',
+                bookmarks: [
+                    { title: 'Twitter', url: 'https://twitter.com' },
+                    { title: 'LinkedIn', url: 'https://linkedin.com' },
+                    { title: 'Reddit', url: 'https://reddit.com' },
+                    { title: 'Hacker News', url: 'https://news.ycombinator.com' }
+                ]
+            },
+            {
+                id: 'reading',
+                name: 'Reading',
+                icon: '📚',
+                bookmarks: [
+                    { title: 'Medium', url: 'https://medium.com' },
+                    { title: 'Dev.to', url: 'https://dev.to' },
+                    { title: 'Substack', url: 'https://substack.com' }
+                ]
+            },
+            {
+                id: 'media',
+                name: 'Entertainment',
+                icon: '🎬',
+                bookmarks: [
+                    { title: 'YouTube', url: 'https://youtube.com' },
+                    { title: 'Netflix', url: 'https://netflix.com' },
+                    { title: 'Spotify', url: 'https://spotify.com' },
+                    { title: 'Twitch', url: 'https://twitch.tv' }
+                ]
+            }
+        ];
+
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+            } catch {
+                return '';
+            }
+        }
+
+        function createBookmarkCard(category) {
+            const card = document.createElement('div');
+            card.className = 'bookmark-card';
+
+            const header = document.createElement('div');
+            header.className = 'card-header';
+            header.textContent = category.name;
+
+            const list = document.createElement('div');
+            list.className = 'bookmark-list';
+
+            category.bookmarks.forEach(bookmark => {
+                const link = document.createElement('a');
+                link.className = 'bookmark-link';
+                link.href = bookmark.url;
+                link.target = '_blank';
+
+                const favicon = document.createElement('img');
+                favicon.className = 'bookmark-favicon';
+                favicon.src = getFaviconUrl(bookmark.url);
+                favicon.alt = '';
+
+                const title = document.createElement('span');
+                title.className = 'bookmark-title';
+                title.textContent = bookmark.title;
+
+                link.appendChild(favicon);
+                link.appendChild(title);
+                list.appendChild(link);
+            });
+
+            card.appendChild(header);
+            card.appendChild(list);
+
+            return card;
+        }
+
+        function initializeDock(dockElement) {
+            categories.forEach(category => {
+                const dockIcon = document.createElement('div');
+                dockIcon.className = 'dock-icon';
+
+                const iconCircle = document.createElement('div');
+                iconCircle.className = 'icon-circle';
+                iconCircle.textContent = category.icon;
+
+                const card = createBookmarkCard(category);
+
+                dockIcon.appendChild(iconCircle);
+                dockIcon.appendChild(card);
+                dockElement.appendChild(dockIcon);
+            });
+        }
+
+        // Initialize both docks for A/B testing
+        initializeDock(document.getElementById('dockTop'));
+        initializeDock(document.getElementById('dockBottom'));
+    </script>
+</body>
+</html>
