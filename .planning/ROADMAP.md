@@ -7,13 +7,56 @@
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
 - ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
 - ✅ [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1, 6.2) — SHIPPED 2026-01-29
+- 🚧 **v1.4 Settings & Manager UI Overhaul** (Phases 7-9) — IN PROGRESS
 
 ---
 
 ## Current Status
 
-**Current Milestone:** None (feature complete)
-**Status:** All milestones shipped
+**Current Milestone:** v1.4 Settings & Manager UI Overhaul
+**Status:** Ready to plan Phase 7
+
+---
+
+## 🚧 v1.4 Settings & Manager UI Overhaul (In Progress)
+
+**Milestone Goal:** Unify manage.html and popup.html with newtab.html's glassmorphism aesthetic using the approved mockup designs.
+
+**Design Decisions (confirmed via mockups):**
+- Manage page: #3 Minimal Centered (floating pill toolbar, accordion categories)
+- Popup: #3 Floating Card (newtab-style card, dropdown for category)
+- Edit Category modal: #3 Floating
+- Edit Bookmark modal: #3 Floating
+
+### Phase 7: Manage Page Overhaul
+
+**Goal:** Rebuild manage.html with minimal centered design — floating pill toolbar, accordion categories, centered layout
+**Depends on:** Phase 6.2
+**Research:** Unlikely (mockup approved, internal patterns)
+**Plans:** TBD
+
+Plans:
+- [ ] 07-01: TBD (run /gsd:plan-phase 7 to break down)
+
+### Phase 8: Popup Redesign
+
+**Goal:** Rebuild popup.html with floating card design — newtab-style glassmorphism card, dropdown category selector
+**Depends on:** Phase 7
+**Research:** Unlikely (mockup approved, internal patterns)
+**Plans:** TBD
+
+Plans:
+- [ ] 08-01: TBD (run /gsd:plan-phase 8 to break down)
+
+### Phase 9: Modal Unification
+
+**Goal:** Apply floating modal style to Edit Category and Edit Bookmark modals across all pages
+**Depends on:** Phase 8
+**Research:** Unlikely (mockup approved, internal patterns)
+**Plans:** TBD
+
+Plans:
+- [ ] 09-01: TBD (run /gsd:plan-phase 9 to break down)
 
 ---
 
@@ -138,3 +181,6 @@ Plans:
 | 6. Quick Access Icons | v1.3 | 3/3 | ✅ Complete | 2026-01-28 |
 | 6.1 Real Brand Logos | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
 | 6.2 Icon Fixes | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
+| 7. Manage Page Overhaul | v1.4 | 0/? | Not started | - |
+| 8. Popup Redesign | v1.4 | 0/? | Not started | - |
+| 9. Modal Unification | v1.4 | 0/? | Not started | - |
