@@ -24,6 +24,18 @@ async function init() {
 
 // Attach global event listeners
 function attachGlobalListeners() {
+  // Category accordion expand/collapse
+  document.getElementById('categories-container').addEventListener('click', (e) => {
+    const header = e.target.closest('.category-header');
+    if (!header) return;
+
+    // Don't toggle if clicking action buttons
+    if (e.target.closest('.category-actions')) return;
+
+    const category = header.closest('.category');
+    category.classList.toggle('expanded');
+  });
+
   // Add Category button
   document.getElementById('add-category-btn').addEventListener('click', () => {
     showCategoryModal();

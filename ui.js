@@ -55,28 +55,42 @@ function renderCategories(data) {
   // Sort categories by order
   const sortedCategories = [...data.categories].sort((a, b) => a.order - b.order);
 
-  container.innerHTML = sortedCategories.map(category => {
+  container.innerHTML = sortedCategories.map((category, index) => {
     const sortedLinks = [...category.links].sort((a, b) => a.order - b.order);
+    const linkCount = category.links.length;
+    const linksHtml = sortedLinks.map(link => renderLink(link, category.id, openInNewTab)).join('');
 
     return `
-      <article class="category" data-category-id="${category.id}" draggable="true">
-        <header class="category-header">
-          <div class="category-title-section">
-            <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
-            <h2 class="category-name">${escapeHtml(category.name)}</h2>
+      <div class="category${index === 0 ? ' expanded' : ''}" data-category-id="${category.id}">
+        <div class="category-header">
+          <div class="category-expand">
+            ${ICON_CARET_RIGHT}
+          </div>
+          <div class="category-icon">
+            ${CATEGORY_ICONS[category.icon] || CATEGORY_ICONS.briefcase}
+          </div>
+          <div class="category-info">
+            <div class="category-name">${escapeHtml(category.name)}</div>
+            <div class="category-meta">${linkCount} bookmark${linkCount !== 1 ? 's' : ''}</div>
           </div>
           <div class="category-actions">
-            <button class="icon-btn edit-category-btn" data-category-id="${category.id}" title="Rename category">${ICON_PENCIL_SIMPLE}</button>
-            <button class="icon-btn delete-category-btn" data-category-id="${category.id}" title="Delete category">${ICON_TRASH}</button>
-            <button class="add-link-btn" data-category-id="${category.id}">+ Add Link</button>
+            <button class="icon-btn edit-category-btn" data-category-id="${category.id}" title="Edit">
+              ${ICON_PENCIL_SIMPLE}
+            </button>
+            <button class="icon-btn delete-category-btn" data-category-id="${category.id}" title="Delete">
+              ${ICON_TRASH}
+            </button>
           </div>
-        </header>
-        <div class="links-grid" data-category-id="${category.id}">
-          ${sortedLinks.length === 0
-            ? '<p class="empty-links">No links yet. Click "Add Link" to add one.</p>'
-            : sortedLinks.map(link => renderLink(link, category.id, openInNewTab)).join('')}
         </div>
-      </article>
+        <div class="category-content">
+          <div class="links-list" data-category-id="${category.id}">
+            ${linksHtml}
+            <div class="add-link-row" data-category-id="${category.id}">
+              ${ICON_PLUS} Add bookmark
+            </div>
+          </div>
+        </div>
+      </div>
     `;
   }).join('');
 
@@ -89,18 +103,27 @@ function renderCategories(data) {
 function renderLink(link, categoryId, openInNewTab = true) {
   const faviconUrl = getFaviconUrl(link.url);
   const targetAttr = openInNewTab ? ' target="_blank" rel="noopener noreferrer"' : '';
+  let hostname = '';
+  try {
+    hostname = new URL(link.url).hostname;
+  } catch (e) {
+    hostname = link.url;
+  }
   return `
     <div class="link-item" data-link-id="${link.id}" data-category-id="${categoryId}" draggable="true">
-      <a href="${escapeHtml(link.url)}" class="link-content" title="${escapeHtml(link.url)}"${targetAttr}>
-        <img src="${faviconUrl}"
-             alt=""
-             class="favicon"
-             onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22><rect width=%2224%22 height=%2224%22 fill=%22%23ccc%22/></svg>'">
-        <span class="link-title">${escapeHtml(link.title)}</span>
-      </a>
+      <span class="link-drag">⋮⋮</span>
+      <img class="link-favicon" src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22><rect width=%2224%22 height=%2224%22 fill=%22%23ccc%22/></svg>'">
+      <div class="link-info">
+        <a href="${escapeHtml(link.url)}" class="link-title"${targetAttr}>${escapeHtml(link.title)}</a>
+        <div class="link-url">${escapeHtml(hostname)}</div>
+      </div>
       <div class="link-actions">
-        <button class="icon-btn edit-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Edit link">${ICON_PENCIL_SIMPLE}</button>
-        <button class="icon-btn delete-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Delete link">${ICON_TRASH}</button>
+        <button class="icon-btn edit-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Edit">
+          ${ICON_PENCIL_SIMPLE}
+        </button>
+        <button class="icon-btn delete-link-btn" data-link-id="${link.id}" data-category-id="${categoryId}" title="Delete">
+          ${ICON_TRASH}
+        </button>
       </div>
     </div>
   `;
@@ -142,11 +165,11 @@ function attachCategoryEventListeners() {
     });
   });
 
-  // Add link to category
-  document.querySelectorAll('.add-link-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+  // Add link row inside category (accordion layout)
+  document.querySelectorAll('.add-link-row').forEach(row => {
+    row.addEventListener('click', (e) => {
       e.stopPropagation();
-      const categoryId = btn.dataset.categoryId;
+      const categoryId = row.dataset.categoryId;
       showLinkModal(null, categoryId);
     });
   });
@@ -185,52 +208,9 @@ function attachLinkEventListeners() {
   });
 }
 
-// Drag and Drop for Categories
+// Drag and Drop for Categories and Links
 function attachDragListeners() {
-  // Category drag and drop
-  document.querySelectorAll('.category').forEach(category => {
-    category.addEventListener('dragstart', (e) => {
-      draggedElement = category;
-      draggedCategoryId = category.dataset.categoryId;
-      category.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-
-    category.addEventListener('dragend', () => {
-      category.classList.remove('dragging');
-      draggedElement = null;
-      draggedCategoryId = null;
-    });
-
-    category.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      if (draggedCategoryId && !draggedLinkId) {
-        e.dataTransfer.dropEffect = 'move';
-        const afterElement = getDragAfterElement(
-          document.getElementById('categories-container'),
-          e.clientY,
-          '.category'
-        );
-        const container = document.getElementById('categories-container');
-        if (afterElement == null) {
-          container.appendChild(draggedElement);
-        } else {
-          container.insertBefore(draggedElement, afterElement);
-        }
-      }
-    });
-
-    category.addEventListener('drop', async (e) => {
-      e.preventDefault();
-      if (draggedCategoryId && !draggedLinkId) {
-        const categories = Array.from(document.querySelectorAll('.category'));
-        const orderedIds = categories.map(cat => cat.dataset.categoryId);
-        await reorderCategories(orderedIds);
-      }
-    });
-  });
-
-  // Link drag and drop
+  // Link drag and drop (links within categories)
   document.querySelectorAll('.link-item').forEach(link => {
     link.addEventListener('dragstart', (e) => {
       draggedElement = link;
@@ -247,32 +227,39 @@ function attachDragListeners() {
     });
   });
 
-  // Link drop zones (grids)
-  document.querySelectorAll('.links-grid').forEach(grid => {
-    grid.addEventListener('dragover', (e) => {
+  // Link drop zones (vertical lists)
+  document.querySelectorAll('.links-list').forEach(list => {
+    list.addEventListener('dragover', (e) => {
       e.preventDefault();
       if (draggedLinkId) {
         e.dataTransfer.dropEffect = 'move';
-        const afterElement = getDragAfterElement(grid, e.clientX, '.link-item');
+        // Use Y position for vertical list
+        const afterElement = getDragAfterElement(list, e.clientY, '.link-item');
         if (afterElement == null) {
-          grid.appendChild(draggedElement);
+          // Insert before the add-link-row (keep it at the bottom)
+          const addLinkRow = list.querySelector('.add-link-row');
+          if (addLinkRow) {
+            list.insertBefore(draggedElement, addLinkRow);
+          } else {
+            list.appendChild(draggedElement);
+          }
         } else {
-          grid.insertBefore(draggedElement, afterElement);
+          list.insertBefore(draggedElement, afterElement);
         }
       }
     });
 
-    grid.addEventListener('drop', async (e) => {
+    list.addEventListener('drop', async (e) => {
       e.preventDefault();
       if (draggedLinkId) {
-        const targetCategoryId = grid.dataset.categoryId;
+        const targetCategoryId = list.dataset.categoryId;
         const originalCategoryId = draggedElement.dataset.categoryId;
 
         // Update link's category attribute
         draggedElement.dataset.categoryId = targetCategoryId;
 
-        // Get ordered IDs
-        const links = Array.from(grid.querySelectorAll('.link-item'));
+        // Get ordered IDs (exclude add-link-row)
+        const links = Array.from(list.querySelectorAll('.link-item'));
         const orderedIds = links.map(l => l.dataset.linkId);
 
         // If moved to different category

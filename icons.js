@@ -34,6 +34,8 @@ const ICON_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256
 
 const ICON_BOOKMARK_SIMPLE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"/></svg>`;
 
+const ICON_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/></svg>`;
+
 // =============================================================================
 // Category Icons
 // =============================================================================
@@ -144,6 +146,7 @@ function getIcon(name) {
     scissors: ICON_SCISSORS,
     clipboard: ICON_CLIPBOARD,
     'bookmark-simple': ICON_BOOKMARK_SIMPLE,
+    'caret-right': ICON_CARET_RIGHT,
     // Category Icons
     ...CATEGORY_ICONS,
     // Quick Access Brand Icons
@@ -173,6 +176,7 @@ if (typeof module !== 'undefined' && module.exports) {
     ICON_SCISSORS,
     ICON_CLIPBOARD,
     ICON_BOOKMARK_SIMPLE,
+    ICON_CARET_RIGHT,
     // Category Icons
     ICON_BRIEFCASE,
     ICON_USERS,
