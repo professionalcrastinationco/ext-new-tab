@@ -14,7 +14,7 @@
 ## Current Status
 
 **Current Milestone:** v1.4 Settings & Manager UI Overhaul
-**Status:** Phase 7 complete (2/2 plans), Phase 8 ready
+**Status:** Phase 8 complete (1/1 plan), Phase 9 ready
 
 ---
 
@@ -39,15 +39,15 @@ Plans:
 - [x] 07-01: HTML/CSS Foundation (manage.css + manage.html structure)
 - [x] 07-02: JavaScript & Interactivity (ui.js accordion rendering, app.js handlers)
 
-### Phase 8: Popup Redesign
+### Phase 8: Popup Redesign ✅
 
 **Goal:** Rebuild popup.html with floating card design — newtab-style glassmorphism card, dropdown category selector
 **Depends on:** Phase 7
 **Research:** Unlikely (mockup approved, internal patterns)
-**Plans:** TBD
+**Plans:** 1
 
 Plans:
-- [ ] 08-01: TBD (run /gsd:plan-phase 8 to break down)
+- [x] 08-01: Popup CSS/HTML restructure with floating card design
 
 ### Phase 9: Modal Unification
 
@@ -183,5 +183,5 @@ Plans:
 | 6.1 Real Brand Logos | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
 | 6.2 Icon Fixes | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
 | 7. Manage Page Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-02-02 |
-| 8. Popup Redesign | v1.4 | 0/? | Not started | - |
+| 8. Popup Redesign | v1.4 | 1/1 | ✅ Complete | 2026-02-02 |
 | 9. Modal Unification | v1.4 | 0/? | Not started | - |

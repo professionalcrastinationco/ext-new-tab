@@ -2,6 +2,26 @@
 
 let currentTab = null;
 
+// Get favicon URL for a given page URL
+function getFaviconUrl(pageUrl) {
+  try {
+    const url = new URL(pageUrl);
+    return `https://www.google.com/s2/favicons?domain=${url.hostname}&sz=64`;
+  } catch {
+    return '';
+  }
+}
+
+// Get hostname from URL for display
+function getHostname(pageUrl) {
+  try {
+    const url = new URL(pageUrl);
+    return url.hostname;
+  } catch {
+    return pageUrl;
+  }
+}
+
 // Initialize popup
 async function initPopup() {
   // Set empty state icon
@@ -22,7 +42,16 @@ async function initPopup() {
       return;
     }
 
-    // Pre-fill URL and title
+    // Populate card header with page info
+    const favicon = document.getElementById('favicon');
+    const pageTitleDisplay = document.getElementById('page-title-display');
+    const pageUrlDisplay = document.getElementById('page-url-display');
+
+    if (favicon) favicon.src = getFaviconUrl(tab.url);
+    if (pageTitleDisplay) pageTitleDisplay.textContent = tab.title;
+    if (pageUrlDisplay) pageUrlDisplay.textContent = getHostname(tab.url);
+
+    // Pre-fill URL and title form fields
     document.getElementById('url').value = tab.url;
     document.getElementById('title').value = tab.title;
 
@@ -30,8 +59,9 @@ async function initPopup() {
     const data = await loadData();
 
     if (!data.categories || data.categories.length === 0) {
-      // Show empty state
-      document.getElementById('form-container').style.display = 'none';
+      // Show empty state, hide card and quick actions
+      document.getElementById('bookmark-card').style.display = 'none';
+      document.querySelector('.quick-actions').style.display = 'none';
       document.getElementById('empty-state').style.display = 'block';
       return;
     }
@@ -136,10 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.close();
   });
 
-  // Open new tab link
+  // Open new tab link (Settings quick action)
   document.getElementById('open-newtab').addEventListener('click', (e) => {
     e.preventDefault();
     chrome.tabs.create({ url: 'chrome://newtab' });
     window.close();
   });
+
+  // Open new tab link (empty state)
+  const openNewtabEmpty = document.getElementById('open-newtab-empty');
+  if (openNewtabEmpty) {
+    openNewtabEmpty.addEventListener('click', (e) => {
+      e.preventDefault();
+      chrome.tabs.create({ url: 'chrome://newtab' });
+      window.close();
+    });
+  }
 });
