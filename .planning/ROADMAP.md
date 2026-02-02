@@ -14,7 +14,7 @@
 ## Current Status
 
 **Current Milestone:** v1.4 Settings & Manager UI Overhaul
-**Status:** Phase 8 complete (1/1 plan), Phase 9 ready
+**Status:** Phase 9 planned (2 plans), ready to execute
 
 ---
 
@@ -57,7 +57,8 @@ Plans:
 **Plans:** TBD
 
 Plans:
-- [ ] 09-01: TBD (run /gsd:plan-phase 9 to break down)
+- [x] 09-01: Manage Page Modal Unification (CSS + HTML + JS + verify)
+- [ ] 09-02: Newtab Page Modal Unification (CSS + HTML + JS + verify)
 
 ---
 
@@ -184,4 +185,4 @@ Plans:
 | 6.2 Icon Fixes | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
 | 7. Manage Page Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-02-02 |
 | 8. Popup Redesign | v1.4 | 1/1 | ✅ Complete | 2026-02-02 |
-| 9. Modal Unification | v1.4 | 0/? | Not started | - |
+| 9. Modal Unification | v1.4 | 1/2 | In progress | - |

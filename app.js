@@ -69,8 +69,26 @@ function attachGlobalListeners() {
     document.getElementById('category-modal').close();
   });
 
-  document.getElementById('cancel-category-btn').addEventListener('click', () => {
+  // Delete category button (in modal)
+  document.getElementById('delete-category-btn').addEventListener('click', async () => {
+    const categoryId = document.getElementById('category-id').value;
+    if (!categoryId) return;
+
+    const category = (await loadData()).categories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    let confirmMessage = `Delete "${category.name}"?`;
+    if (category.links.length > 0) {
+      confirmMessage = `Delete "${category.name}" and all ${category.links.length} bookmark(s) in it?`;
+    }
+
+    const confirmed = await showConfirmDialog(confirmMessage);
+    if (!confirmed) return;
+
+    await deleteCategory(categoryId);
     document.getElementById('category-modal').close();
+    const data = await loadData();
+    renderCategories(data);
   });
 
   // Link form submit
@@ -110,8 +128,24 @@ function attachGlobalListeners() {
     document.getElementById('link-modal').close();
   });
 
-  document.getElementById('cancel-link-btn').addEventListener('click', () => {
+  // Delete link button (in modal)
+  document.getElementById('delete-link-btn').addEventListener('click', async () => {
+    const linkId = document.getElementById('link-id').value;
+    const categoryId = document.getElementById('link-original-category').value;
+    if (!linkId || !categoryId) return;
+
+    const data = await loadData();
+    const category = data.categories.find(c => c.id === categoryId);
+    const link = category?.links.find(l => l.id === linkId);
+    if (!link) return;
+
+    const confirmed = await showConfirmDialog(`Delete "${link.title}"?`);
+    if (!confirmed) return;
+
+    await deleteLink(categoryId, linkId);
     document.getElementById('link-modal').close();
+    const updatedData = await loadData();
+    renderCategories(updatedData);
   });
 
   // Quick Add button

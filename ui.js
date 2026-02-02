@@ -6,11 +6,17 @@ let currentData = null;
 function populateIconPicker(selectedIcon) {
     const picker = document.getElementById('icon-picker');
     const hiddenInput = document.getElementById('category-icon');
+    const previewIcon = document.getElementById('category-preview-icon');
 
     if (!picker || !hiddenInput) return;
 
     // Set hidden input value
     hiddenInput.value = selectedIcon || 'briefcase';
+
+    // Update preview icon
+    if (previewIcon) {
+        previewIcon.innerHTML = CATEGORY_ICONS[hiddenInput.value] || CATEGORY_ICONS.briefcase;
+    }
 
     // Get category icons from icons.js
     const iconNames = Object.keys(CATEGORY_ICONS);
@@ -33,6 +39,11 @@ function populateIconPicker(selectedIcon) {
         picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
         item.classList.add('selected');
         hiddenInput.value = item.dataset.icon;
+
+        // Update preview icon in real-time
+        if (previewIcon) {
+            previewIcon.innerHTML = CATEGORY_ICONS[item.dataset.icon] || CATEGORY_ICONS.briefcase;
+        }
     };
 }
 let draggedElement = null;
@@ -301,22 +312,33 @@ function getDragAfterElement(container, position, selector) {
 function showCategoryModal(category = null) {
   const modal = document.getElementById('category-modal');
   const form = document.getElementById('category-form');
-  const title = document.getElementById('category-modal-title');
   const nameInput = document.getElementById('category-name');
   const idInput = document.getElementById('category-id');
+  const previewLabel = document.getElementById('category-preview-label');
+  const previewTitle = document.getElementById('category-preview-title');
+  const previewIcon = document.getElementById('category-preview-icon');
+  const deleteBtn = document.getElementById('delete-category-btn');
 
   if (category) {
-    title.textContent = 'Edit Category';
+    // Edit mode
+    previewLabel.textContent = 'Editing Category';
+    previewTitle.textContent = category.name;
     nameInput.value = category.name;
     idInput.value = category.id;
     // Populate icon picker with current selection
     populateIconPicker(category.icon);
+    // Show delete button
+    deleteBtn.style.display = 'flex';
   } else {
-    title.textContent = 'Add Category';
+    // Add mode
+    previewLabel.textContent = 'New Category';
+    previewTitle.textContent = 'Untitled';
     nameInput.value = '';
     idInput.value = '';
     // Populate icon picker with default
     populateIconPicker('briefcase');
+    // Hide delete button
+    deleteBtn.style.display = 'none';
   }
 
   modal.showModal();
@@ -327,12 +349,16 @@ function showCategoryModal(category = null) {
 function showLinkModal(link = null, categoryId = null) {
   const modal = document.getElementById('link-modal');
   const form = document.getElementById('link-form');
-  const title = document.getElementById('link-modal-title');
   const urlInput = document.getElementById('link-url');
   const titleInput = document.getElementById('link-title');
   const categorySelect = document.getElementById('link-category');
   const linkIdInput = document.getElementById('link-id');
   const originalCategoryInput = document.getElementById('link-original-category');
+  const previewLabel = document.getElementById('link-preview-label');
+  const previewTitle = document.getElementById('link-preview-title');
+  const previewFavicon = document.getElementById('link-preview-favicon');
+  const faviconImg = document.getElementById('link-favicon-img');
+  const deleteBtn = document.getElementById('delete-link-btn');
 
   // Populate category dropdown
   categorySelect.innerHTML = currentData.categories
@@ -341,17 +367,40 @@ function showLinkModal(link = null, categoryId = null) {
     .join('');
 
   if (link) {
-    title.textContent = 'Edit Link';
+    // Edit mode
+    previewLabel.textContent = 'Editing Bookmark';
+    // Truncate title if too long
+    const displayTitle = link.title.length > 30 ? link.title.substring(0, 30) + '...' : link.title;
+    previewTitle.textContent = displayTitle;
+    // Set favicon using Google Favicons API
+    try {
+      const hostname = new URL(link.url).hostname;
+      faviconImg.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+      faviconImg.alt = link.title;
+      faviconImg.style.display = 'block';
+    } catch (e) {
+      faviconImg.style.display = 'none';
+    }
     urlInput.value = link.url;
     titleInput.value = link.title;
     linkIdInput.value = link.id;
     originalCategoryInput.value = categoryId;
+    // Show delete button
+    deleteBtn.style.display = 'flex';
   } else {
-    title.textContent = 'Add Link';
+    // Add mode
+    previewLabel.textContent = 'New Bookmark';
+    previewTitle.textContent = 'Untitled';
+    // Hide favicon in add mode or show placeholder
+    faviconImg.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256" fill="%2394a3b8"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140a40,40,0,0,1-54.85,1.63,8,8,0,1,0-10.64,12,56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>';
+    faviconImg.alt = '';
+    faviconImg.style.display = 'block';
     urlInput.value = '';
     titleInput.value = '';
     linkIdInput.value = '';
     originalCategoryInput.value = '';
+    // Hide delete button
+    deleteBtn.style.display = 'none';
   }
 
   modal.showModal();
