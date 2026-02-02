@@ -403,6 +403,12 @@ function showLinkModal(link = null, categoryId = null) {
     deleteBtn.style.display = 'none';
   }
 
+  // Reset checkbox (unchecked by default)
+  const addQuickLinkCheckbox = document.getElementById('link-add-quick-link');
+  if (addQuickLinkCheckbox) {
+    addQuickLinkCheckbox.checked = false;
+  }
+
   modal.showModal();
   urlInput.focus();
 }

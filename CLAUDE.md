@@ -1,5 +1,10 @@
 # Project Instructions
 
+## ALWAYS! TEST UI AFTER NEW FEATURES TO FUNCTIONALITY  
+
+After a new feature or function has been created, and that new feature or functionality is visible to users on the front end, you MUST ALWAYS launch Playwright OR Agent-Browser and test that new feature or functionality. 
+
+
 ## Browser Automation
 
 Use `agent-browser` for web automation tasks. It's installed globally and called via Bash commands (not MCP).

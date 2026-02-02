@@ -7,18 +7,18 @@
 - ✅ [v1.2 Glassmorphism Polish](milestones/v1.2-ROADMAP.md) (Phase 5) — SHIPPED 2026-01-28
 - ✅ [v1.2.1 UI Consistency Fix](milestones/v1.2.1-ROADMAP.md) (Phase 5.1) — SHIPPED 2026-01-28
 - ✅ [v1.3 Quick Access Icons](milestones/v1.3-ROADMAP.md) (Phase 6, 6.1, 6.2) — SHIPPED 2026-01-29
-- 🚧 **v1.4 Settings & Manager UI Overhaul** (Phases 7-9) — IN PROGRESS
+- ✅ **v1.4 Settings & Manager UI Overhaul** (Phases 7-9) — SHIPPED 2026-02-02
 
 ---
 
 ## Current Status
 
 **Current Milestone:** v1.4 Settings & Manager UI Overhaul
-**Status:** Phase 9 planned (2 plans), ready to execute
+**Status:** ✅ Complete (2026-02-02)
 
 ---
 
-## 🚧 v1.4 Settings & Manager UI Overhaul (In Progress)
+## ✅ v1.4 Settings & Manager UI Overhaul (Complete)
 
 **Milestone Goal:** Unify manage.html and popup.html with newtab.html's glassmorphism aesthetic using the approved mockup designs.
 
@@ -49,16 +49,16 @@ Plans:
 Plans:
 - [x] 08-01: Popup CSS/HTML restructure with floating card design
 
-### Phase 9: Modal Unification
+### Phase 9: Modal Unification ✅
 
 **Goal:** Apply floating modal style to Edit Category and Edit Bookmark modals across all pages
 **Depends on:** Phase 8
 **Research:** Unlikely (mockup approved, internal patterns)
-**Plans:** TBD
+**Plans:** 2
 
 Plans:
 - [x] 09-01: Manage Page Modal Unification (CSS + HTML + JS + verify)
-- [ ] 09-02: Newtab Page Modal Unification (CSS + HTML + JS + verify)
+- [x] 09-02: Newtab Page Modal Unification (CSS + HTML + JS + verify)
 
 ---
 
@@ -185,4 +185,4 @@ Plans:
 | 6.2 Icon Fixes | v1.3 | 1/1 | ✅ Complete | 2026-01-29 |
 | 7. Manage Page Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-02-02 |
 | 8. Popup Redesign | v1.4 | 1/1 | ✅ Complete | 2026-02-02 |
-| 9. Modal Unification | v1.4 | 1/2 | In progress | - |
+| 9. Modal Unification | v1.4 | 2/2 | ✅ Complete | 2026-02-02 |

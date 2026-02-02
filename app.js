@@ -100,6 +100,7 @@ function attachGlobalListeners() {
     const categoryId = formData.get('category');
     const linkId = formData.get('linkId');
     const originalCategory = formData.get('originalCategory');
+    const addAsQuickLink = formData.get('addQuickLink') === 'on';
 
     if (!url || !title || !categoryId) return;
 
@@ -116,6 +117,11 @@ function attachGlobalListeners() {
     } else {
       // Create new link
       await addLink(categoryId, { title, url });
+    }
+
+    // Also add as quick link if checkbox was checked
+    if (addAsQuickLink) {
+      await addQuickLink({ title, url, icon: 'globe' });
     }
 
     document.getElementById('link-modal').close();

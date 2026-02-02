@@ -1,5 +1,57 @@
 # Project Milestones: Quick Bookmarks
 
+## v1.4 Settings & Manager UI Overhaul (Shipped: 2026-02-02)
+
+**Delivered:** Unified all extension surfaces with newtab.html's glassmorphism aesthetic using floating card designs.
+
+**Phases completed:** 7-9 (5 plans total)
+
+**Key accomplishments:**
+
+- Rebuilt manage.html with minimal centered design — floating pill toolbar, accordion categories
+- Redesigned popup.html with floating card — page favicon header, icon-labeled form fields
+- Unified all modals across manage.html and newtab.html with floating card design
+- Preview headers with icon/favicon for Edit Category, Edit Bookmark, Settings, Quick Link, Confirm Delete modals
+- Consistent glassmorphism styling (blur backgrounds, cyan top border accent, layered shadows)
+
+**Stats:**
+
+- Phases 7, 8, 9
+- 5 plans completed
+- Same-day completion (2026-02-02)
+
+**Git range:** `feat(07-01)` → `feat(09-02)`
+
+**What's next:** Feature complete for current needs
+
+---
+
+## v1.3 Quick Access Icons (Shipped: 2026-01-29)
+
+**Delivered:** Customizable quick access icon strip below search bar with official brand logos.
+
+**Phases completed:** 6, 6.1, 6.2 (5 plans total)
+
+**Key accomplishments:**
+
+- Added user-editable quick access icon strip below the search bar
+- Custom SVG icons matching extension's visual style
+- Context menu and modal for add/edit/delete quick links
+- Official monochrome brand logos: Claude starburst, ChatGPT hexagon, GitHub octocat
+- Kanban icon for Iceberg, consistent icon sizing
+
+**Stats:**
+
+- Phases 6, 6.1, 6.2
+- 5 plans completed
+- Timeline: 2026-01-28 to 2026-01-29
+
+**Git range:** `feat(06-01)` → `feat(06.2-01)`
+
+**What's next:** v1.4 Settings & Manager UI Overhaul
+
+---
+
 ## v1.2.1 UI Consistency Fix (Shipped: 2026-01-28)
 
 **Delivered:** Category card glassmorphism now matches context menu styling for visual consistency.

@@ -31,12 +31,18 @@ function renderQuickLinkIcon(iconName) {
 }
 
 // Populate icon picker grid
-function populateIconPicker(selectedIcon) {
+function populateIconPicker(selectedIcon, updatePreview = true) {
     const picker = document.getElementById('icon-picker');
     const hiddenInput = document.getElementById('category-icon');
+    const previewIcon = document.getElementById('category-preview-icon');
 
     // Set hidden input value
     hiddenInput.value = selectedIcon || 'briefcase';
+
+    // Update preview icon
+    if (updatePreview && previewIcon) {
+        previewIcon.innerHTML = CATEGORY_ICONS[hiddenInput.value] || CATEGORY_ICONS['briefcase'];
+    }
 
     // Get category icons from icons.js
     const iconNames = Object.keys(CATEGORY_ICONS);
@@ -59,13 +65,19 @@ function populateIconPicker(selectedIcon) {
         picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
         item.classList.add('selected');
         hiddenInput.value = item.dataset.icon;
+
+        // Update preview icon in real-time
+        if (previewIcon) {
+            previewIcon.innerHTML = CATEGORY_ICONS[item.dataset.icon] || CATEGORY_ICONS['briefcase'];
+        }
     };
 }
 
 // Populate quick link icon picker grid (includes both brand and category icons)
-function populateQuickLinkIconPicker(selectedIcon) {
+function populateQuickLinkIconPicker(selectedIcon, updatePreview = true) {
     const picker = document.getElementById('quick-link-icon-picker');
     const hiddenInput = document.getElementById('quick-link-icon');
+    const previewIcon = document.getElementById('quick-link-preview-icon');
     if (!picker || !hiddenInput) return;
 
     hiddenInput.value = selectedIcon || 'globe';
@@ -76,6 +88,11 @@ function populateQuickLinkIconPicker(selectedIcon) {
         ...CATEGORY_ICONS
     };
     const iconNames = Object.keys(allIcons);
+
+    // Update preview icon
+    if (updatePreview && previewIcon) {
+        previewIcon.innerHTML = allIcons[hiddenInput.value] || allIcons['globe'] || CATEGORY_ICONS['globe'];
+    }
 
     picker.innerHTML = iconNames.map(name => `
         <button type="button"
@@ -93,6 +110,11 @@ function populateQuickLinkIconPicker(selectedIcon) {
         picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
         item.classList.add('selected');
         hiddenInput.value = item.dataset.icon;
+
+        // Update preview icon in real-time
+        if (previewIcon) {
+            previewIcon.innerHTML = allIcons[item.dataset.icon] || allIcons['globe'] || CATEGORY_ICONS['globe'];
+        }
     };
 }
 
@@ -103,8 +125,28 @@ function renderQuickLinks(quickLinks, openInNewTab) {
 
     container.innerHTML = '';
 
+    // Remove old context menu listener by cloning
+    const newContainer = container.cloneNode(false);
+    container.parentNode.replaceChild(newContainer, container);
+
+    // Add context menu to container for adding new links (must be added before populating)
+    newContainer.addEventListener('contextmenu', (e) => {
+        // Only show add menu if clicking on container itself or empty state
+        if (e.target === newContainer || e.target.classList.contains('quick-links-empty')) {
+            e.preventDefault();
+            showContextMenu(e, [
+                {
+                    content: `${addIcon}Add Quick Link`,
+                    events: {
+                        click: () => showQuickLinkModal(null)
+                    }
+                }
+            ], 'dark');
+        }
+    });
+
     if (!quickLinks || quickLinks.length === 0) {
-        container.innerHTML = '<span class="quick-links-empty">No quick links. Right-click to add!</span>';
+        newContainer.innerHTML = '<span class="quick-links-empty">No quick links. Right-click to add!</span>';
         return;
     }
 
@@ -156,22 +198,7 @@ function renderQuickLinks(quickLinks, openInNewTab) {
 
         linkEl.appendChild(iconEl);
         linkEl.appendChild(titleEl);
-        container.appendChild(linkEl);
-    });
-
-    // Add context menu to container for adding new links
-    container.addEventListener('contextmenu', (e) => {
-        // Only show add menu if clicking on container itself, not on a link
-        if (e.target === container || e.target.classList.contains('quick-links-empty')) {
-            showContextMenu(e, [
-                {
-                    content: `${addIcon}Add Quick Link`,
-                    events: {
-                        click: () => showQuickLinkModal(null)
-                    }
-                }
-            ], 'dark');
-        }
+        newContainer.appendChild(linkEl);
     });
 }
 
@@ -216,8 +243,24 @@ function attachEventListeners() {
         document.getElementById('category-modal').close();
     });
 
-    document.getElementById('cancel-category-btn').addEventListener('click', () => {
-        document.getElementById('category-modal').close();
+    // Delete category button
+    document.getElementById('delete-category-btn').addEventListener('click', async () => {
+        const categoryId = document.getElementById('category-id').value;
+        const category = currentData.categories.find(c => c.id === categoryId);
+        if (!category) return;
+
+        const hasLinks = category.links && category.links.length > 0;
+        const message = hasLinks
+            ? `Delete "${category.name}" and all ${category.links.length} bookmark(s)?`
+            : `Delete "${category.name}"?`;
+
+        const confirmed = await showConfirmDialog(message);
+        if (confirmed) {
+            await deleteCategory(categoryId);
+            document.getElementById('category-modal').close();
+            currentData = await loadData();
+            renderDock(currentData);
+        }
     });
 
     document.getElementById('category-form').addEventListener('submit', async (e) => {
@@ -240,8 +283,19 @@ function attachEventListeners() {
         document.getElementById('link-modal').close();
     });
 
-    document.getElementById('cancel-link-btn').addEventListener('click', () => {
-        document.getElementById('link-modal').close();
+    // Delete link button
+    document.getElementById('delete-link-btn').addEventListener('click', async () => {
+        const linkId = document.getElementById('link-id').value;
+        const categoryId = document.getElementById('link-original-category').value;
+        const linkTitle = document.getElementById('link-title').value;
+
+        const confirmed = await showConfirmDialog(`Delete "${linkTitle}"?`);
+        if (confirmed) {
+            await deleteLink(categoryId, linkId);
+            document.getElementById('link-modal').close();
+            currentData = await loadData();
+            renderDock(currentData);
+        }
     });
 
     document.getElementById('link-form').addEventListener('submit', async (e) => {
@@ -252,6 +306,7 @@ function attachEventListeners() {
         const categoryId = formData.get('category');
         const linkId = formData.get('linkId');
         const originalCategory = formData.get('originalCategory');
+        const addAsQuickLink = formData.get('addQuickLink') === 'on';
 
         if (!url || !title || !categoryId || !linkId) return;
 
@@ -264,9 +319,15 @@ function attachEventListeners() {
             await updateLink(categoryId, linkId, { title, url });
         }
 
+        // Also add as quick link if checkbox was checked
+        if (addAsQuickLink) {
+            await addQuickLink({ title, url, icon: 'globe' });
+        }
+
         document.getElementById('link-modal').close();
         currentData = await loadData();
         renderDock(currentData);
+        renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
     });
 
     // Settings button
@@ -312,8 +373,20 @@ function attachEventListeners() {
         document.getElementById('quick-link-modal').close();
     });
 
-    document.getElementById('cancel-quick-link-btn').addEventListener('click', () => {
-        document.getElementById('quick-link-modal').close();
+    // Delete quick link button
+    document.getElementById('delete-quick-link-btn').addEventListener('click', async () => {
+        const linkId = document.getElementById('quick-link-id').value;
+        const linkTitle = document.getElementById('quick-link-title').value;
+
+        if (!linkId) return;
+
+        const confirmed = await showConfirmDialog(`Delete "${linkTitle}"?`);
+        if (confirmed) {
+            await deleteQuickLink(linkId);
+            document.getElementById('quick-link-modal').close();
+            currentData = await loadData();
+            renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
+        }
     });
 
     document.getElementById('quick-link-form').addEventListener('submit', async (e) => {
@@ -499,11 +572,23 @@ function showCategoryModal(category) {
     const modal = document.getElementById('category-modal');
     const nameInput = document.getElementById('category-name');
     const idInput = document.getElementById('category-id');
+    const previewTitle = document.getElementById('category-preview-title');
+    const deleteBtn = document.getElementById('delete-category-btn');
 
     nameInput.value = category.name;
     idInput.value = category.id;
 
-    // Populate icon picker with current selection
+    // Populate preview header
+    if (previewTitle) {
+        previewTitle.textContent = category.name || 'Edit Category';
+    }
+
+    // Show delete button (editing existing category)
+    if (deleteBtn) {
+        deleteBtn.style.display = 'flex';
+    }
+
+    // Populate icon picker with current selection (also updates preview icon)
     populateIconPicker(category.icon);
 
     modal.showModal();
@@ -517,6 +602,9 @@ function showLinkModal(link, categoryId) {
     const categorySelect = document.getElementById('link-category');
     const linkIdInput = document.getElementById('link-id');
     const originalCategoryInput = document.getElementById('link-original-category');
+    const previewTitle = document.getElementById('link-preview-title');
+    const previewImg = document.getElementById('link-preview-img');
+    const deleteBtn = document.getElementById('delete-link-btn');
 
     // Populate category dropdown
     categorySelect.innerHTML = currentData.categories
@@ -529,8 +617,28 @@ function showLinkModal(link, categoryId) {
     linkIdInput.value = link.id;
     originalCategoryInput.value = categoryId;
 
+    // Populate preview header
+    if (previewTitle) {
+        previewTitle.textContent = link.title || 'Edit Bookmark';
+    }
+    if (previewImg) {
+        previewImg.src = getFaviconUrl(link.url);
+        previewImg.alt = link.title || '';
+    }
+
+    // Show delete button (editing existing bookmark)
+    if (deleteBtn) {
+        deleteBtn.style.display = 'flex';
+    }
+
+    // Reset checkbox (unchecked by default)
+    const addQuickLinkCheckbox = document.getElementById('link-add-quick-link');
+    if (addQuickLinkCheckbox) {
+        addQuickLinkCheckbox.checked = false;
+    }
+
     modal.showModal();
-    urlInput.focus();
+    titleInput.focus();
 }
 
 // Show quick link edit modal
@@ -539,22 +647,32 @@ function showQuickLinkModal(link = null) {
     const titleInput = document.getElementById('quick-link-title');
     const urlInput = document.getElementById('quick-link-url');
     const linkIdInput = document.getElementById('quick-link-id');
-    const modalTitle = document.getElementById('quick-link-modal-title');
+    const previewLabel = document.getElementById('quick-link-preview-label');
+    const previewTitle = document.getElementById('quick-link-preview-title');
+    const deleteBtn = document.getElementById('delete-quick-link-btn');
 
     if (link) {
         // Editing existing link
-        modalTitle.textContent = 'Edit Quick Link';
+        if (previewLabel) previewLabel.textContent = 'Edit Quick Link';
+        if (previewTitle) previewTitle.textContent = link.title || 'Quick Link';
         titleInput.value = link.title;
         urlInput.value = link.url;
         linkIdInput.value = link.id;
         populateQuickLinkIconPicker(link.icon);
+
+        // Show delete button
+        if (deleteBtn) deleteBtn.style.display = 'flex';
     } else {
         // Adding new link
-        modalTitle.textContent = 'Add Quick Link';
+        if (previewLabel) previewLabel.textContent = 'New Quick Link';
+        if (previewTitle) previewTitle.textContent = 'Untitled';
         titleInput.value = '';
         urlInput.value = '';
         linkIdInput.value = '';
         populateQuickLinkIconPicker('globe');
+
+        // Hide delete button
+        if (deleteBtn) deleteBtn.style.display = 'none';
     }
 
     modal.showModal();

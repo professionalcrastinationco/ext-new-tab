@@ -10,7 +10,7 @@ Fast access to frequently used bookmarks from the new tab page without navigatin
 
 ## Current State
 
-**Shipped:** v1.3 Quick Access Icons (2026-01-29)
+**Shipped:** v1.4 Settings & Manager UI Overhaul (2026-02-02)
 
 Polished Chrome extension with:
 - Unified design tokens system (`tokens.css`) with 32 CSS custom properties
@@ -24,8 +24,11 @@ Polished Chrome extension with:
 - Quick access icons strip below search bar with official brand icons
 - User-editable quick links with add/edit/delete via context menu and modal
 - Official brand logos: Claude starburst, ChatGPT hexagon, GitHub octocat, Kanban board
+- Unified floating modal design across all pages (glassmorphism cards with preview headers)
+- Minimal centered manage page with floating pill toolbar and accordion categories
+- Floating card popup with page favicon header
 
-**Codebase:** ~6,700 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
+**Codebase:** ~7,200 LOC (JavaScript/CSS/HTML), vanilla JS, no build step
 
 ## Requirements
 
@@ -52,6 +55,9 @@ Polished Chrome extension with:
 - ✓ Quick access icons strip below search bar — v1.3
 - ✓ User-editable quick links (add/edit/delete) — v1.3
 - ✓ Brand icons (Claude starburst, ChatGPT hexagon, GitHub octocat, Kanban) — v1.3
+- ✓ Unified floating modal design across all pages — v1.4
+- ✓ Minimal centered manage page with accordion categories — v1.4
+- ✓ Floating card popup with page favicon header — v1.4
 
 ### Active
 
@@ -90,4 +96,4 @@ Polished Chrome extension with:
 | Claude starburst from Simple Icons | Authentic AI assistant branding | ✓ Good |
 
 ---
-*Last updated: 2026-01-29 after v1.3 milestone complete*
+*Last updated: 2026-02-02 after v1.4 milestone complete*
