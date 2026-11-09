@@ -222,7 +222,46 @@ async function init() {
 }
 
 // Handle search input
+// Google apps menu
+const GOOGLE_APPS = [
+    { name: 'Gmail', url: 'https://mail.google.com', img: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico' },
+    { name: 'Drive', url: 'https://drive.google.com', img: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
+    { name: 'Docs', url: 'https://docs.google.com/document', img: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
+    { name: 'Sheets', url: 'https://docs.google.com/spreadsheets', img: 'https://ssl.gstatic.com/docs/spreadsheets/favicon_jfk2.png' },
+    { name: 'Calendar', url: 'https://calendar.google.com', img: 'https://calendar.google.com/googlecalendar/images/favicons_2020q4/calendar_31.ico' },
+    { name: 'Gemini', url: 'https://gemini.google.com', icon: 'gemini.google.com' },
+    { name: 'Cloud', url: 'https://console.cloud.google.com', icon: 'cloud.google.com' },
+    { name: 'Maps', url: 'https://maps.google.com', icon: 'maps.google.com' },
+    { name: 'Photos', url: 'https://photos.google.com', icon: 'photos.google.com' }
+];
+
+function initAppsMenu() {
+    const btn = document.getElementById('appsBtn');
+    const menu = document.getElementById('appsMenu');
+    GOOGLE_APPS.forEach(app => {
+        const a = document.createElement('a');
+        a.className = 'apps-item';
+        a.href = app.url;
+        a.setAttribute('role', 'menuitem');
+        const img = document.createElement('img');
+        img.src = app.img || `https://www.google.com/s2/favicons?domain=${app.icon}&sz=64`;
+        img.alt = '';
+        const label = document.createElement('span');
+        label.textContent = app.name;
+        a.append(img, label);
+        menu.appendChild(a);
+    });
+    const setOpen = (open) => {
+        menu.hidden = !open;
+        btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); setOpen(menu.hidden); });
+    document.addEventListener('click', (e) => { if (!menu.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+}
+
 function attachEventListeners() {
+    initAppsMenu();
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
