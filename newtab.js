@@ -225,14 +225,14 @@ async function init() {
 // Google apps menu
 const GOOGLE_APPS = [
     { name: 'Gmail', url: 'https://mail.google.com', img: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico' },
-    { name: 'Drive', url: 'https://drive.google.com', img: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
     { name: 'Docs', url: 'https://docs.google.com/document', img: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
     { name: 'Sheets', url: 'https://docs.google.com/spreadsheets', img: 'https://ssl.gstatic.com/docs/spreadsheets/favicon_jfk2.png' },
-    { name: 'Calendar', url: 'https://calendar.google.com', img: 'https://calendar.google.com/googlecalendar/images/favicons_2020q4/calendar_31.ico' },
-    { name: 'Gemini', url: 'https://gemini.google.com', icon: 'gemini.google.com' },
+    { name: 'Drive', url: 'https://drive.google.com', img: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
     { name: 'Cloud', url: 'https://console.cloud.google.com', icon: 'cloud.google.com' },
+    { name: 'Gemini', url: 'https://gemini.google.com', icon: 'gemini.google.com' },
+    { name: 'Calendar', url: 'https://calendar.google.com', img: 'https://calendar.google.com/googlecalendar/images/favicons_2020q4/calendar_31.ico' },
     { name: 'Maps', url: 'https://maps.google.com', icon: 'maps.google.com' },
-    { name: 'Photos', url: 'https://photos.google.com', icon: 'photos.google.com' }
+    { name: 'Photos', url: 'https://photos.google.com', img: 'https://www.gstatic.com/images/branding/product/2x/photos_96dp.png' }
 ];
 
 function initAppsMenu() {
