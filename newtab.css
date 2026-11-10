@@ -94,7 +94,15 @@
    ========================================================================== */
 
 body {
-    background-color: #0f172a;
+    /* Spotlight Mesh Deep: soft cyan and blue glows with a dark vignette */
+    background-color: #0b1224;
+    background-image:
+        radial-gradient(ellipse farthest-corner at 50% 50%, rgba(2, 6, 23, 0) 55%, rgba(2, 6, 23, 0.55) 100%),
+        radial-gradient(ellipse 23vw 28vh at 50% 48%, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.06) 50%, rgba(34, 211, 238, 0) 100%),
+        radial-gradient(ellipse 36vw 42vh at 76% 70%, rgba(37, 99, 235, 0.3), rgba(37, 99, 235, 0.13) 50%, rgba(37, 99, 235, 0) 100%),
+        radial-gradient(ellipse 34vw 42vh at 27% 28%, rgba(8, 145, 178, 0.34), rgba(8, 145, 178, 0.15) 50%, rgba(8, 145, 178, 0) 100%),
+        linear-gradient(135deg, #0b1224 0%, #111c33 100%);
+    background-attachment: fixed;
     min-height: 100vh;
     font-family: system-ui, -apple-system, sans-serif;
     overflow: hidden;
@@ -102,6 +110,27 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+/* Night Sky Aurora background (animated by background.js) */
+body.bg-night-sky {
+    /* the canvas paints the whole sky, so the body itself stays clear */
+    background: transparent;
+}
+
+html:has(body.bg-night-sky) {
+    background: #030712;
+}
+
+#skyCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+#skyCanvas[hidden] { display: none; }
 
 /* ==========================================================================
    Search Box

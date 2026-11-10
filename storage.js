@@ -9,7 +9,8 @@ const DEFAULT_DATA = {
   settings: {
     defaultCategoryId: null,
     openInNewTab: true,
-    dockPosition: 'bottom' // 'top' or 'bottom'
+    dockPosition: 'bottom', // 'top' or 'bottom'
+    background: 'spotlight' // 'spotlight' or 'night-sky'
   }
 };
 

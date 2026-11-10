@@ -394,6 +394,12 @@ function attachEventListeners() {
         renderDock(currentData);
     });
 
+    // Background change
+    document.getElementById('backgroundSelect').addEventListener('change', async (e) => {
+        await updateSetting('background', e.target.value);
+        applyBackground(e.target.value);
+    });
+
     // Open in new tab change
     document.getElementById('openInNewTabSelect').addEventListener('change', async (e) => {
         await updateSetting('openInNewTab', e.target.value === 'true');
@@ -452,7 +458,15 @@ function attachEventListeners() {
     });
 }
 
+function applyBackground(name) {
+    const nightSky = name === 'night-sky';
+    document.body.classList.toggle('bg-night-sky', nightSky);
+    if (window.NightSky) nightSky ? window.NightSky.start() : window.NightSky.stop();
+}
+
 function loadSettings(settings) {
+    document.getElementById('backgroundSelect').value = settings.background || 'spotlight';
+    applyBackground(settings.background || 'spotlight');
     document.getElementById('dockPositionSelect').value = settings.dockPosition || 'bottom';
     document.getElementById('openInNewTabSelect').value = settings.openInNewTab !== false ? 'true' : 'false';
 }

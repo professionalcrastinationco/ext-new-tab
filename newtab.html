@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="newtab.css">
 </head>
 <body>
+    <canvas id="skyCanvas" hidden aria-hidden="true"></canvas>
     <!-- Google Search Field -->
     <div class="search-container">
         <div class="search-box">
@@ -172,6 +173,13 @@
                         <option value="top">Top</option>
                     </select>
                 </div>
+                <div class="setting-item">
+                    <label for="backgroundSelect">Background</label>
+                    <select id="backgroundSelect">
+                        <option value="spotlight">Spotlight Mesh</option>
+                        <option value="night-sky">Night Sky Aurora</option>
+                    </select>
+                </div>
             </div>
 
             <div class="settings-section">
@@ -277,6 +285,7 @@
     <script src="storage.js"></script>
     <script src="import-export.js"></script>
     <script src="context-menu.js"></script>
+    <script src="background.js"></script>
     <script src="newtab.js"></script>
 </body>
 </html>
