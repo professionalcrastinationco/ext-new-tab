@@ -330,6 +330,16 @@ html:has(body.bg-night-sky) {
 }
 
 /* Plus button at the end of the dock */
+/* While dragging: dragged item fades, hover panels and tips stay hidden */
+.dragging {
+    opacity: 0.35;
+}
+
+.dock.sorting .bookmark-card,
+.dock.sorting .tip {
+    display: none;
+}
+
 .dock-add {
     flex-shrink: 0;
     width: 44px;

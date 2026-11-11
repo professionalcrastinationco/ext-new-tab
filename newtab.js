@@ -130,6 +130,54 @@ function populateQuickLinkIconPicker(selectedIcon, updatePreview = true) {
     }
 }
 
+// Drag to reorder. Items live-move inside the container while dragging and the
+// new order is saved on drop. The plus button stays last. Listeners are added
+// once per container and only act while one of its own items is being dragged.
+let sortingItem = null;
+
+function makeSortable(container, itemSelector, addSelector, onDone) {
+    if (container.dataset.sortable) return;
+    container.dataset.sortable = '1';
+
+    container.addEventListener('dragstart', (e) => {
+        const item = e.target.closest ? e.target.closest(itemSelector) : null;
+        // Ignore drags that start on something inside an item (for example a bookmark link)
+        if (!item || e.target !== item) return;
+        sortingItem = item;
+        container.classList.add('sorting');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.dataset.id || '');
+        requestAnimationFrame(() => item.classList.add('dragging'));
+    });
+
+    container.addEventListener('dragover', (e) => {
+        if (!sortingItem || sortingItem.parentElement !== container) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        const others = [...container.querySelectorAll(itemSelector)].filter(el => el !== sortingItem);
+        const next = others.find(el => {
+            const r = el.getBoundingClientRect();
+            return e.clientX < r.left + r.width / 2;
+        });
+        const end = container.querySelector(addSelector);
+        const anchor = next || end || null;
+        if (anchor !== sortingItem.nextSibling) container.insertBefore(sortingItem, anchor);
+    });
+
+    container.addEventListener('drop', (e) => {
+        if (sortingItem) e.preventDefault();
+    });
+
+    container.addEventListener('dragend', async () => {
+        if (!sortingItem) return;
+        const ids = [...container.querySelectorAll(itemSelector)].map(el => el.dataset.id);
+        sortingItem.classList.remove('dragging');
+        sortingItem = null;
+        container.classList.remove('sorting');
+        await onDone(ids);
+    });
+}
+
 // Render quick access links
 function renderQuickLinks(quickLinks, openInNewTab) {
     const container = document.getElementById('quickLinks');
@@ -140,6 +188,7 @@ function renderQuickLinks(quickLinks, openInNewTab) {
     // Remove old context menu listener by cloning
     const newContainer = container.cloneNode(false);
     container.parentNode.replaceChild(newContainer, container);
+    delete newContainer.dataset.sortable; // the clone copies attributes but not listeners
 
     // Add context menu to container for adding new links (must be added before populating)
     newContainer.addEventListener('contextmenu', (e) => {
@@ -187,6 +236,8 @@ function renderQuickLinks(quickLinks, openInNewTab) {
         const linkEl = document.createElement('a');
         linkEl.className = 'quick-link';
         linkEl.href = link.url;
+        linkEl.dataset.id = link.id;
+        linkEl.draggable = true;
         if (openInNewTab) {
             linkEl.target = '_blank';
             linkEl.rel = 'noopener noreferrer';
@@ -232,6 +283,12 @@ function renderQuickLinks(quickLinks, openInNewTab) {
     });
 
     appendAddButton(false);
+
+    makeSortable(newContainer, '.quick-link', '.quick-link-add', async (ids) => {
+        await reorderQuickLinks(ids);
+        currentData = await loadData();
+        renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
+    });
 }
 
 async function init() {
@@ -718,6 +775,8 @@ function renderDock(data) {
     sortedCategories.forEach(category => {
         const dockIcon = document.createElement('div');
         dockIcon.className = 'dock-icon';
+        dockIcon.dataset.id = category.id;
+        dockIcon.draggable = true;
 
         const dockBtn = document.createElement('button');
         dockBtn.type = 'button';
@@ -790,6 +849,12 @@ function renderDock(data) {
     addBtn.innerHTML = ICON_PLUS;
     addBtn.addEventListener('click', () => showCategoryModal(null));
     dockElement.appendChild(addBtn);
+
+    makeSortable(dockElement, '.dock-icon', '.dock-add', async (ids) => {
+        await reorderCategories(ids);
+        currentData = await loadData();
+        renderDock(currentData);
+    });
 }
 
 function showCategoryModal(category = null) {
