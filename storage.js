@@ -314,7 +314,6 @@ async function reorderQuickLinks(orderedIds) {
 // Listen for storage changes from other tabs/windows
 chrome.storage.onChanged.addListener((changes, areaName) => {
   if (areaName === 'sync' && changes[STORAGE_KEY]) {
-    console.log('Storage changed, dispatching update event...');
     // Notify app to reload UI
     window.dispatchEvent(new CustomEvent('storageUpdated', {
       detail: changes[STORAGE_KEY].newValue

@@ -16,7 +16,6 @@ async function init() {
 
   // Listen for storage updates from other tabs/windows (includes popup saves)
   window.addEventListener('storageUpdated', async (e) => {
-    console.log('Storage updated, refreshing UI...');
     const data = e.detail || await loadData();
     renderCategories(data);
   });

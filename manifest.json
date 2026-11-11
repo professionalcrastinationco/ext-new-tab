@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Quick Bookmarks",
-  "version": "1.0.0",
+  "version": "2026.11.10",
   "description": "Organize quick links into categories on your new tab page",
-  "permissions": ["storage", "tabs", "activeTab"],
+  "permissions": ["storage", "tabs"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

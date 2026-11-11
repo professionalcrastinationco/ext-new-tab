@@ -110,7 +110,6 @@ async function saveBookmark(formData) {
     const categoryId = formData.get('category');
     const openInNewTab = formData.get('openInNewTab') === 'on';
 
-    console.log('Saving bookmark:', { title, url, categoryId });
 
     // Load current data
     const data = await loadData();
@@ -132,7 +131,6 @@ async function saveBookmark(formData) {
 
       // Save everything in one operation
       await saveData(data);
-      console.log('Bookmark saved successfully');
 
       showMessage('Bookmark saved!', 'success');
 
