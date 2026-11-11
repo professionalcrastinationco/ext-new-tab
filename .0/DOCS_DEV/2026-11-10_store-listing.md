@@ -9,7 +9,7 @@ Turn every new tab into a calm, fast launchpad.
 
 - Group bookmarks into your own categories, each with an icon
 - A quick-links dock for the sites you open all day
-- A Google apps menu (Gmail, Docs, Sheets, Drive, Calendar, Gemini, Maps, Photos, Cloud) inside the search box
+- A Google apps menu in the search box for one-click access to your Google tools
 - Two backgrounds: Spotlight Mesh and an animated Night Sky Aurora with slow shooting stars
 - Save the current page in one click from the toolbar popup
 - Import and export your bookmarks as a file
@@ -20,4 +20,4 @@ Turn every new tab into a calm, fast launchpad.
 - tabs: reads the title and address of open tabs for Save Current Page and Quick Add.
 - New tab override: the extension's main feature is its new tab page.
 - Remote code: No. Data use: no personal data collected or sold.
-- Privacy policy URL: publish docs/privacy.html (GitHub Pages) and paste the link.
+- Privacy policy URL: https://professionalcrastinationco.github.io/ext-new-tab/privacy.html

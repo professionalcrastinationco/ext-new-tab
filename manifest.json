@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dockside: Bookmarks New Tab Page",
-  "version": "2026.11.10",
+  "version": "2026.11.11",
   "description": "Organize quick links into categories on your new tab page",
   "permissions": ["storage", "tabs"],
   "action": {
