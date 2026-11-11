@@ -34,14 +34,13 @@
   width: 36px;
   height: 36px;
   flex-shrink: 0;
-  background: var(--accent);
-  border-radius: var(--radius-small);
+  background: none;
   color: var(--text);
 }
 
 .brand-tile svg {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   fill: currentColor;
 }
 
