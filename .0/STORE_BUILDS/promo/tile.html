@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0}
+body{width:440px;height:280px;overflow:hidden;font-family:Inter,system-ui,sans-serif;color:#f1f5f9;position:relative;
+background:radial-gradient(circle at 85% 90%,rgba(37,99,235,.5),transparent 55%),radial-gradient(circle at 15% 10%,rgba(8,145,178,.55),transparent 55%),linear-gradient(135deg,#0b1224,#111c33)}
+.top{position:absolute;left:28px;top:24px;display:flex;align-items:center;gap:12px}
+.top img{width:44px;height:44px;border-radius:12px}
+h1{font-family:Outfit,Inter,sans-serif;font-weight:600;font-size:40px;margin:0;letter-spacing:-.5px;line-height:1}
+.sub{position:absolute;left:28px;top:80px;font-family:Outfit,Inter,sans-serif;font-weight:500;font-size:22px;color:#67e8f9}
+.tag{position:absolute;left:28px;top:114px;font-size:12.5px;color:#94a3b8;letter-spacing:.2px}
+.mock{position:absolute;left:28px;right:28px;top:148px;bottom:-1px;border-radius:14px 14px 0 0;background:rgba(15,23,42,.7);border:1px solid rgba(148,163,184,.3);border-bottom:none;padding:14px 18px}
+.search{height:26px;width:58%;margin:0 auto;border-radius:999px;background:rgba(30,41,59,.85);border:1px solid rgba(148,163,184,.3);font-size:10px;color:#64748b;display:flex;align-items:center;padding-left:12px}
+.dock{display:flex;gap:10px;justify-content:center;margin:14px auto 0;width:max-content;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.dock div{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#cbd5e1}
+.dock svg{width:18px;height:18px}
+</style></head><body>
+<div class="top"><img src="../../../icons/icon128.png" alt=""><h1>Dockside</h1></div>
+<div class="sub">New Tab Page &amp; Bookmarks</div>
+<div class="tag">Categories &middot; Quick links &middot; Google apps menu</div>
+<div class="mock"><div class="search">Search Google or type a URL</div><div class="dock" id="d"></div></div>
+<script src="../../../icons.js"></script><script>
+['briefcase','code','book-open','game-controller','star'].forEach(n=>{const e=document.createElement('div');e.innerHTML=CATEGORY_ICONS[n];document.getElementById('d').appendChild(e)})
+</script></body></html>
