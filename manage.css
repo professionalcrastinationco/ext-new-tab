@@ -398,3 +398,12 @@
     line-height: 24px;
   }
 }
+
+/* Custom icons (linked or uploaded images) */
+.custom-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 4px;
+}

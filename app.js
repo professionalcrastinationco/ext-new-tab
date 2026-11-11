@@ -7,6 +7,7 @@ async function init() {
   if (isInitialized) return;
   isInitialized = true;
 
+  await loadCustomUploads();
   // Load and render initial data
   const data = await loadData();
   renderCategories(data);

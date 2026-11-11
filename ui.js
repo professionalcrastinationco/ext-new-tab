@@ -93,7 +93,7 @@ function renderCategories(data) {
             ${ICON_CARET_RIGHT}
           </div>
           <div class="category-icon">
-            ${CATEGORY_ICONS[category.icon] || CATEGORY_ICONS.briefcase}
+            ${(isCustomIcon(category.icon) && customIconMarkup(category.icon)) || CATEGORY_ICONS[category.icon] || CATEGORY_ICONS.briefcase}
           </div>
           <div class="category-info">
             <div class="category-name">${escapeHtml(category.name)}</div>

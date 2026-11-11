@@ -63,6 +63,12 @@
                     <label class="section-label">
                         Choose Icon
                     </label>
+                                        <div class="custom-icon-row">
+                        <input type="url" class="field-input" id="category-icon-url" placeholder="Or paste an image link (https://...)" autocomplete="off" aria-invalid="false">
+                        <button type="button" class="btn btn-secondary" id="category-icon-upload">Upload</button>
+                        <input type="file" id="category-icon-file" accept="image/*" hidden>
+                    </div>
+                    <p class="custom-icon-note">Only use links you trust. A linked image is loaded from its website and syncs to your other devices. Uploaded icons stay on this computer.</p>
                     <div class="icon-picker" id="icon-picker">
                         <!-- Icons populated by JavaScript -->
                     </div>
@@ -251,6 +257,12 @@
                         Choose Icon
                     </label>
                     <input type="search" class="field-input icon-search" id="quick-link-icon-search" placeholder="Search Icons" autocomplete="off">
+                    <div class="custom-icon-row">
+                        <input type="url" class="field-input" id="quick-link-icon-url" placeholder="Or paste an image link (https://...)" autocomplete="off" aria-invalid="false">
+                        <button type="button" class="btn btn-secondary" id="quick-link-icon-upload">Upload</button>
+                        <input type="file" id="quick-link-icon-file" accept="image/*" hidden>
+                    </div>
+                    <p class="custom-icon-note">Only use links you trust. A linked image is loaded from its website and syncs to your other devices. Uploaded icons stay on this computer.</p>
                     <div class="icon-picker quick-link-icon-picker" id="quick-link-icon-picker">
                         <!-- Icons populated by JavaScript -->
                     </div>
@@ -274,6 +286,7 @@
 
     <script src="brand-icons.js"></script>
     <script src="icons.js"></script>
+    <script src="custom-icons.js"></script>
     <script src="popular-links.js"></script>
     <script src="utils.js"></script>
     <script src="storage.js"></script>

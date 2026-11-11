@@ -9,6 +9,7 @@ const addIcon = `<span style="display:inline-flex;width:13px;height:13px;margin-
 // Helper to render category icon (supports both emoji and Phosphor names)
 function renderCategoryIcon(icon) {
     if (!icon) return CATEGORY_ICONS.folder || '📁';
+    if (isCustomIcon(icon)) return customIconMarkup(icon) || CATEGORY_ICONS.globe;
     // Check if it's a Phosphor icon name (in CATEGORY_ICONS)
     if (CATEGORY_ICONS[icon]) {
         return CATEGORY_ICONS[icon];
@@ -19,6 +20,7 @@ function renderCategoryIcon(icon) {
 
 // Helper to render quick link icon
 function renderQuickLinkIcon(iconName) {
+    if (isCustomIcon(iconName)) return customIconMarkup(iconName) || CATEGORY_ICONS['globe'] || ICON_GLOBE;
     // Check QUICK_ACCESS_ICONS first, then fall back to CATEGORY_ICONS
     if (typeof QUICK_ACCESS_ICONS !== 'undefined' && QUICK_ACCESS_ICONS[iconName]) {
         return QUICK_ACCESS_ICONS[iconName];
@@ -41,8 +43,11 @@ function populateIconPicker(selectedIcon, updatePreview = true) {
 
     // Update preview icon
     if (updatePreview && previewIcon) {
-        previewIcon.innerHTML = CATEGORY_ICONS[hiddenInput.value] || CATEGORY_ICONS['briefcase'];
+        previewIcon.innerHTML = isCustomIcon(hiddenInput.value)
+            ? (customIconMarkup(hiddenInput.value) || CATEGORY_ICONS['globe'])
+            : (CATEGORY_ICONS[hiddenInput.value] || CATEGORY_ICONS['briefcase']);
     }
+    syncCustomIconRow('category', hiddenInput.value);
 
     // Get category icons from icons.js
     const iconNames = Object.keys(CATEGORY_ICONS);
@@ -65,6 +70,7 @@ function populateIconPicker(selectedIcon, updatePreview = true) {
         picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
         item.classList.add('selected');
         hiddenInput.value = item.dataset.icon;
+        syncCustomIconRow('category', '');
 
         // Update preview icon in real-time
         if (previewIcon) {
@@ -91,8 +97,11 @@ function populateQuickLinkIconPicker(selectedIcon, updatePreview = true) {
 
     // Update preview icon
     if (updatePreview && previewIcon) {
-        previewIcon.innerHTML = allIcons[hiddenInput.value] || allIcons['globe'] || CATEGORY_ICONS['globe'];
+        previewIcon.innerHTML = isCustomIcon(hiddenInput.value)
+            ? (customIconMarkup(hiddenInput.value) || allIcons['globe'])
+            : (allIcons[hiddenInput.value] || allIcons['globe'] || CATEGORY_ICONS['globe']);
     }
+    syncCustomIconRow('quick-link', hiddenInput.value);
 
     picker.innerHTML = iconNames.map(name => `
         <button type="button"
@@ -110,6 +119,7 @@ function populateQuickLinkIconPicker(selectedIcon, updatePreview = true) {
         picker.querySelectorAll('.icon-picker-item').forEach(el => el.classList.remove('selected'));
         item.classList.add('selected');
         hiddenInput.value = item.dataset.icon;
+        syncCustomIconRow('quick-link', '');
 
         // Update preview icon in real-time
         if (previewIcon) {
@@ -295,6 +305,9 @@ async function init() {
     // Set Phosphor icons
     document.getElementById('settingsIcon').innerHTML = ICON_GEAR;
 
+    await loadCustomUploads();
+    initCustomIconRow('quick-link', 'quick-link-icon', 'quick-link-preview-icon');
+    initCustomIconRow('category', 'category-icon', 'category-preview-icon');
     currentData = await loadData();
     renderDock(currentData);
     renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
@@ -575,7 +588,7 @@ function createBookmarkCard(category, openInNewTab) {
     const headerIcon = document.createElement('span');
     headerIcon.className = 'card-header-icon';
     const headerIconContent = renderCategoryIcon(category.icon);
-    if (headerIconContent.startsWith('<svg')) {
+    if (headerIconContent.startsWith('<')) {
         headerIcon.innerHTML = headerIconContent;
     } else {
         headerIcon.textContent = headerIconContent;
@@ -789,7 +802,7 @@ function renderDock(data) {
         iconCircle.className = 'icon-circle';
         const iconContent = renderCategoryIcon(category.icon);
         // Check if it's an SVG (Phosphor) or text (emoji)
-        if (iconContent.startsWith('<svg')) {
+        if (iconContent.startsWith('<')) {
             iconCircle.innerHTML = iconContent;
         } else {
             iconCircle.textContent = iconContent;
