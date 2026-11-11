@@ -1,4 +1,4 @@
-# Quick Bookmarks Chrome Extension
+# Dockside Chrome Extension
 
 A Chrome new tab extension for organizing quick links into user-managed categories. Built with vanilla JavaScript, Pico CSS, and Chrome's Manifest V3.
 

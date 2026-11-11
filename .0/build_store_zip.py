@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / ".0" / "STORE_BUILDS"
-SHORT_NAME = "quick-bookmarks"
+SHORT_NAME = "dockside"
 
 manifest = json.loads((ROOT / "manifest.json").read_text(encoding="utf-8"))
 

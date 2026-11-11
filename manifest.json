@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Quick Bookmarks",
+  "name": "Dockside: Bookmarks New Tab Page",
   "version": "2026.11.10",
   "description": "Organize quick links into categories on your new tab page",
   "permissions": ["storage", "tabs"],
@@ -11,7 +11,7 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "Quick Bookmark"
+    "default_title": "Save to Dockside"
   },
   "chrome_url_overrides": {
     "newtab": "newtab.html"

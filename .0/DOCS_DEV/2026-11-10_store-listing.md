@@ -1,6 +1,6 @@
 # Chrome Web Store Listing Draft
 
-Name: (pending, see 2026-11-10_name-ideas.md)
+Name: Dockside: Bookmarks New Tab Page
 Category: Productivity
 Short description (under 132): Organize your favorite links into clean categories on every new tab, with a Google apps menu and calm animated backgrounds.
 
