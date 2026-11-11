@@ -12,7 +12,7 @@ const WANTED = [
   'firefoxbrowser','digitalocean','supabase','firebase','postman','python','react','tailwindcss','typescript','wordpress','medium',
   'substack','canva','airbnb','uber','evernote','todoist','bitwarden','1password','protonmail','duckduckgo','bluesky','mastodon',
   'threads','ycombinator','producthunt','apple','linkedin','microsoft','googledocs','googlesheets','googleanalytics','mailchimp',
-  'hubspot','salesforce','zapier','airtable','miro','loom','calendly','obsidian','steam','imdb','github'
+  'hubspot','deepseek','salesforce','zapier','airtable','miro','loom','calendly','obsidian','steam','imdb','github'
 ];
 
 const out = {};

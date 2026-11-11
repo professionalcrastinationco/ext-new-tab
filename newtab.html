@@ -233,7 +233,7 @@
             </button>
         </div>
         <form id="quick-link-form">
-            <div class="modal-body">
+            <div class="ql-cols"><div class="ql-left"><div class="modal-body">
                 <div class="field">
                     <label class="field-label">
                         Title
@@ -257,7 +257,7 @@
                 </div>
                 <input type="hidden" id="quick-link-icon" name="icon" value="globe">
                 <input type="hidden" id="quick-link-id" name="linkId">
-            </div>
+            </div></div><aside class="ql-popular" id="popular-links" aria-label="Popular Links"><h4 class="ql-popular-title">Popular Links</h4><div id="popular-groups"></div></aside></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-quick-link-btn" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>
@@ -274,6 +274,7 @@
 
     <script src="brand-icons.js"></script>
     <script src="icons.js"></script>
+    <script src="popular-links.js"></script>
     <script src="utils.js"></script>
     <script src="storage.js"></script>
     <script src="import-export.js"></script>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Add Quick Link Panel Mockup</title>
+<link rel="stylesheet" href="../../tokens.css">
+<script src="../../brand-icons.js"></script>
+<style>
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px 16px}
+.switch{display:flex;gap:8px;z-index:2}
+.switch a{padding:6px 14px;border:1px solid var(--border-glass);border-radius:999px;color:var(--text-muted);text-decoration:none;font-size:13px;background:var(--surface-glass)}
+.switch a.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.note{color:var(--text-muted);font-size:13px;max-width:900px;text-align:center}
+.panel{width:min(880px,100%);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-raised);overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border)}
+.ph h3{font-size:18px;font-weight:600}
+.x{width:32px;height:32px;border-radius:8px;background:transparent;border:0;color:var(--text-muted);font-size:20px;cursor:pointer}
+.cols{display:grid;grid-template-columns:1fr 1.6fr}
+.col{padding:16px 24px}
+.col+.col{border-left:1px solid var(--border)}
+.col h4{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:12px}
+label{display:block;font-size:13px;color:var(--text-muted);margin:12px 0 6px}
+input{width:100%;height:40px;padding:0 12px;background:var(--background);border:1px solid var(--border);border-radius:8px;color:var(--text);font:inherit;font-size:14px}
+.icons{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:6px}
+.icons span{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;color:var(--text-muted);background:var(--background);border:1px solid var(--border)}
+.icons span.sel{border-color:var(--focus-ring);color:var(--text)}
+.icons svg{width:18px;height:18px;fill:currentColor}
+.btn{margin-top:16px;height:40px;padding:0 20px;border:0;border-radius:8px;background:var(--accent);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.grp{margin-bottom:8px}
+.grp .gl{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:2px}
+.tiles{display:flex;flex-wrap:wrap;gap:0;margin-left:-6px}
+.tile{position:relative;width:84px;height:66px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:6px;color:var(--text-muted);cursor:pointer;transition:color .15s,transform .15s}
+.tile svg{width:28px;height:28px;fill:currentColor}
+.tile .ph2{width:28px;height:28px;border-radius:6px;background:var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.tile span.nm{position:absolute;bottom:4px;left:2px;right:2px;text-align:center;font-size:12px;line-height:16px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.tile:hover,.tile.hov{color:var(--text);transform:translateY(-2px)}
+.tile:hover span.nm,.tile.hov span.nm{color:#fff}
+.tile.on{color:var(--text)}
+.tile.on::after{content:"✓";position:absolute;top:2px;right:22px;width:14px;height:14px;border-radius:50%;background:var(--accent);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--border);color:var(--text-muted);font-size:13px;background:transparent}
+.chip.on{background:var(--surface-hover);color:var(--text);border-color:var(--text-muted)}
+.cnt{font-size:12px;color:var(--text-muted);margin-top:12px}
+.foot{padding:12px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;color:var(--text-muted);font-size:13px}
+.foot b{color:var(--text)}
+.fake{font-size:11px;color:var(--text-muted);opacity:.8}
+</style></head><body>
+<div class="switch" id="sw"></div>
+<p class="note" id="note"></p>
+<div class="panel" id="panel"></div>
+<script>
+const v=new URLSearchParams(location.search).get('v')||'a';
+const G=[
+ ['AI Chat',[['ChatGPT','chatgpt',0],['Claude','anthropic',1],['Gemini','googlegemini',1],['Perplexity','perplexity',0],['Grok','grok',0]]],
+ ['Google',[['Gmail','gmail',1],['Calendar','googlecalendar',1],['Drive','googledrive',0],['Docs','googledocs',0],['Sheets','googlesheets',0]]],
+ ['Create',[['Canva','canva',0],['Figma','figma',0],['Notion','notion',0],['Midjourney','midjourney',0]]],
+ ['Social And Video',[['YouTube','youtube',1],['Reddit','reddit',0],['X','x',0],['LinkedIn','linkedin',0],['Instagram','instagram',0]]],
+ ['Dev',[['GitHub','github',0],['Stack Overflow','stackoverflow',0],['Hugging Face','huggingface',0],['Vercel','vercel',0]]]
+];
+const tile=(n,k,on)=>'<div class="tile'+(on?' on':'')+(n==='Notion'?' hov':'')+'">'+(BRAND_ICONS[k]||'<span class="ph2">'+n[0]+'</span>')+'<span class="nm">'+n+'</span></div>';
+const form='<h4>Add Your Own</h4><label>Name</label><input value="Example Site"><label>Address</label><input value="https://example.com"><label>Icon</label><div class="icons">'+
+ [0,1,2,3,4,5,6,7].map(i=>'<span class="'+(i?'':'sel')+'">'+BRAND_ICONS.google+'</span>').join('')+'</div><button class="btn">Add Quick Link</button>';
+let right;
+if(v==='a'){
+ right='<h4>Popular Links</h4>'+G.map(g=>'<div class="grp"><div class="gl">'+g[0]+'</div><div class="tiles">'+g[1].map(i=>tile(i[0],i[1],i[2])).join('')+'</div></div>').join('');
+}else{
+ right='<h4>Popular Links</h4><div class="chips">'+G.map((g,i)=>'<span class="chip'+(i==1?' on':'')+'">'+g[0]+'</span>').join('')+'</div><div class="tiles">'+G[1][1].map(i=>tile(i[0],i[1],i[2])).join('')+'</div><div class="cnt">Click a tile to add it. Click again to remove it.</div>';
+}
+document.getElementById('panel').innerHTML='<div class="ph"><h3>Add Quick Link</h3><button class="x">&times;</button></div><div class="cols"><div class="col">'+form+'</div><div class="col">'+right+'</div></div><div class="foot"><span><b>4</b> added from popular links</span><span class="fake">Mockup, fake data</span></div>';
+document.getElementById('sw').innerHTML=[['a','A: All Groups Visible'],['b','B: Group Tabs']].map(x=>'<a href="?v='+x[0]+'" class="'+(v===x[0]?'on':'')+'">'+x[1]+'</a>').join('');
+document.getElementById('note').textContent=v==='a'?'All five groups stacked on the right, no scrolling. Icons look like real quick links: no cards, names always shown dim and turn white on hover (Notion shows the hover state). A check means already added. Letter tiles need a new icon added to the extension.':'One group at a time behind tabs. Shorter panel, less to look at, one more click to browse.';
+</script></body></html>

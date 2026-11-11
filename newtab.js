@@ -932,8 +932,68 @@ function showLinkModal(link, categoryId) {
 }
 
 // Show quick link edit modal
+// Popular links panel (right column of the Add Quick Link dialog)
+function linkHost(url) {
+    try {
+        return new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+    } catch (e) {
+        return '';
+    }
+}
+
+function findQuickLinkByUrl(url) {
+    const host = linkHost(url);
+    return (currentData.quickLinks || []).find(l => linkHost(l.url) === host);
+}
+
+function renderPopularLinks() {
+    const groups = document.getElementById('popular-groups');
+    if (!groups || typeof POPULAR_LINKS === 'undefined') return;
+
+    groups.innerHTML = '';
+    POPULAR_LINKS.forEach(group => {
+        const section = document.createElement('div');
+        section.className = 'popular-group';
+
+        const label = document.createElement('div');
+        label.className = 'popular-group-label';
+        label.textContent = group.name;
+        section.appendChild(label);
+
+        const tiles = document.createElement('div');
+        tiles.className = 'popular-tiles';
+        group.items.forEach(item => {
+            const tile = document.createElement('button');
+            tile.type = 'button';
+            tile.className = 'popular-tile';
+            tile.dataset.url = item.url;
+            tile.setAttribute('aria-label', item.title);
+            tile.innerHTML = `${renderQuickLinkIcon(item.icon)}<span class="popular-name">${item.title}</span>`;
+            tile.classList.toggle('added', !!findQuickLinkByUrl(item.url));
+            tile.setAttribute('aria-pressed', tile.classList.contains('added') ? 'true' : 'false');
+            tile.addEventListener('click', async () => {
+                const existing = findQuickLinkByUrl(item.url);
+                if (existing) {
+                    await deleteQuickLink(existing.id);
+                } else {
+                    await addQuickLink({ title: item.title, url: item.url, icon: item.icon });
+                }
+                currentData = await loadData();
+                renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
+                renderPopularLinks();
+            });
+            tiles.appendChild(tile);
+        });
+        section.appendChild(tiles);
+        groups.appendChild(section);
+    });
+}
+
 function showQuickLinkModal(link = null) {
     const modal = document.getElementById('quick-link-modal');
+    // Popular links only when adding; editing keeps the single-column dialog
+    modal.classList.toggle('ql-edit', !!link);
+    if (!link) renderPopularLinks();
     const titleInput = document.getElementById('quick-link-title');
     const urlInput = document.getElementById('quick-link-url');
     const linkIdInput = document.getElementById('quick-link-id');
