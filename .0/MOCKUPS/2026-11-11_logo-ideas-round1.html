@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Dockside Logo Ideas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:32px;font-family:Inter,sans-serif;background:#f8fafc;color:#0f172a}
+h1{font-family:Outfit;font-size:28px;margin:0 0 4px}p{color:#64748b;margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.c{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:20px}
+.n{font-weight:600;margin-bottom:2px}.d{font-size:13px;color:#64748b;margin-bottom:14px;min-height:34px}
+.row{display:flex;align-items:center;gap:12px}
+.t{border-radius:22%;display:flex;align-items:center;justify-content:center}
+.l{width:112px;height:112px;background:#f1f5f9;color:#0f172a}
+.k{width:112px;height:112px;background:#0e7490;color:#fff}
+.s{width:16px;height:16px;border-radius:4px;background:#0e7490;color:#fff}
+.s svg{width:12px;height:12px}.l svg,.k svg{width:80px;height:80px}
+</style></head><body><h1>Dockside Logo Ideas</h1><p>Round 1, one color, shown on light, on the brand cyan, and at toolbar size (16px).</p><div class="grid" id="g"></div>
+<script>
+const S=(b)=>`<svg viewBox="0 0 128 128" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">${b}</svg>`;
+const L=[
+["1. Dock Pill","A glass dock with four icons, one lifted. Your actual UI as the logo.",S(`<rect x="12" y="54" width="104" height="38" rx="19"/><circle cx="38" cy="73" r="3" fill="currentColor"/><circle cx="64" cy="73" r="3" fill="currentColor"/><circle cx="90" cy="73" r="3" fill="currentColor"/><circle cx="64" cy="32" r="10" fill="currentColor" stroke="none"/>`)],
+["2. Anchor","Classic and instantly nautical. Reads as Dockside at once.",S(`<circle cx="64" cy="26" r="9"/><path d="M64 35v68M40 56h48M20 80c4 18 22 24 44 24s40-6 44-24"/>`)],
+["3. Pier","Planks and posts on the water line. Calm and simple.",S(`<path d="M12 56h104"/><path d="M28 56v44M64 56v44M100 56v44"/><path d="M12 88c13-8 23-8 36 0s23 8 36 0 23-8 32 0" stroke-width="7"/>`)],
+["4. Tab On Dock","A browser tab sitting on a dock bar. Says new tab plus dock.",S(`<path d="M20 70V42a8 8 0 018-8h26l8 10h38a8 8 0 018 8v18"/><rect x="12" y="82" width="104" height="22" rx="11"/>`)],
+["5. D Monogram","A D whose flat edge is the dock.",S(`<path d="M36 28v72h22c26 0 40-14 40-36S84 28 58 28z"/><circle cx="62" cy="64" r="4" fill="currentColor" stroke="none"/>`)],
+["6. Sailboat","A sail over a short dock line. Friendly, a bit playful.",S(`<path d="M64 20v62M64 24c20 10 32 30 32 58H64M52 38c-10 12-16 26-16 44h16"/><path d="M20 100h88"/>`)],
+["7. Bookmark On Dock","Keeps your bookmark idea but gives it a place to sit.",S(`<path d="M44 20h40a4 4 0 014 4v54L64 62 40 78V24a4 4 0 014-4z"/><rect x="14" y="92" width="100" height="16" rx="8"/>`)],
+["8. Stack Of Tiles","Three rounded tiles, one active: categories in a row.",S(`<rect x="14" y="44" width="28" height="40" rx="9"/><rect x="50" y="44" width="28" height="40" rx="9" fill="currentColor"/><rect x="86" y="44" width="28" height="40" rx="9"/>`)]
+];
+document.getElementById('g').innerHTML=L.map(([n,d,s])=>`<div class="c"><div class="n">${n}</div><div class="d">${d}</div><div class="row"><div class="t l">${s}</div><div class="t k">${s}</div><div class="t s">${s}</div></div></div>`).join('');
+</script></body></html>
