@@ -3,51 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Categories - Dockside</title>
-  <link rel="stylesheet" href="lib/pico.min.css">
+  <title>Manage Bookmarks - Dockside</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="manage.css">
-  <style>
-    /* Override Pico CSS defaults with design tokens */
-    :root {
-      --pico-background-color: var(--color-base);
-      --pico-card-background-color: var(--glass-bg-light);
-      --pico-muted-border-color: var(--color-border);
-    }
-    body {
-      background-color: var(--color-base);
-    }
-  </style>
 </head>
 <body>
-  <nav class="floating-toolbar">
-    <a href="newtab.html" class="toolbar-btn">
-      <svg viewBox="0 0 256 256" width="18" height="18">
-        <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z" fill="currentColor"/>
-      </svg>
-      Dock
-    </a>
-    <div class="toolbar-divider"></div>
-    <button class="toolbar-btn primary" id="quick-add-btn">
-      <svg viewBox="0 0 256 256" width="18" height="18">
-        <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" fill="currentColor"/>
-      </svg>
-      Quick Add
-    </button>
-    <div class="toolbar-divider"></div>
-    <button class="toolbar-btn" id="import-btn">
-      <svg viewBox="0 0 256 256" width="18" height="18">
-        <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z" fill="currentColor"/>
-      </svg>
-      Import
-    </button>
-    <button class="toolbar-btn" id="export-btn">
-      <svg viewBox="0 0 256 256" width="18" height="18">
-        <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z" fill="currentColor"/>
-      </svg>
-      Export
-    </button>
-  </nav>
+  <header class="top-bar">
+    <div class="brand">
+      <span class="brand-tile" aria-hidden="true">
+        <svg viewBox="0 0 256 256"><path d="M184,32H72A16,16,0,0,0,56,48V224a8,8,0,0,0,12.24,6.78L128,193.43l59.77,37.35A8,8,0,0,0,200,224V48A16,16,0,0,0,184,32Zm0,177.57-51.77-32.35a8,8,0,0,0-8.48,0L72,209.57V48H184Z"/></svg>
+      </span>
+      Dockside
+    </div>
+    <nav class="top-bar-actions" aria-label="Page actions">
+      <a href="newtab.html" class="btn btn-ghost">
+        <svg viewBox="0 0 256 256" aria-hidden="true">
+          <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/>
+        </svg>
+        <span>Back To Dock</span>
+      </a>
+      <button type="button" class="btn btn-ghost" id="import-btn">
+        <svg viewBox="0 0 256 256" aria-hidden="true">
+          <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"/>
+        </svg>
+        <span>Import</span>
+      </button>
+      <button type="button" class="btn btn-ghost" id="export-btn">
+        <svg viewBox="0 0 256 256" aria-hidden="true">
+          <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/>
+        </svg>
+        <span>Export</span>
+      </button>
+      <button type="button" class="btn btn-primary" id="quick-add-btn">
+        <svg viewBox="0 0 256 256" aria-hidden="true">
+          <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
+        </svg>
+        <span>Quick Add</span>
+      </button>
+    </nav>
+  </header>
 
   <div class="main-wrapper">
     <main class="main-content">
@@ -58,11 +52,11 @@
       <div id="categories-container" class="categories">
         <!-- Categories rendered by ui.js -->
       </div>
-      <button id="add-category-btn" class="add-category">
-        <svg viewBox="0 0 256 256" width="20" height="20">
-          <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z" fill="currentColor"/>
+      <button type="button" id="add-category-btn" class="btn btn-secondary add-category">
+        <svg viewBox="0 0 256 256" aria-hidden="true">
+          <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/>
         </svg>
-        Add New Category
+        Add Category
       </button>
     </main>
   </div>
@@ -74,10 +68,10 @@
         <img src="" alt="" id="link-favicon-img">
       </div>
       <div class="preview-info">
-        <span class="preview-label" id="link-preview-label">New Bookmark</span>
-        <span class="preview-title" id="link-preview-title">Untitled</span>
+        <span class="preview-label" id="link-preview-label">Bookmark</span>
+        <span class="preview-title" id="link-preview-title">New Bookmark</span>
       </div>
-      <button class="close-btn" id="close-link-modal" type="button">
+      <button class="icon-btn close-btn" aria-label="Close" id="close-link-modal" type="button">
         <svg viewBox="0 0 256 256" fill="currentColor">
           <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
         </svg>
@@ -87,21 +81,18 @@
       <div class="modal-body">
         <div class="field">
           <label class="field-label" for="link-title">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
             Title
           </label>
           <input type="text" class="field-input" id="link-title" name="title" placeholder="Example Site" required>
         </div>
         <div class="field">
           <label class="field-label" for="link-url">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140a40,40,0,0,1-54.85,1.63,8,8,0,1,0-10.64,12,56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>
             URL
           </label>
           <input type="url" class="field-input" id="link-url" name="url" placeholder="https://example.com" required>
         </div>
         <div class="field">
           <label class="field-label" for="link-category">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM40,56H80V200H40ZM216,200H96V56H216V200Z"/></svg>
             Category
           </label>
           <select class="field-select" id="link-category" name="category" required></select>
@@ -109,23 +100,21 @@
         <div class="field checkbox-field">
           <label class="checkbox-label">
             <input type="checkbox" id="link-add-quick-link" name="addQuickLink">
-            <span class="checkbox-text">
-              <svg viewBox="0 0 256 256" fill="currentColor"><path d="M197.66,122.34a8,8,0,0,1,0,11.32l-80,80a8,8,0,0,1-11.32,0l-40-40a8,8,0,0,1,11.32-11.32L112,196.69l74.34-74.35A8,8,0,0,1,197.66,122.34Zm-169.32,0L68,82.69,102.34,117a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40a8,8,0,0,0,11.32,11.32Z"/></svg>
-              Also add as Quick Link icon
-            </span>
+            <span class="checkbox-text">Also Add As Quick Link</span>
           </label>
         </div>
         <input type="hidden" id="link-id" name="linkId">
         <input type="hidden" id="link-original-category" name="originalCategory">
       </div>
       <div class="modal-footer">
-        <button type="button" class="delete-btn" id="delete-link-btn" style="display: none;">
+        <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-link-btn" style="display: none;">
           <svg viewBox="0 0 256 256" fill="currentColor">
             <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
           </svg>
           Delete
         </button>
-        <button type="submit" class="save-btn">
+        <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary save-btn">
           <svg viewBox="0 0 256 256" fill="currentColor">
             <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
           </svg>
@@ -142,10 +131,10 @@
         <!-- Icon SVG populated by JS -->
       </div>
       <div class="preview-info">
-        <span class="preview-label" id="category-preview-label">New Category</span>
-        <span class="preview-title" id="category-preview-title">Untitled</span>
+        <span class="preview-label" id="category-preview-label">Category</span>
+        <span class="preview-title" id="category-preview-title">New Category</span>
       </div>
-      <button class="close-btn" id="close-category-modal" type="button">
+      <button class="icon-btn close-btn" aria-label="Close" id="close-category-modal" type="button">
         <svg viewBox="0 0 256 256" fill="currentColor">
           <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/>
         </svg>
@@ -155,14 +144,12 @@
       <div class="modal-body">
         <div class="field">
           <label class="field-label" for="category-name">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
             Category Name
           </label>
           <input type="text" class="field-input" id="category-name" name="name" placeholder="Work, Personal, etc." required>
         </div>
         <div class="icon-section">
           <label class="section-label">
-            <svg viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM48,48H208V152H48ZM208,208H48V168H208v40Z"/></svg>
             Choose Icon
           </label>
           <div class="icon-picker" id="icon-picker">
@@ -173,13 +160,14 @@
         <input type="hidden" id="category-id" name="categoryId">
       </div>
       <div class="modal-footer">
-        <button type="button" class="delete-btn" id="delete-category-btn" style="display: none;">
+        <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-category-btn" style="display: none;">
           <svg viewBox="0 0 256 256" fill="currentColor">
             <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
           </svg>
           Delete
         </button>
-        <button type="submit" class="save-btn">
+        <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary save-btn">
           <svg viewBox="0 0 256 256" fill="currentColor">
             <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/>
           </svg>
@@ -192,8 +180,8 @@
   <!-- Confirm Delete Modal -->
   <dialog id="confirm-modal">
     <div class="modal-header">
-      <div class="preview-icon" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #ef4444;">
-        <svg viewBox="0 0 256 256" fill="currentColor" width="26" height="26">
+      <div class="preview-icon danger-icon">
+        <svg viewBox="0 0 256 256" fill="currentColor">
           <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/>
         </svg>
       </div>
@@ -202,12 +190,12 @@
         <span class="preview-title">Delete Item</span>
       </div>
     </div>
-    <div class="confirm-body">
-      <p id="confirm-message"></p>
+    <div class="modal-body">
+      <p id="confirm-message" class="confirm-message"></p>
     </div>
-    <div class="confirm-footer">
-      <button type="button" class="cancel-btn" id="cancel-confirm-btn">Cancel</button>
-      <button type="button" class="confirm-delete-btn" id="confirm-delete-btn">Delete</button>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" id="cancel-confirm-btn">Cancel</button>
+      <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
     </div>
   </dialog>
 

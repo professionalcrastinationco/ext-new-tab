@@ -36,9 +36,9 @@ async function initPopup() {
     currentTab = tab;
 
     // Don't allow bookmarking chrome:// or extension pages
-    if (tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
-      showMessage('Cannot bookmark Chrome internal pages', 'error');
-      document.getElementById('save-btn').disabled = true;
+    if (!tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
+      document.getElementById('bookmark-card').hidden = true;
+      document.getElementById('unsupported-state').hidden = false;
       return;
     }
 
@@ -59,10 +59,9 @@ async function initPopup() {
     const data = await loadData();
 
     if (!data.categories || data.categories.length === 0) {
-      // Show empty state, hide card and quick actions
-      document.getElementById('bookmark-card').style.display = 'none';
-      document.querySelector('.quick-actions').style.display = 'none';
-      document.getElementById('empty-state').style.display = 'block';
+      // Show empty state, hide the card
+      document.getElementById('bookmark-card').hidden = true;
+      document.getElementById('empty-state').hidden = false;
       return;
     }
 

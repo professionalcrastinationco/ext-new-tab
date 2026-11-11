@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dockside</title>
-    <link rel="stylesheet" href="lib/pico.min.css">
+    <link rel="stylesheet" href="tokens.css">
     <link rel="stylesheet" href="newtab.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
                 placeholder="Search Google or type a URL"
                 autocomplete="off"
             />
-            <button type="button" class="apps-btn" id="appsBtn" aria-label="Google apps" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="icon-btn apps-btn" id="appsBtn" aria-label="Google apps" aria-haspopup="true" aria-expanded="false">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
             </button>
             <div class="apps-menu" id="appsMenu" role="menu" hidden></div>
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Quick Access Links -->
-    <div class="quick-links-container" id="quickLinks">
+    <div class="quick-links" id="quickLinks">
         <!-- Populated by JavaScript -->
     </div>
 
@@ -35,7 +35,7 @@
     <div class="dock dock-bottom" id="dock"></div>
 
     <!-- Settings Button -->
-    <button class="settings-btn" id="settingsBtn"><span id="settingsIcon"></span></button>
+    <button class="icon-btn settings-btn" id="settingsBtn" aria-label="Settings"><span id="settingsIcon"></span></button>
 
     <!-- Edit Category Modal -->
     <dialog id="category-modal">
@@ -45,24 +45,22 @@
             </div>
             <div class="preview-info">
                 <span class="preview-label">Category</span>
-                <span class="preview-title" id="category-preview-title">Edit Category</span>
+                <span class="preview-title" id="category-preview-title">Category</span>
             </div>
-            <button class="close-btn" id="close-category-modal" type="button">
+            <button class="icon-btn close-btn" aria-label="Close" id="close-category-modal" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
             </button>
         </div>
         <form id="category-form">
             <div class="modal-body">
                 <div class="field">
-                    <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
-                        Name
+                    <label class="field-label" for="category-name">
+                        Category Name
                     </label>
                     <input type="text" class="field-input" id="category-name" name="name" placeholder="Work, Personal, etc." required>
                 </div>
                 <div class="icon-section">
                     <label class="section-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M200,32H56A24,24,0,0,0,32,56V200a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V56A24,24,0,0,0,200,32Zm8,168a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8ZM80,80A12,12,0,1,1,92,92,12,12,0,0,1,80,80Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,176,80Zm0,96a12,12,0,1,1-12-12A12,12,0,0,1,176,176Zm-96,0a12,12,0,1,1-12-12A12,12,0,0,1,80,176Z"/></svg>
                         Choose Icon
                     </label>
                     <div class="icon-picker" id="icon-picker">
@@ -73,11 +71,12 @@
                 <input type="hidden" id="category-id" name="categoryId">
             </div>
             <div class="modal-footer">
-                <button type="button" class="delete-btn" id="delete-category-btn" style="display: none;">
+                <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-category-btn" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>
                     Delete
                 </button>
-                <button type="submit" class="save-btn">
+                <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+                <button type="submit" class="btn btn-primary save-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
                     Save
                 </button>
@@ -93,9 +92,9 @@
             </div>
             <div class="preview-info">
                 <span class="preview-label">Bookmark</span>
-                <span class="preview-title" id="link-preview-title">Edit Bookmark</span>
+                <span class="preview-title" id="link-preview-title">Bookmark</span>
             </div>
-            <button class="close-btn" id="close-link-modal" type="button">
+            <button class="icon-btn close-btn" aria-label="Close" id="close-link-modal" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
             </button>
         </div>
@@ -103,21 +102,18 @@
             <div class="modal-body">
                 <div class="field">
                     <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
                         Title
                     </label>
                     <input type="text" class="field-input" id="link-title" name="title" placeholder="Example Site" required>
                 </div>
                 <div class="field">
                     <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140.4A40,40,0,0,1,117.33,142,8,8,0,1,0,106.69,154a56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>
                         URL
                     </label>
                     <input type="url" class="field-input" id="link-url" name="url" placeholder="https://example.com" required>
                 </div>
                 <div class="field">
                     <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM176,88a48,48,0,0,1-96,0,8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0Z"/></svg>
                         Category
                     </label>
                     <select class="field-select" id="link-category" name="category" required>
@@ -127,21 +123,19 @@
                 <div class="field checkbox-field">
                     <label class="checkbox-label">
                         <input type="checkbox" id="link-add-quick-link" name="addQuickLink">
-                        <span class="checkbox-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M197.66,122.34a8,8,0,0,1,0,11.32l-80,80a8,8,0,0,1-11.32,0l-40-40a8,8,0,0,1,11.32-11.32L112,196.69l74.34-74.35A8,8,0,0,1,197.66,122.34Zm-169.32,0L68,82.69,102.34,117a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40a8,8,0,0,0,11.32,11.32Z"/></svg>
-                            Also add as Quick Link icon
-                        </span>
+                        <span class="checkbox-text">Also Add As Quick Link</span>
                     </label>
                 </div>
                 <input type="hidden" id="link-id" name="linkId">
                 <input type="hidden" id="link-original-category" name="originalCategory">
             </div>
             <div class="modal-footer">
-                <button type="button" class="delete-btn" id="delete-link-btn" style="display: none;">
+                <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-link-btn" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>
                     Delete
                 </button>
-                <button type="submit" class="save-btn">
+                <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+                <button type="submit" class="btn btn-primary save-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
                     Save
                 </button>
@@ -159,7 +153,7 @@
                 <span class="preview-label">Preferences</span>
                 <span class="preview-title">Settings</span>
             </div>
-            <button class="close-btn" id="close-settings-modal" type="button">
+            <button class="icon-btn close-btn" aria-label="Close" id="close-settings-modal" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
             </button>
         </div>
@@ -168,14 +162,14 @@
                 <h4>Appearance</h4>
                 <div class="setting-item">
                     <label for="dockPositionSelect">Dock Position</label>
-                    <select id="dockPositionSelect">
+                    <select class="field-select" id="dockPositionSelect">
                         <option value="bottom">Bottom</option>
                         <option value="top">Top</option>
                     </select>
                 </div>
                 <div class="setting-item">
                     <label for="backgroundSelect">Background</label>
-                    <select id="backgroundSelect">
+                    <select class="field-select" id="backgroundSelect">
                         <option value="spotlight">Spotlight Mesh</option>
                         <option value="night-sky">Night Sky Aurora</option>
                     </select>
@@ -185,21 +179,20 @@
             <div class="settings-section">
                 <h4>Bookmarks</h4>
                 <div class="setting-item">
-                    <label for="openInNewTabSelect">Open links in</label>
-                    <select id="openInNewTabSelect">
+                    <label for="openInNewTabSelect">Open Links In</label>
+                    <select class="field-select" id="openInNewTabSelect">
                         <option value="true">New Tab</option>
                         <option value="false">Same Tab</option>
                     </select>
                 </div>
+                <div class="setting-item">
+                    <div>
+                        <span class="setting-name">Categories</span>
+                        <span class="setting-hint">Add, Rename And Reorder</span>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="manageCategoriesBtn">Manage Categories</button>
+                </div>
             </div>
-
-            <div class="settings-section">
-                <h4>Categories</h4>
-                <button class="manage-btn" id="manageCategoriesBtn">
-                    Manage Categories
-                </button>
-            </div>
-        </div>
     </dialog>
 
     <!-- Confirm Delete Modal -->
@@ -214,11 +207,11 @@
             </div>
         </div>
         <div class="modal-body">
-            <p id="confirm-message" style="margin: 0; color: #94a3b8; font-size: 15px; line-height: 1.5;"></p>
+            <p id="confirm-message" class="confirm-message"></p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="secondary-btn" id="cancel-confirm-btn">Cancel</button>
-            <button type="button" class="confirm-delete" id="confirm-delete-btn">
+            <button type="button" class="btn btn-secondary" id="cancel-confirm-btn">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirm-delete-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>
                 Delete
             </button>
@@ -235,7 +228,7 @@
                 <span class="preview-label" id="quick-link-preview-label">Quick Link</span>
                 <span class="preview-title" id="quick-link-preview-title">New Quick Link</span>
             </div>
-            <button class="close-btn" id="close-quick-link-modal" type="button">
+            <button class="icon-btn close-btn" aria-label="Close" id="close-quick-link-modal" type="button">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
             </button>
         </div>
@@ -243,24 +236,21 @@
             <div class="modal-body">
                 <div class="field">
                     <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
                         Title
                     </label>
                     <input type="text" class="field-input" id="quick-link-title" name="title" placeholder="My Site" required>
                 </div>
                 <div class="field">
                     <label class="field-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140.4A40,40,0,0,1,117.33,142,8,8,0,1,0,106.69,154a56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>
                         URL
                     </label>
                     <input type="url" class="field-input" id="quick-link-url" name="url" placeholder="https://example.com" required>
                 </div>
                 <div class="icon-section">
                     <label class="section-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M200,32H56A24,24,0,0,0,32,56V200a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V56A24,24,0,0,0,200,32Zm8,168a8,8,0,0,1-8,8H56a8,8,0,0,1-8-8V56a8,8,0,0,1,8-8H200a8,8,0,0,1,8,8ZM80,80A12,12,0,1,1,92,92,12,12,0,0,1,80,80Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,176,80Zm0,96a12,12,0,1,1-12-12A12,12,0,0,1,176,176Zm-96,0a12,12,0,1,1-12-12A12,12,0,0,1,80,176Z"/></svg>
                         Choose Icon
                     </label>
-                    <input type="search" class="field-input icon-search" id="quick-link-icon-search" placeholder="Search icons (try: youtube, github, notion)" autocomplete="off">
+                    <input type="search" class="field-input icon-search" id="quick-link-icon-search" placeholder="Search Icons" autocomplete="off">
                     <div class="icon-picker quick-link-icon-picker" id="quick-link-icon-picker">
                         <!-- Icons populated by JavaScript -->
                     </div>
@@ -269,11 +259,12 @@
                 <input type="hidden" id="quick-link-id" name="linkId">
             </div>
             <div class="modal-footer">
-                <button type="button" class="delete-btn" id="delete-quick-link-btn" style="display: none;">
+                <button type="button" class="btn btn-ghost btn-ghost-danger delete-btn" id="delete-quick-link-btn" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"/></svg>
                     Delete
                 </button>
-                <button type="submit" class="save-btn">
+                <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+                <button type="submit" class="btn btn-primary save-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>
                     Save
                 </button>

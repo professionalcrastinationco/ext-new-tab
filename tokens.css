@@ -1,96 +1,638 @@
 /* ==========================================================================
-   Quick Bookmarks - Design Tokens
+   Dockside - Design Tokens and Shared Components
    ==========================================================================
-   Unified CSS custom properties for consistent styling across the extension.
-   Based on newtab.css glassmorphism patterns and context menu implementation.
+   One source for the new tab, Manage page and popup: tokens, the Spotlight
+   Mesh background, buttons, icon buttons, fields, checkbox, icon picker tiles
+   and the modal shell. Page files only add layout. Spec:
+   .0/DOCS_DEV/2026-11-11_design-pass-spec.md
    ========================================================================== */
 
 :root {
-  /* ==========================================================================
-     Color Palette (Slate-based)
-     ========================================================================== */
-  --color-base: #0f172a;                      /* Body background */
-  --color-surface-1: rgba(30, 41, 59, 0.6);   /* Primary surfaces */
-  --color-surface-2: rgba(30, 41, 59, 0.8);   /* Elevated surfaces */
-  --color-surface-3: rgba(51, 65, 85, 0.5);   /* Tertiary surfaces */
+  /* colors */
+  --background: #0b1224;
+  --surface: #0f172a;
+  --surface-hover: #1e293b;
+  --border: #334155;
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent: #0e7490;
+  --accent-hover: #155e75;
+  --danger: #dc2626;
+  --focus-ring: #22d3ee;
+  --surface-glass: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.14);
+  --warning: #fbbf24;
 
-  --color-border: rgba(148, 163, 184, 0.2);   /* Default borders */
-  --color-border-focus: rgba(6, 182, 212, 0.5); /* Focus state */
+  /* radii */
+  --radius-small: 8px;
+  --radius-medium: 16px;
+  --radius-pill: 999px;
 
-  --color-text: #f1f5f9;                      /* Primary text */
-  --color-text-muted: #94a3b8;                /* Secondary text */
-  --color-text-subtle: #64748b;               /* Tertiary text */
+  /* spacing */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
 
-  --color-primary: #0ea5e9;                   /* Primary actions */
-  --color-primary-hover: #0284c7;             /* Primary hover */
-  --color-accent: #22d3ee;                    /* Accent/highlight */
+  /* type */
+  --font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-label: 12px;
+  --text-body: 14px;
+  --text-heading: 18px;
+  --text-title: 28px;
 
-  /* ==========================================================================
-     Glassmorphism Effects
-     ========================================================================== */
-  --glass-blur: 20px;
-  --glass-blur-subtle: 10px;
-  --glass-blur-heavy: 30px;
+  /* shadows */
+  --shadow-resting: 0 8px 24px rgba(2, 6, 23, 0.35);
+  --shadow-raised: 0 24px 64px rgba(2, 6, 23, 0.55), 0 4px 12px rgba(2, 6, 23, 0.3);
 
-  --glass-bg-light: rgba(30, 41, 59, 0.6);
-  --glass-bg-medium: rgba(30, 41, 59, 0.8);
-  --glass-bg-heavy: rgba(30, 41, 59, 0.95);
+  /* motion */
+  --transition: 0.15s ease;
+}
 
-  --glass-border: 1px solid rgba(148, 163, 184, 0.2);
-  --glass-border-glow: 1px solid rgba(6, 182, 212, 0.5);
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
-  /* Layered shadow (from context menu - the best one) */
-  --glass-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 2px 2px rgb(0 0 0 / 3%),
-    0 4px 4px rgb(0 0 0 / 4%),
-    0 10px 8px rgb(0 0 0 / 5%),
-    0 15px 15px rgb(0 0 0 / 6%),
-    0 30px 30px rgb(0 0 0 / 7%),
-    0 70px 65px rgb(0 0 0 / 9%);
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  --glass-shadow-subtle: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --glass-shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.5);
+* {
+  margin: 0;
+  padding: 0;
+}
 
-  /* ==========================================================================
-     Spacing (8px grid)
-     ========================================================================== */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
+[hidden] {
+  display: none !important;
+}
 
-  /* ==========================================================================
-     Border Radius
-     ========================================================================== */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 20px;
-  --radius-pill: 50px;
-  --radius-circle: 50%;
+html {
+  color-scheme: dark;
+}
 
-  /* ==========================================================================
-     Typography
-     ========================================================================== */
-  --font-family: system-ui, -apple-system, sans-serif;
-  --font-size-sm: 0.875rem;
-  --font-size-base: 0.95rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
+/* Spotlight Mesh: soft cyan and blue glows with a dark vignette.
+   Sizes are percentages so the same recipe works in the 400px popup. */
+body {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse farthest-corner at 50% 50%, rgba(2, 6, 23, 0) 55%, rgba(2, 6, 23, 0.55) 100%),
+    radial-gradient(ellipse 23% 28% at 50% 48%, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.06) 50%, rgba(34, 211, 238, 0) 100%),
+    radial-gradient(ellipse 36% 42% at 76% 70%, rgba(37, 99, 235, 0.3), rgba(37, 99, 235, 0.13) 50%, rgba(37, 99, 235, 0) 100%),
+    radial-gradient(ellipse 34% 42% at 27% 28%, rgba(8, 145, 178, 0.34), rgba(8, 145, 178, 0.15) 50%, rgba(8, 145, 178, 0) 100%),
+    linear-gradient(135deg, #0b1224 0%, #111c33 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: var(--text-body);
+  line-height: 20px;
+}
 
-  /* ==========================================================================
-     Transitions
-     ========================================================================== */
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.2s ease;
-  --transition-slow: 0.3s ease;
-  --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 0;
+}
+
+/* ==========================================================================
+   Buttons: one primary, plus secondary, ghost and danger
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  height: 40px;
+  padding: 0 var(--space-16);
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--text);
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  background: var(--accent-hover);
+}
+
+.btn-secondary {
+  background: var(--surface-hover);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-secondary:active {
+  background: var(--border);
+  border-color: var(--text-muted);
+}
+
+.btn-ghost {
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.btn-ghost:active {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-ghost-danger {
+  color: var(--danger);
+}
+
+.btn-ghost-danger:hover {
+  color: var(--danger);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: var(--text);
+}
+
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--danger) 85%, black);
+}
+
+.btn-danger:active {
+  background: color-mix(in srgb, var(--danger) 70%, black);
+}
+
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:active {
+  background: var(--surface-hover);
+  border-color: var(--surface-hover);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Icon button (36 x 36)
+   ========================================================================== */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-small);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
+}
+
+.icon-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.icon-btn:active {
+  background: var(--border);
+  color: var(--text);
+}
+
+.icon-btn:disabled,
+.icon-btn:disabled:hover {
+  background: transparent;
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Fields
+   ========================================================================== */
+
+.field-label,
+.section-label {
+  display: block;
+  margin-bottom: var(--space-8);
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  font-weight: 500;
+}
+
+input.field-input,
+select.field-select {
+  display: block;
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-16);
+  background-color: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+input.field-input::placeholder {
+  color: var(--text-muted);
+}
+
+input.field-input:focus,
+select.field-select:focus {
+  border-color: var(--focus-ring);
+}
+
+input.field-input:disabled,
+select.field-select:disabled {
+  background-color: var(--surface-hover);
+  border-color: var(--surface-hover);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+input.field-input:invalid:not(:placeholder-shown):not(:focus) {
+  border-color: var(--danger);
+}
+
+select.field-select {
+  height: 40px;
+  padding-right: var(--space-32);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-16) center;
+  cursor: pointer;
+}
+
+select.field-select:hover,
+select.field-select:active {
+  background-color: var(--border);
+}
+
+select.field-select:disabled:hover {
+  background-color: var(--surface-hover);
+}
+
+select.field-select option {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+/* Checkbox */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: var(--surface-hover);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+}
+
+.checkbox-label:hover input[type="checkbox"]:not(:disabled) {
+  background-color: var(--border);
+  border-color: var(--text-muted);
+}
+
+.checkbox-label input[type="checkbox"]:active:not(:disabled) {
+  background-color: var(--border);
+}
+
+.checkbox-label:has(input:disabled) {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.checkbox-label input[type="checkbox"]:disabled {
+  border-color: var(--surface-hover);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Icon picker (category icons and quick link brand icons)
+   ========================================================================== */
+
+.icon-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  justify-items: center;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.icon-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.icon-picker-item svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.icon-picker-item:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.icon-picker-item:active {
+  background: var(--border);
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.icon-picker-item.selected {
+  background: var(--surface-hover);
+  border-color: var(--focus-ring);
+  color: var(--focus-ring);
+}
+
+.icon-picker-item.selected:hover {
+  background: var(--border);
+}
+
+.icon-picker-item:disabled {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.quick-link-icon-picker {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.quick-link-icon-picker .icon-picker-item {
+  width: 44px;
+  height: 44px;
+}
+
+.quick-link-icon-picker .icon-picker-item svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-search {
+  margin-bottom: var(--space-8);
+}
+
+input.field-input.icon-search {
+  height: 40px;
+}
+
+/* ==========================================================================
+   Modal shell (settings, category, bookmark, quick link, delete confirm)
+   ========================================================================== */
+
+dialog {
+  margin: auto;
+  padding: 0;
+  width: 440px;
+  max-width: calc(100vw - 2 * var(--space-16));
+  max-height: calc(100vh - 2 * var(--space-16));
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-raised);
+  overflow: auto;
+}
+
+dialog::backdrop {
+  background: color-mix(in srgb, var(--background) 75%, transparent);
+}
+
+#settings-modal {
+  width: 480px;
+}
+
+#quick-link-modal {
+  width: 520px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-16) var(--space-16) var(--space-16) var(--space-24);
+  border-bottom: 1px solid var(--surface-hover);
+}
+
+.preview-icon,
+.preview-favicon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--surface-hover);
+  border-radius: var(--radius-small);
+  color: var(--focus-ring);
+}
+
+.preview-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.preview-favicon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.preview-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.preview-label,
+.settings-section h4 {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  line-height: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.preview-title {
+  display: block;
+  color: var(--text);
+  font-size: var(--text-heading);
+  line-height: 24px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.danger-icon {
+  color: var(--danger);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  padding: var(--space-24);
+}
+
+.confirm-message {
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+}
+
+/* Same background as the modal: no darker band under the buttons */
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-8);
+  padding: var(--space-16) var(--space-24) var(--space-24);
+  border-top: 1px solid var(--surface-hover);
+}
+
+.modal-footer .delete-btn {
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Settings rows
+   ========================================================================== */
+
+#settings-modal .modal-body {
+  gap: var(--space-8);
+  padding-top: var(--space-8);
+}
+
+.settings-section h4 {
+  padding-top: var(--space-16);
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  min-height: 56px;
+}
+
+.setting-item + .setting-item {
+  border-top: 1px solid var(--surface-hover);
+}
+
+.setting-item label,
+.setting-item .setting-name {
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.setting-item .setting-hint {
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.setting-item select.field-select {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

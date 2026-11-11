@@ -274,6 +274,7 @@ function initAppsMenu() {
 
 function attachEventListeners() {
     initAppsMenu();
+    initDockPanels();
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
@@ -489,17 +490,42 @@ function createBookmarkCard(category, openInNewTab) {
 
     const header = document.createElement('div');
     header.className = 'card-header';
-    header.textContent = category.name;
+
+    const headerIcon = document.createElement('span');
+    headerIcon.className = 'card-header-icon';
+    const headerIconContent = renderCategoryIcon(category.icon);
+    if (headerIconContent.startsWith('<svg')) {
+        headerIcon.innerHTML = headerIconContent;
+    } else {
+        headerIcon.textContent = headerIconContent;
+    }
+
+    const headerName = document.createElement('span');
+    headerName.className = 'card-header-name';
+    headerName.textContent = category.name;
+
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'icon-btn';
+    editBtn.title = 'Edit Category';
+    editBtn.setAttribute('aria-label', `Edit ${category.name}`);
+    editBtn.innerHTML = ICON_PENCIL_SIMPLE;
+    editBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeDockPanels();
+        showCategoryModal(category);
+    });
+
+    header.append(headerIcon, headerName, editBtn);
 
     const list = document.createElement('div');
     list.className = 'bookmark-list';
 
     if (category.links.length === 0) {
-        list.style.gridColumn = '1 / -1';
-        list.style.textAlign = 'center';
-        list.style.color = '#64748b';
-        list.style.fontSize = '0.875rem';
-        list.innerHTML = `<span class="ph-icon" style="margin-right:6px">${ICON_FOLDER_OPEN}</span>No bookmarks yet. Right-click to add!`;
+        const empty = document.createElement('span');
+        empty.className = 'bookmark-list-empty';
+        empty.textContent = 'No bookmarks yet. Right-click to add!';
+        list.appendChild(empty);
     } else {
         const sortedLinks = [...category.links].sort((a, b) => a.order - b.order);
         sortedLinks.forEach(bookmark => {
@@ -558,33 +584,88 @@ function createBookmarkCard(category, openInNewTab) {
     return card;
 }
 
+// Close any dock category panel that was pinned open by a click
+function closeDockPanels() {
+    document.querySelectorAll('.dock-icon.open').forEach(el => {
+        el.classList.remove('open');
+        const btn = el.querySelector('.dock-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+    });
+}
+
+// Dock icon click toggles its panel; clicking elsewhere or Escape closes it.
+// Hovering an icon also opens the panel after a short pause (CSS only).
+function initDockPanels() {
+    const dock = document.getElementById('dock');
+    dock.addEventListener('click', (e) => {
+        const btn = e.target.closest('.dock-btn');
+        if (!btn) return;
+        const icon = btn.parentElement;
+        const wasOpen = icon.classList.contains('open');
+        closeDockPanels();
+        if (!wasOpen) {
+            icon.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+    });
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.dock-icon')) closeDockPanels();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDockPanels();
+    });
+}
+
+// First run: scrim plus welcome card (shown while there are no categories)
+let welcomeDismissed = false;
+
+function renderWelcome(show) {
+    let scrim = document.getElementById('welcome');
+    if (!show || welcomeDismissed) {
+        if (scrim) scrim.remove();
+        return;
+    }
+    if (scrim) return;
+    scrim = document.createElement('div');
+    scrim.id = 'welcome';
+    scrim.className = 'welcome-scrim';
+    scrim.innerHTML = `
+        <div class="welcome-card" role="dialog" aria-label="Welcome To Dockside">
+            <div class="welcome-brand">
+                <span class="brand-tile">${ICON_BOOKMARK_SIMPLE}</span>
+                <h2>Welcome To Dockside</h2>
+            </div>
+            <ol>
+                <li><strong>1. Make A Category</strong>Like Work, Learning or Fun.</li>
+                <li><strong>2. Add Bookmarks</strong>Save any page from the toolbar button.</li>
+                <li><strong>3. Click Its Icon</strong>Your links open from this dock.</li>
+            </ol>
+            <div class="welcome-actions">
+                <button type="button" class="btn btn-ghost" id="welcomeDismiss">Start Empty</button>
+                <a class="btn btn-primary" href="manage.html">Create Your First Category</a>
+            </div>
+        </div>`;
+    document.body.appendChild(scrim);
+    document.getElementById('welcomeDismiss').addEventListener('click', () => {
+        welcomeDismissed = true;
+        scrim.remove();
+    });
+}
+
 function renderDock(data) {
     const dockElement = document.getElementById('dock');
     const dockPosition = data.settings.dockPosition || 'bottom';
     const openInNewTab = data.settings.openInNewTab !== false;
+    const hasCategories = data.categories && data.categories.length > 0;
 
     // Update dock position class
-    dockElement.className = `dock dock-${dockPosition}`;
+    dockElement.className = `dock dock-${dockPosition}${hasCategories ? '' : ' dock-empty'}`;
 
     // Clear dock
     dockElement.innerHTML = '';
 
-    if (!data.categories || data.categories.length === 0) {
-        const welcome = document.createElement('div');
-        welcome.className = 'welcome-card';
-        welcome.innerHTML = `
-            <div class="welcome-head">
-                <h2>Welcome to Dockside</h2>
-                <a class="welcome-btn" href="manage.html">Create Your First Category</a>
-            </div>
-            <ol>
-                <li><strong>1. Make a category</strong>Like Work, Learning or Fun.</li>
-                <li><strong>2. Add bookmarks</strong>Save any page from the toolbar button.</li>
-                <li><strong>3. Click its icon</strong>Your links open from this dock.</li>
-            </ol>`;
-        dockElement.appendChild(welcome);
-        return;
-    }
+    renderWelcome(!hasCategories);
+    if (!hasCategories) return;
 
     // Sort categories by order
     const sortedCategories = [...data.categories].sort((a, b) => a.order - b.order);
@@ -592,6 +673,13 @@ function renderDock(data) {
     sortedCategories.forEach(category => {
         const dockIcon = document.createElement('div');
         dockIcon.className = 'dock-icon';
+
+        const dockBtn = document.createElement('button');
+        dockBtn.type = 'button';
+        dockBtn.className = 'dock-btn';
+        dockBtn.setAttribute('aria-label', category.name);
+        dockBtn.setAttribute('aria-haspopup', 'true');
+        dockBtn.setAttribute('aria-expanded', 'false');
 
         const iconCircle = document.createElement('div');
         iconCircle.className = 'icon-circle';
@@ -602,9 +690,10 @@ function renderDock(data) {
         } else {
             iconCircle.textContent = iconContent;
         }
+        dockBtn.appendChild(iconCircle);
 
         // Add context menu to icon for category actions
-        iconCircle.addEventListener('contextmenu', (e) => {
+        dockBtn.addEventListener('contextmenu', (e) => {
             showContextMenu(e, [
                 {
                     content: `${editIcon}Edit Category`,
@@ -634,9 +723,15 @@ function renderDock(data) {
             ], 'dark');
         });
 
+        // Name tooltip shown on hover or keyboard focus
+        const tip = document.createElement('span');
+        tip.className = 'tip';
+        tip.textContent = category.name;
+
         const card = createBookmarkCard(category, openInNewTab);
 
-        dockIcon.appendChild(iconCircle);
+        dockIcon.appendChild(dockBtn);
+        dockIcon.appendChild(tip);
         dockIcon.appendChild(card);
         dockElement.appendChild(dockIcon);
     });
@@ -654,7 +749,7 @@ function showCategoryModal(category) {
 
     // Populate preview header
     if (previewTitle) {
-        previewTitle.textContent = category.name || 'Edit Category';
+        previewTitle.textContent = category.name || 'Category';
     }
 
     // Show delete button (editing existing category)
@@ -693,7 +788,7 @@ function showLinkModal(link, categoryId) {
 
     // Populate preview header
     if (previewTitle) {
-        previewTitle.textContent = link.title || 'Edit Bookmark';
+        previewTitle.textContent = link.title || 'Bookmark';
     }
     if (previewImg) {
         previewImg.src = getFaviconUrl(link.url);
@@ -727,7 +822,7 @@ function showQuickLinkModal(link = null) {
 
     if (link) {
         // Editing existing link
-        if (previewLabel) previewLabel.textContent = 'Edit Quick Link';
+        if (previewLabel) previewLabel.textContent = 'Quick Link';
         if (previewTitle) previewTitle.textContent = link.title || 'Quick Link';
         titleInput.value = link.title;
         urlInput.value = link.url;
@@ -738,8 +833,8 @@ function showQuickLinkModal(link = null) {
         if (deleteBtn) deleteBtn.style.display = 'flex';
     } else {
         // Adding new link
-        if (previewLabel) previewLabel.textContent = 'New Quick Link';
-        if (previewTitle) previewTitle.textContent = 'Untitled';
+        if (previewLabel) previewLabel.textContent = 'Quick Link';
+        if (previewTitle) previewTitle.textContent = 'New Quick Link';
         titleInput.value = '';
         urlInput.value = '';
         linkIdInput.value = '';

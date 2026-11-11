@@ -55,8 +55,23 @@ function renderCategories(data) {
   currentData = data;
   const container = document.getElementById('categories-container');
 
-  if (!data.categories || data.categories.length === 0) {
-    container.innerHTML = '<p class="empty-state">No categories yet. Click "Add Category" to get started.</p>';
+  const addCategoryBtn = document.getElementById('add-category-btn');
+  const isEmpty = !data.categories || data.categories.length === 0;
+  if (addCategoryBtn) addCategoryBtn.hidden = isEmpty;
+
+  if (isEmpty) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="empty-state-icon" aria-hidden="true">${ICON_BOOKMARK_SIMPLE}</span>
+        <h2 class="empty-state-title">No Categories Yet</h2>
+        <p class="empty-state-body">Categories keep your bookmarks tidy and show up as icons in your dock. Add one to get started, or bring in bookmarks you exported earlier.</p>
+        <div class="empty-state-actions">
+          <button type="button" class="btn btn-primary" id="empty-add-btn">Add Category</button>
+          <button type="button" class="btn btn-secondary" id="empty-import-btn">Import Bookmarks</button>
+        </div>
+      </div>`;
+    document.getElementById('empty-add-btn').addEventListener('click', () => showCategoryModal());
+    document.getElementById('empty-import-btn').addEventListener('click', () => importBookmarks());
     return;
   }
 
@@ -73,7 +88,7 @@ function renderCategories(data) {
 
     return `
       <div class="category${index === 0 ? ' expanded' : ''}" data-category-id="${category.id}">
-        <div class="category-header">
+        <div class="category-header" tabindex="0" role="button" aria-expanded="${index === 0}">
           <div class="category-expand">
             ${ICON_CARET_RIGHT}
           </div>
@@ -96,9 +111,9 @@ function renderCategories(data) {
         <div class="category-content">
           <div class="links-list" data-category-id="${category.id}">
             ${linksHtml}
-            <div class="add-link-row" data-category-id="${category.id}">
-              ${ICON_PLUS} Add bookmark
-            </div>
+            <button type="button" class="btn btn-ghost add-link-row" data-category-id="${category.id}">
+              ${ICON_PLUS} Add Bookmark
+            </button>
           </div>
         </div>
       </div>
@@ -123,7 +138,7 @@ function renderLink(link, categoryId, openInNewTab = true) {
   return `
     <div class="link-item" data-link-id="${link.id}" data-category-id="${categoryId}" draggable="true">
       <span class="link-drag">⋮⋮</span>
-      <img class="link-favicon" src="${faviconUrl}" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22><rect width=%2224%22 height=%2224%22 fill=%22%23ccc%22/></svg>'">
+      <img class="link-favicon" src="${faviconUrl}" alt="">
       <div class="link-info">
         <a href="${escapeHtml(link.url)}" class="link-title"${targetAttr}>${escapeHtml(link.title)}</a>
         <div class="link-url">${escapeHtml(hostname)}</div>
@@ -321,7 +336,7 @@ function showCategoryModal(category = null) {
 
   if (category) {
     // Edit mode
-    previewLabel.textContent = 'Editing Category';
+    previewLabel.textContent = 'Category';
     previewTitle.textContent = category.name;
     nameInput.value = category.name;
     idInput.value = category.id;
@@ -331,8 +346,8 @@ function showCategoryModal(category = null) {
     deleteBtn.style.display = 'flex';
   } else {
     // Add mode
-    previewLabel.textContent = 'New Category';
-    previewTitle.textContent = 'Untitled';
+    previewLabel.textContent = 'Category';
+    previewTitle.textContent = 'New Category';
     nameInput.value = '';
     idInput.value = '';
     // Populate icon picker with default
@@ -368,7 +383,7 @@ function showLinkModal(link = null, categoryId = null) {
 
   if (link) {
     // Edit mode
-    previewLabel.textContent = 'Editing Bookmark';
+    previewLabel.textContent = 'Bookmark';
     // Truncate title if too long
     const displayTitle = link.title.length > 30 ? link.title.substring(0, 30) + '...' : link.title;
     previewTitle.textContent = displayTitle;
@@ -389,8 +404,8 @@ function showLinkModal(link = null, categoryId = null) {
     deleteBtn.style.display = 'flex';
   } else {
     // Add mode
-    previewLabel.textContent = 'New Bookmark';
-    previewTitle.textContent = 'Untitled';
+    previewLabel.textContent = 'Bookmark';
+    previewTitle.textContent = 'New Bookmark';
     // Hide favicon in add mode or show placeholder
     faviconImg.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256" fill="%2394a3b8"><path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4L72.5,104.28A56,56,0,0,1,149.31,102a8,8,0,1,1-10.64,12,40,40,0,0,0-54.85,1.63L59.7,139.72a40,40,0,0,0,56.58,56.58l9.94-9.94A8,8,0,0,1,137.54,186.36Zm70.08-138a56.08,56.08,0,0,0-79.22,0l-9.94,9.95a8,8,0,0,0,11.32,11.31l9.94-9.94a40,40,0,0,1,56.58,56.58L172.18,140a40,40,0,0,1-54.85,1.63,8,8,0,1,0-10.64,12,56,56,0,0,0,76.81-2.26l24.12-24.12A56.08,56.08,0,0,0,207.62,48.38Z"/></svg>';
     faviconImg.alt = '';

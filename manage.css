@@ -1,184 +1,144 @@
 /* ==========================================================================
-   Quick Bookmarks - Manage Page Styles (Mockup 3: Minimal Centered)
+   Dockside - Manage page layout
    ==========================================================================
-   Floating pill toolbar, accordion categories, centered layout.
-   Uses design tokens from tokens.css.
+   Tokens, buttons, fields, icon picker and the modal shell live in tokens.css.
    ========================================================================== */
 
 /* ==========================================================================
-   1. Floating Toolbar
+   1. Top bar
    ========================================================================== */
-.floating-toolbar {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--glass-bg-light);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-radius: var(--radius-pill);
-  border: var(--glass-border);
-  box-shadow: var(--glass-shadow);
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  height: 76px;
+  padding: 0 var(--space-32);
+  border-bottom: 1px solid var(--surface-hover);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  color: var(--text);
+  font-size: var(--text-heading);
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.brand-tile {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 8px 16px;
-  z-index: 1000;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--accent);
+  border-radius: var(--radius-small);
+  color: var(--text);
 }
 
-.toolbar-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-pill);
-  padding: 10px 18px;
-  margin: 0;
-  color: var(--color-text-muted);
-  font-family: var(--font-family);
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1;
-  height: 38px;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-/* Reset Pico button styles for toolbar */
-button.toolbar-btn,
-a.toolbar-btn {
-  --pico-font-weight: 500;
-  margin-bottom: 0;
-  padding: 10px 18px;
-}
-
-.toolbar-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text);
-}
-
-.toolbar-btn.primary {
-  background: var(--color-primary);
-  color: white;
-}
-
-.toolbar-btn.primary:hover {
-  background: var(--color-primary-hover);
-}
-
-.toolbar-btn svg {
-  width: 18px;
-  height: 18px;
+.brand-tile svg {
+  width: 20px;
+  height: 20px;
   fill: currentColor;
-  flex-shrink: 0;
-  vertical-align: middle;
 }
 
-.toolbar-divider {
-  width: 1px;
-  height: 24px;
-  background: var(--color-border);
-  flex-shrink: 0;
-  align-self: center;
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
 }
 
 /* ==========================================================================
-   2. Main Layout
+   2. Main layout
    ========================================================================== */
 .main-wrapper {
-  min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 100px 24px 40px;
+  padding: var(--space-24) var(--space-24) var(--space-32);
 }
 
 .main-content {
   width: 100%;
-  max-width: 700px;
+  max-width: 720px;
 }
 
 /* ==========================================================================
-   3. Page Header
+   3. Page header
    ========================================================================== */
 .page-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--space-32);
 }
 
 .page-title {
-  font-size: 2rem;
-  font-weight: 300;
-  letter-spacing: -0.5px;
-  color: var(--color-text);
-  margin: 0;
+  color: var(--text);
+  font-size: var(--text-title);
+  line-height: 36px;
+  font-weight: 600;
 }
 
 .page-subtitle {
-  font-size: 14px;
-  color: var(--color-text-muted);
-  margin-top: 8px;
-  margin-bottom: 0;
+  margin-top: var(--space-8);
+  color: var(--text-muted);
+  font-size: var(--text-body);
+  line-height: 20px;
 }
 
 /* ==========================================================================
-   4. Categories Container
+   4. Categories
    ========================================================================== */
 .categories {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-16);
 }
 
-/* ==========================================================================
-   5. Category Accordion
-   ========================================================================== */
 .category {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(30, 41, 59, 0.7));
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: border-color var(--transition-slow), box-shadow var(--transition-slow);
-}
-
-.category:hover {
-  border-color: rgba(148, 163, 184, 0.35);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
 }
 
 .category.expanded {
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--shadow-resting);
 }
 
 .category-header {
   display: flex;
   align-items: center;
-  padding: 18px 20px;
+  gap: var(--space-16);
+  height: 72px;
+  padding: 0 var(--space-16);
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: background-color var(--transition);
 }
 
 .category-header:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-hover);
+}
+
+.category-header:active {
+  background: var(--border);
+}
+
+.category-header:focus-visible {
+  outline-offset: -2px;
 }
 
 .category-expand {
-  width: 28px;
-  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
-  color: var(--color-text-subtle);
-  transition: transform var(--transition-slow);
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform var(--transition);
 }
 
 .category.expanded .category-expand {
@@ -186,27 +146,25 @@ a.toolbar-btn {
 }
 
 .category-expand svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   fill: currentColor;
 }
 
+/* Bare category icon: no tile, no tint */
 .category-icon {
-  width: 36px;
-  height: 36px;
-  background: rgba(34, 211, 238, 0.1);
-  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 14px;
-  color: var(--color-accent);
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
+  color: var(--focus-ring);
 }
 
 .category-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
@@ -216,120 +174,118 @@ a.toolbar-btn {
 }
 
 .category-name {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--color-text);
-  margin: 0;
+  color: var(--text);
+  font-size: var(--text-heading);
+  line-height: 24px;
+  font-weight: 600;
 }
 
 .category-meta {
-  font-size: 12px;
-  color: var(--color-text-subtle);
-  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  line-height: 16px;
 }
 
-.category-actions {
+/* Hover actions stay in the layout so nothing shifts */
+.category-actions,
+.link-actions {
   display: flex;
   gap: 4px;
   opacity: 0;
-  transition: opacity var(--transition-base);
+  transition: opacity var(--transition);
 }
 
-.category-header:hover .category-actions {
+.category-header:hover .category-actions,
+.category-header:focus-within .category-actions,
+.link-item:hover .link-actions,
+.link-item:focus-within .link-actions {
   opacity: 1;
 }
 
+.delete-category-btn,
+.delete-link-btn {
+  color: var(--danger);
+}
+
+.delete-category-btn:hover,
+.delete-link-btn:hover {
+  color: var(--danger);
+}
+
+/* Smooth open and close that fits any number of links */
 .category-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height var(--transition-slow) ease-out;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transition);
 }
 
 .category.expanded .category-content {
-  max-height: 500px;
+  grid-template-rows: 1fr;
+}
+
+.category-content > .links-list {
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* ==========================================================================
-   6. Icon Buttons
-   ========================================================================== */
-.icon-btn {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.icon-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text);
-}
-
-.icon-btn svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-/* ==========================================================================
-   7. Links List
+   5. Links list
    ========================================================================== */
 .links-list {
-  padding: 0 20px 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-8);
+  padding: 0 var(--space-16);
 }
 
 .link-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: rgba(51, 65, 85, 0.25);
-  border-radius: var(--radius-md);
+  gap: var(--space-16);
+  height: 64px;
+  padding: 0 var(--space-16);
+  flex-shrink: 0;
+  background: var(--surface-hover);
+  border-radius: var(--radius-small);
   cursor: pointer;
-  position: relative;
-  transition: background var(--transition-fast);
+  transition: background-color var(--transition);
 }
 
 .link-item:hover {
-  background: rgba(51, 65, 85, 0.45);
+  background: var(--border);
+}
+
+.link-item:active {
+  background: var(--border);
+}
+
+.link-item.dragging {
+  opacity: 0.5;
 }
 
 .link-drag {
-  color: var(--color-text-subtle);
-  cursor: move;
-  opacity: 0;
-  transition: opacity var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 16px;
+  color: var(--text-muted);
+  cursor: move;
+  opacity: 0;
+  transition: opacity var(--transition);
 }
 
-.link-item:hover .link-drag {
+.link-item:hover .link-drag,
+.link-item:focus-within .link-drag {
   opacity: 1;
 }
 
-.link-drag svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
+/* Bare favicon in a 32px slot: no tile, no background */
 .link-favicon {
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: var(--color-surface-3);
+  width: 32px;
+  height: 32px;
+  padding: 7px;
   flex-shrink: 0;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .link-info {
@@ -338,590 +294,108 @@ a.toolbar-btn {
 }
 
 .link-title {
-  font-size: 14px;
-  color: var(--color-text);
-  white-space: nowrap;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0;
+  white-space: nowrap;
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 20px;
+  font-weight: 500;
 }
 
 .link-url {
-  font-size: 11px;
-  color: var(--color-text-subtle);
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 0;
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  line-height: 16px;
 }
 
-.link-actions {
-  display: flex;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity var(--transition-base);
+/* Icon buttons sit on the row, so their hover fill is the darker surface */
+.link-item .icon-btn:hover {
+  background: var(--surface);
 }
 
-.link-item:hover .link-actions {
-  opacity: 1;
+.link-item .icon-btn:active {
+  background: var(--background);
 }
 
-.link-actions .icon-btn {
-  width: 28px;
-  height: 28px;
-}
-
-.link-actions .icon-btn svg {
-  width: 14px;
-  height: 14px;
-}
-
-/* ==========================================================================
-   8. Add Link Row
-   ========================================================================== */
 .add-link-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  color: var(--color-text-muted);
-  font-size: 13px;
-  cursor: pointer;
-  gap: 6px;
-  transition: color var(--transition-fast);
-  background: transparent;
-  border: none;
-  width: 100%;
-}
-
-.add-link-row:hover {
-  color: var(--color-accent);
-}
-
-.add-link-row svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
+  align-self: flex-start;
+  margin-bottom: var(--space-16);
 }
 
 /* ==========================================================================
-   9. Add Category Button
+   6. Add category and empty state
    ========================================================================== */
 .add-category {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 24px;
-  background: transparent;
-  border: 2px dashed rgba(148, 163, 184, 0.2);
-  border-radius: var(--radius-lg);
-  color: var(--color-text-muted);
-  font-size: 15px;
-  cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
   width: 100%;
-  margin-top: 12px;
+  margin-top: var(--space-16);
 }
 
-.add-category:hover {
-  border-color: var(--color-accent);
-  color: var(--color-text);
-  background: rgba(34, 211, 238, 0.03);
-}
-
-.add-category svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
-
-/* ==========================================================================
-   10. Floating Modal Design (Mockup #3 - Glassmorphism Card)
-   ========================================================================== */
-
-/* Dialog Base - Override Pico CSS dialog styles */
-dialog {
-  /* Reset Pico's fullscreen modal approach */
-  display: block;
-  position: fixed;
-  inset: unset; /* Critical: unset Pico's inset: 0 */
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  min-width: 0; /* Reset Pico's min-width: 100% */
-  max-width: calc(100vw - 40px);
-  height: auto;
-  min-height: 0; /* Reset Pico's min-height: 100% */
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.95) 0%,
-    rgba(15, 23, 42, 0.85) 100%
-  );
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-  border-top: 2px solid rgba(6, 182, 212, 0.5);
-  box-shadow: var(--glass-shadow-elevated);
-  overflow: hidden;
-}
-
-/* Dialog Backdrop */
-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-}
-
-/* Modal Header with Preview */
-.modal-header {
+.empty-state {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 20px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  gap: var(--space-24);
+  padding: var(--space-32);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  text-align: center;
 }
 
-.preview-icon,
-.preview-favicon {
-  width: 48px;
-  height: 48px;
-  background: rgba(34, 211, 238, 0.1);
-  border: 2px solid rgba(34, 211, 238, 0.3);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-accent);
-  flex-shrink: 0;
-  overflow: hidden;
+.empty-state-icon svg {
+  width: 64px;
+  height: 64px;
+  fill: var(--focus-ring);
 }
 
-.preview-icon svg {
-  width: 26px;
-  height: 26px;
-  fill: currentColor;
-}
-
-.preview-favicon img {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.preview-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.preview-label {
-  display: block;
-  font-size: 11px;
-  color: var(--color-text-subtle);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-
-.preview-title {
-  display: block;
-  font-size: 1.1rem;
+.empty-state-title {
+  color: var(--text);
+  font-size: var(--text-title);
+  line-height: 36px;
   font-weight: 600;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.close-btn {
-  width: 32px;
-  height: 32px;
+.empty-state-body {
+  max-width: 440px;
+  color: var(--text-muted);
+  font-size: var(--text-body);
+  line-height: 20px;
+}
+
+.empty-state-actions {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  align-self: flex-start;
-  padding: 0;
-  margin: 0;
-}
-
-.close-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text);
-}
-
-.close-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-}
-
-/* Modal Body */
-.modal-body {
-  padding: 20px;
-}
-
-/* Field Styling */
-.field {
-  margin-bottom: 16px;
-}
-
-.field:last-of-type {
-  margin-bottom: 0;
-}
-
-.field-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--color-text-muted);
-  margin-bottom: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.field-label svg {
-  width: 12px;
-  height: 12px;
-  fill: currentColor;
-}
-
-.field-input,
-.field-select {
-  width: 100%;
-  padding: 12px 14px;
-  background: rgba(51, 65, 85, 0.4);
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: var(--radius-md);
-  color: var(--color-text);
-  font-size: 14px;
-  transition: all var(--transition-fast);
-  outline: none;
-}
-
-.field-input:focus,
-.field-select:focus {
-  background: rgba(51, 65, 85, 0.6);
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-}
-
-.field-input::placeholder {
-  color: var(--color-text-subtle);
-}
-
-.field-select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 40px;
-}
-
-.field-select option {
-  background: #1e293b;
-}
-
-/* Checkbox Field */
-.checkbox-field {
-  margin-top: 16px;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  cursor: pointer;
-  padding: 12px 14px;
-  background: rgba(51, 65, 85, 0.3);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-  border-radius: var(--radius-md, 8px);
-  transition: all var(--transition-fast, 0.15s ease);
-}
-
-.checkbox-label:hover {
-  background: rgba(51, 65, 85, 0.5);
-  border-color: rgba(148, 163, 184, 0.2);
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  accent-color: var(--color-primary, #0ea5e9);
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.checkbox-text {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--color-text-muted, #94a3b8);
-  line-height: 1.4;
-}
-
-.checkbox-text svg {
-  width: 16px;
-  height: 16px;
-  fill: var(--color-text-subtle, #64748b);
-  flex-shrink: 0;
-}
-
-.checkbox-label:has(input:checked) .checkbox-text {
-  color: var(--color-text, #f1f5f9);
-}
-
-.checkbox-label:has(input:checked) .checkbox-text svg {
-  fill: var(--color-primary, #0ea5e9);
-}
-
-/* Icon Section */
-.icon-section {
-  margin-top: 16px;
-}
-
-.section-label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.section-label svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-}
-
-/* Modal Footer */
-.modal-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background: rgba(51, 65, 85, 0.2);
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-.delete-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-md);
-  color: #ef4444;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.delete-btn:hover {
-  background: rgba(239, 68, 68, 0.1);
-}
-
-.delete-btn svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-.save-btn {
-  padding: 10px 24px;
-  background: var(--color-primary);
-  border: none;
-  border-radius: var(--radius-md);
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.save-btn:hover {
-  background: var(--color-primary-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-}
-
-.save-btn svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-/* Confirm Modal Styling */
-.confirm-body {
-  padding: 20px;
-  color: var(--color-text);
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.confirm-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  padding: 16px 20px;
-  background: rgba(51, 65, 85, 0.2);
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-.cancel-btn {
-  padding: 10px 20px;
-  background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-text-muted);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.cancel-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--color-text);
-}
-
-.confirm-delete-btn {
-  padding: 10px 20px;
-  background: #ef4444;
-  border: none;
-  border-radius: var(--radius-md);
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.confirm-delete-btn:hover {
-  background: #dc2626;
+  gap: var(--space-8);
 }
 
 /* ==========================================================================
-   11. Icon Picker (for category modal)
+   7. Responsive
    ========================================================================== */
-.icon-picker {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  padding: 12px;
-  background: var(--color-surface-1, rgba(30, 41, 59, 0.6));
-  border-radius: var(--radius-md, 8px);
-  border: 1px solid var(--color-border, rgba(148, 163, 184, 0.2));
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.icon-picker-item {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md, 8px);
-  color: var(--color-text-muted, #94a3b8);
-  cursor: pointer;
-  transition: all var(--transition-fast, 0.15s ease);
-  padding: 0;
-  margin: 0;
-}
-
-.icon-picker-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text, #f1f5f9);
-}
-
-.icon-picker-item.selected {
-  background: rgba(34, 211, 238, 0.15);
-  border-color: var(--color-accent, #22d3ee);
-  color: var(--color-accent, #22d3ee);
-}
-
-.icon-picker-item svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-  flex-shrink: 0;
-}
-
-/* ==========================================================================
-   12. Responsive Adjustments
-   ========================================================================== */
-@media (max-width: 768px) {
-  .floating-toolbar {
-    top: 12px;
-    padding: 6px 10px;
-    gap: 8px;
+@media (max-width: 640px) {
+  .top-bar {
+    padding: 0 var(--space-16);
   }
 
-  .toolbar-btn {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-
-  .toolbar-btn span {
+  .top-bar-actions .btn span {
     display: none;
+  }
+
+  .top-bar-actions .btn {
+    padding: 0 var(--space-8);
   }
 
   .main-wrapper {
-    padding: 80px 16px 32px;
-  }
-
-  .main-content {
-    max-width: 100%;
-  }
-
-  .page-header {
-    margin-bottom: 32px;
+    padding: var(--space-24) var(--space-16) var(--space-32);
   }
 
   .page-title {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .floating-toolbar {
-    left: 12px;
-    right: 12px;
-    transform: none;
-    justify-content: center;
-  }
-
-  .toolbar-divider:not(:first-of-type) {
-    display: none;
-  }
-
-  .toolbar-btn:not(.primary):not([href]) {
-    display: none;
+    font-size: var(--text-heading);
+    line-height: 24px;
   }
 }

@@ -27,3 +27,11 @@ function getFaviconUrl(url) {
     return '';
   }
 }
+
+/* Any button marked data-close closes the dialog it sits in (Cancel buttons) */
+document.addEventListener('click', (e) => {
+  const closer = e.target.closest('[data-close]');
+  if (!closer) return;
+  const dialog = closer.closest('dialog');
+  if (dialog) dialog.close();
+});

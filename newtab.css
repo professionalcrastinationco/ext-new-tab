@@ -1,17 +1,8 @@
-/* newtab.css - New tab page styles */
+/* newtab.css - New tab page layout. Tokens, buttons, fields and the modal
+   shell live in tokens.css. */
 
 /* ==========================================================================
-   CSS Variables & Reset
-   ========================================================================== */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* ==========================================================================
-   Phosphor Icon Base Styles
+   Phosphor icon base
    ========================================================================== */
 
 .ph-icon {
@@ -27,84 +18,17 @@
     fill: currentColor;
 }
 
-/* Icon sizes */
 .ph-icon-sm svg { width: 14px; height: 14px; }
 .ph-icon-md svg { width: 18px; height: 18px; }
 .ph-icon-lg svg { width: 24px; height: 24px; }
 .ph-icon-xl svg { width: 32px; height: 32px; }
 
-/* Icon button SVG styling */
-.icon-btn svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-    display: block;
-}
-
 /* ==========================================================================
-   Icon Picker Component
-   ========================================================================== */
-
-.icon-picker {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
-    padding: 12px;
-    background: rgba(51, 65, 85, 0.5);
-    border-radius: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 0.5rem;
-}
-
-.icon-picker-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    cursor: pointer;
-    background: transparent;
-    border: 2px solid transparent;
-    color: #94a3b8;
-    transition: all 0.15s ease;
-    padding: 0;
-}
-
-.icon-picker-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #f1f5f9;
-}
-
-.icon-picker-item.selected {
-    border-color: #22d3ee;
-    background: rgba(34, 211, 238, 0.1);
-    color: #22d3ee;
-}
-
-.icon-picker-item svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-}
-
-/* ==========================================================================
-   Base Styles
+   Page and backgrounds
    ========================================================================== */
 
 body {
-    /* Spotlight Mesh Deep: soft cyan and blue glows with a dark vignette */
-    background-color: #0b1224;
-    background-image:
-        radial-gradient(ellipse farthest-corner at 50% 50%, rgba(2, 6, 23, 0) 55%, rgba(2, 6, 23, 0.55) 100%),
-        radial-gradient(ellipse 23vw 28vh at 50% 48%, rgba(34, 211, 238, 0.14), rgba(34, 211, 238, 0.06) 50%, rgba(34, 211, 238, 0) 100%),
-        radial-gradient(ellipse 36vw 42vh at 76% 70%, rgba(37, 99, 235, 0.3), rgba(37, 99, 235, 0.13) 50%, rgba(37, 99, 235, 0) 100%),
-        radial-gradient(ellipse 34vw 42vh at 27% 28%, rgba(8, 145, 178, 0.34), rgba(8, 145, 178, 0.15) 50%, rgba(8, 145, 178, 0) 100%),
-        linear-gradient(135deg, #0b1224 0%, #111c33 100%);
-    background-attachment: fixed;
     min-height: 100vh;
-    font-family: system-ui, -apple-system, sans-serif;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -118,7 +42,7 @@ body.bg-night-sky {
 }
 
 html:has(body.bg-night-sky) {
-    background: #030712;
+    background: var(--background);
 }
 
 #skyCanvas {
@@ -133,7 +57,7 @@ html:has(body.bg-night-sky) {
 #skyCanvas[hidden] { display: none; }
 
 /* ==========================================================================
-   Search Box
+   Search box
    ========================================================================== */
 
 .search-container {
@@ -141,101 +65,85 @@ html:has(body.bg-night-sky) {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 600px;
-    padding: 0 2rem;
+    z-index: 20;
+    width: min(520px, calc(100vw - 2 * var(--space-16)));
 }
 
 .search-box {
     position: relative;
-    width: 100%;
     display: flex;
     align-items: center;
-    background-color: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 50px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    height: 64px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-resting);
+    transition: border-color var(--transition);
 }
 
-.search-box:focus-within {
-    background-color: rgba(30, 41, 59, 0.8);
-    border-color: rgba(6, 182, 212, 0.5);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
+.search-box:has(.search-input:focus) {
+    border-color: var(--focus-ring);
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 0;
 }
 
 .search-input {
     flex: 1;
-    padding: 1.2rem 1rem 1.25rem 1.25rem !important;
-    margin: 0 0 0 0 !important;
-    font-size: 1.125rem;
+    min-width: 0;
+    height: 100%;
+    padding: 0 var(--space-16) 0 var(--space-24);
     background: transparent;
-    border: none;
-    color: #f1f5f9;
+    border: 0;
+    box-shadow: none;
+    color: var(--text);
+    font-size: var(--text-heading);
+    line-height: 24px;
     outline: none;
 }
 
 .search-input::placeholder {
-    color: #64748b;
+    color: var(--text-muted);
 }
 
-.search-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 1.25rem;
-    color: #64748b;
-    flex-shrink: 0;
-    pointer-events: none;
-}
-
-.search-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: currentColor;
-}
-
-/* Google apps button + menu */
+/* Google apps button (icon button) */
 .apps-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin: 0 0.6rem 0 0 !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    border-radius: 50%;
-    color: #94a3b8;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    margin-right: var(--space-16);
 }
 
-.apps-btn svg { width: 20px; height: 20px; }
+.apps-btn svg { width: 22px; height: 22px; }
 
-.apps-btn:hover,
 .apps-btn[aria-expanded="true"] {
-    background: rgba(148, 163, 184, 0.15) !important;
-    color: #f1f5f9;
+    background: var(--border);
+    color: var(--text);
 }
 
+/* Google apps menu: opens below the bar, never reaches the dock */
 .apps-menu {
     position: absolute;
-    bottom: calc(100% + 12px);
+    top: calc(100% + var(--space-8));
     right: 0;
     z-index: 50;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.25rem;
-    width: 300px;
-    padding: 1rem;
-    background-color: rgba(30, 41, 59, 0.92);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    grid-template-columns: repeat(3, 96px);
+    gap: var(--space-8);
+    padding: var(--space-16);
+    max-height: calc(50vh - 134px);
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-raised);
+}
+
+.apps-menu::before {
+    content: "Google Apps";
+    grid-column: 1 / -1;
+    color: var(--text-muted);
+    font-size: var(--text-label);
+    line-height: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .apps-menu[hidden] { display: none; }
@@ -244,969 +152,544 @@ html:has(body.bg-night-sky) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 0.25rem;
-    border-radius: 12px;
-    color: #f1f5f9;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
+    gap: var(--space-8);
+    height: 62px;
+    color: var(--text-muted);
+    font-size: var(--text-label);
+    line-height: 16px;
+    transition: color var(--transition);
+}
+
+.apps-item img {
+    width: 32px;
+    height: 32px;
+    opacity: 0.85;
+    transition: opacity var(--transition), transform var(--transition);
 }
 
 .apps-item:hover,
 .apps-item:focus-visible {
-    background: rgba(148, 163, 184, 0.15);
-    outline: none;
+    color: var(--text);
 }
 
-.apps-item img { width: 32px; height: 32px; }
+.apps-item:hover img,
+.apps-item:focus-visible img {
+    opacity: 1;
+}
+
+.apps-item:focus-visible {
+    border-radius: var(--radius-small);
+}
 
 /* ==========================================================================
-   Quick Access Links
+   Quick links: icon only, label on hover, siblings dim
    ========================================================================== */
 
-.quick-links-container {
+.quick-links {
     position: absolute;
-    top: calc(50% + 60px);  /* Below search box */
+    top: calc(50% + 68px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 1.5rem;
-    padding: 0.75rem 1.25rem;
-    /* background-color: rgba(30, 41, 59, 0.5); */
-    /* backdrop-filter: blur(20px); */
-    /* border: 1px solid rgba(148, 163, 184, 0.15); */
-    border-radius: 16px;
-    /* box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); */
+    gap: var(--space-24);
 }
 
 .quick-link {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #314158;
-    transition: all 0.2s ease;
+    gap: var(--space-8);
+    width: 80px;
+    height: 72px;
+    padding-top: 4px;
+    color: var(--text-muted);
     cursor: pointer;
-}
-
-.quick-link:hover {
-    color: #f1f5f9;
-    /* background-color: rgba(255, 255, 255, 0.08); */
-    transform: translateY(-2px);
+    transition: color var(--transition), transform var(--transition), opacity var(--transition);
 }
 
 .quick-link-icon {
-    width: 48px;
-    height: 48px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: rgba(51, 65, 85, 0.6); */
-    border-radius: 100%;
-    /* padding: 6px; */
-    transition: all 0.2s ease;
-}
-
-.quick-link:hover .quick-link-icon {
-    /* background-color: rgba(6, 182, 212, 0.2); */
-    /* box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3); */
 }
 
 .quick-link-icon svg {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     fill: currentColor;
 }
 
+/* The label slot is always reserved so nothing shifts */
 .quick-link-title {
-    font-size: 0.75rem;
-    font-weight: 500;
-    white-space: nowrap;
-    max-width: 60px;
+    max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: none;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: var(--text-label);
+    line-height: 16px;
+    opacity: 0;
+    transition: opacity var(--transition);
 }
 
-/* Empty state for quick links */
+.quick-link:hover,
+.quick-link:focus-visible {
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+.quick-link:hover .quick-link-title,
+.quick-link:focus-visible .quick-link-title {
+    opacity: 1;
+}
+
+.quick-link:focus-visible {
+    border-radius: var(--radius-small);
+}
+
+.quick-links:has(.quick-link:hover) .quick-link:not(:hover),
+.quick-links:has(.quick-link:focus-visible) .quick-link:not(:focus-visible) {
+    opacity: 0.35;
+}
+
 .quick-links-empty {
-    color: #64748b;
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
+    color: var(--text-muted);
+    font-size: var(--text-body);
+    padding: var(--space-8) var(--space-16);
 }
 
 /* ==========================================================================
-   Dock - Shared Styles
+   Dock: one translucent glass pill, icons only, name on hover
    ========================================================================== */
 
 .dock {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    gap: 1rem;
-    padding: 0.75rem 1.25rem;
-    /* background-color: rgba(30, 41, 59, 0.7); */
-    /* backdrop-filter: blur(20px); */
-    border-radius: 20px;
-    /* border: 1px solid rgba(51, 65, 85, 0.5); */
-    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); */
     z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: 64px;
+    padding: 0 var(--space-16);
+    background: var(--surface-glass);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-resting);
+    overflow: visible;
 }
 
-/* Bottom dock positioning */
-.dock-bottom {
-    bottom: 20px;
+.dock-empty {
+    display: none;
 }
 
-/* Top dock positioning */
-.dock-top {
-    top: 20px;
-}
+.dock-bottom { bottom: var(--space-24); }
+.dock-top { top: var(--space-24); }
 
 .dock-icon {
     position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    transition: opacity var(--transition);
+}
+
+.dock-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: var(--text-muted);
     cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    color: #45556c;
-}
-
-/* Bottom dock - icons move up on hover */
-.dock-bottom .dock-icon:hover {
-    transform: scale(1.2) translateY(-8px);
-    color: #90a1b9;
-}
-
-/* Top dock - icons move down on hover */
-.dock-top .dock-icon:hover {
-    transform: scale(1.2) translateY(8px);
-    color: #90a1b9;
-}
-
-/* Hover bridge for bottom dock - fills gap between icon and card above */
-.dock-bottom .dock-icon::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 50px;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 999;
-}
-
-.dock-bottom .dock-icon:hover::before {
-    pointer-events: all;
-}
-
-/* Hover bridge for top dock - fills gap between icon and card below */
-.dock-top .dock-icon::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 30px;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 999;
-}
-
-.dock-top .dock-icon:hover::before {
-    pointer-events: all;
+    transition: background-color var(--transition), color var(--transition);
 }
 
 .icon-circle {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.875rem;
+    font-size: var(--text-heading);
     line-height: 1;
-    /* background-color: rgba(51, 65, 85, 0.5); */
-    border-radius: 14px;
-    transition: all 0.3s ease;
 }
 
-.dock-icon:hover .icon-circle {
-    transform: scale(1.05);
-}
-
-.empty-dock {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    padding: 0.75rem 1.5rem;
-    text-align: center;
-    line-height: 1.5;
-    background-color: rgba(51, 65, 85, 0.3);
-    border-radius: 12px;
-}
-
-/* ==========================================================================
-   Bookmark Cards (Floating)
-   ========================================================================== */
-
-.bookmark-card {
-    position: absolute;
-    left: 50%;
-    background: linear-gradient(
-        45deg,
-        rgba(10, 20, 28, 0.3) 0%,
-        rgba(10, 20, 28, 0.8) 100%
-    );
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
-    padding: 1.5rem;
-    min-width: 400px;
-    max-width: 520px;
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 2px 2px rgb(0 0 0 / 3%),
-        0 4px 4px rgb(0 0 0 / 4%),
-        0 10px 8px rgb(0 0 0 / 5%),
-        0 15px 15px rgb(0 0 0 / 6%),
-        0 30px 30px rgb(0 0 0 / 7%),
-        0 70px 65px rgb(0 0 0 / 9%);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 1000;
-}
-
-/* Bottom dock card - appears above icon */
-.dock-bottom .bookmark-card {
-    bottom: calc(100% + 20px);
-    transform: translateX(-50%) translateY(20px);
-    border-top: 2px solid rgba(6, 182, 212, 0.5);
-}
-
-.dock-bottom .dock-icon:hover .bookmark-card {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(-50%) translateY(0);
-}
-
-.dock-bottom .bookmark-card:hover {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* Top dock card - appears below icon */
-.dock-top .bookmark-card {
-    top: calc(100% + 20px);
-    transform: translateX(-50%) translateY(-20px);
-    border-bottom: 2px solid rgba(6, 182, 212, 0.5);
-}
-
-.dock-top .dock-icon:hover .bookmark-card {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(-50%) translateY(0);
-}
-
-.dock-top .bookmark-card:hover {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* Arrow pointing down to icon (for bottom dock) */
-.dock-bottom .bookmark-card::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid rgba(10, 20, 28, 0.8);
-}
-
-/* Arrow pointing up to icon (for top dock) */
-.dock-top .bookmark-card::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(10, 20, 28, 0.8);
-}
-
-.card-header {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #334155;
-}
-
-.bookmark-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-}
-
-.bookmark-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background-color: transparent;
-    border-radius: 8px;
-    color: #f1f5f9;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-    min-width: 0;
-}
-
-.bookmark-link:hover {
-    background-color: #334155;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(51, 65, 85, 0.5);
-}
-
-.bookmark-favicon {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    flex-shrink: 0;
-}
-
-.bookmark-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-    flex: 1;
-}
-
-/* ==========================================================================
-   Settings Button
-   ========================================================================== */
-
-.settings-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    /* background-color: rgba(30, 41, 59, 0.7); */
-    background-color: transparent;
-    backdrop-filter: blur(20px);
-    /* border: 1px solid rgba(51, 65, 85, 0.5); */
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #f1f5f9;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.settings-btn:hover {
-    background-color: rgba(30, 41, 59, 0.9);
-    border-color: rgba(6, 182, 212, 0.5);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.1);
-}
-
-.settings-btn svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-}
-
-/* ==========================================================================
-   Settings Modal (now uses native dialog)
-   ========================================================================== */
-
-.settings-section {
-    margin-bottom: 1.5rem;
-}
-
-.settings-section:last-child {
-    margin-bottom: 0;
-}
-
-.settings-section h4 {
-    color: #f1f5f9;
-    font-size: 1rem;
-    margin-bottom: 0.75rem;
-    font-weight: 600;
-}
-
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #334155;
-    border-radius: 8px;
-    margin-bottom: 0.75rem;
-}
-
-.setting-item:last-child {
-    margin-bottom: 0;
-}
-
-.setting-item label {
-    color: #f1f5f9;
-    font-size: 0.95rem;
-    margin-bottom: 0;
-}
-
-.setting-item select {
-    background-color: rgba(51, 65, 85, 0.8);
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    border-radius: 6px;
-    color: #f1f5f9;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    width: auto;
-}
-
-.manage-categories-btn {
-    width: 100%;
-    padding: 1rem;
-    background-color: #0ea5e9;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.manage-categories-btn:hover {
-    background-color: #0284c7;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.3);
-}
-
-/* ==========================================================================
-   Dialog/Modal Styling - Floating Card Design
-   ========================================================================== */
-
-/* Dialog Base - Override Pico CSS dialog styles */
-dialog {
-    /* Reset Pico's fullscreen modal approach */
-    display: block;
-    position: fixed;
-    inset: unset; /* Critical: unset Pico's inset: 0 */
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    min-width: 0; /* Reset Pico's min-width: 100% */
-    max-width: calc(100vw - 40px);
-    height: auto;
-    min-height: 0; /* Reset Pico's min-height: 100% */
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(15, 23, 42, 0.95) 0%,
-        rgba(15, 23, 42, 0.85) 100%
-    );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-top: 2px solid rgba(6, 182, 212, 0.5);
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.05),
-        0 20px 25px -5px rgba(0, 0, 0, 0.3),
-        0 8px 10px -6px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    color: #f1f5f9;
-}
-
-/* Dialog Backdrop */
-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-}
-
-/* Modal Header with Preview */
-.modal-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 20px;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-.preview-icon,
-.preview-favicon {
-    width: 48px;
-    height: 48px;
-    background: rgba(34, 211, 238, 0.1);
-    border: 2px solid rgba(34, 211, 238, 0.3);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #22d3ee;
-    flex-shrink: 0;
-    overflow: hidden;
-}
-
-.preview-icon svg {
+.icon-circle svg {
     width: 26px;
     height: 26px;
     fill: currentColor;
 }
 
-.preview-favicon {
-    background: rgba(51, 65, 85, 0.5);
-    border-color: rgba(148, 163, 184, 0.2);
+.dock-icon:hover .dock-btn,
+.dock-btn:focus-visible {
+    background: var(--border-glass);
+    color: var(--text);
 }
 
-.preview-favicon img {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    object-fit: cover;
+.dock-btn:active {
+    background: var(--border);
 }
 
-.preview-info {
-    flex: 1;
-    min-width: 0;
+/* Open category: cyan icon with a small dot */
+.dock-icon.open .dock-btn {
+    color: var(--focus-ring);
 }
 
-.preview-label {
-    display: block;
-    font-size: 11px;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+.dock-icon.open .dock-btn::after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 37px;
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--focus-ring);
 }
 
-.preview-title {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #f1f5f9;
+.dock-top .dock-icon.open .dock-btn::after {
+    top: 3px;
+}
+
+/* Dock tooltip pill: category name above the icon (below it on a top dock) */
+.tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+    transform: translateX(-50%) translateY(2px);
+    padding: 4px var(--space-8);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-resting);
+    color: var(--text);
+    font-size: var(--text-label);
+    line-height: 16px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition), transform var(--transition);
 }
 
-/* Close Button */
-.close-btn {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    color: #64748b;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    align-self: flex-start;
-    padding: 0;
-    margin: 0;
+.dock-top .tip {
+    bottom: auto;
+    top: calc(100% + 6px);
+    transform: translateX(-50%) translateY(-2px);
 }
 
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #f1f5f9;
+/* Hover: the name shows first, then the panel takes over after a short pause */
+.dock-icon:hover .tip {
+    animation: tip-dwell 0.5s ease forwards;
 }
 
-.close-btn svg {
-    width: 18px;
-    height: 18px;
-    fill: currentColor;
+.dock-btn:focus-visible ~ .tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
-/* Modal Body */
-.modal-body {
-    padding: 20px;
+.dock-icon.open .tip,
+.dock-icon.open .dock-btn:focus-visible ~ .tip {
+    opacity: 0;
+    animation: none;
 }
 
-/* Field Styling */
-.field {
-    margin-bottom: 16px;
+@keyframes tip-dwell {
+    0% { opacity: 0; transform: translateX(-50%) translateY(2px); }
+    30%, 70% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(0); }
 }
 
-.field:last-of-type {
-    margin-bottom: 0;
+.dock-top .dock-icon:hover .tip {
+    animation-name: tip-dwell-top;
 }
 
-.field-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: #64748b;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+@keyframes tip-dwell-top {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-2px); }
+    30%, 70% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(0); }
 }
 
-.field-label svg {
-    width: 12px;
-    height: 12px;
-    fill: currentColor;
+/* Group dimming: while one dock icon is hovered or focused, the others recede */
+.dock:has(.dock-icon:hover) .dock-icon:not(:hover),
+.dock:has(.dock-btn:focus-visible) .dock-icon:not(:has(.dock-btn:focus-visible)) {
+    opacity: 0.35;
 }
 
-.field-input,
-.field-select {
+/* Hover bridge: keeps the panel open while the pointer crosses the gap */
+.dock-bottom .dock-icon::before,
+.dock-top .dock-icon::before {
+    content: "";
+    position: absolute;
+    left: 0;
     width: 100%;
-    padding: 12px 14px;
-    background: rgba(51, 65, 85, 0.4);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    border-radius: 8px;
-    color: #f1f5f9;
-    font-size: 14px;
-    transition: all 0.15s ease;
-    outline: none;
-    box-sizing: border-box;
+    height: 40px;
+    pointer-events: none;
 }
 
-.field-input:focus,
-.field-select:focus {
-    background: rgba(51, 65, 85, 0.6);
-    border-color: rgba(6, 182, 212, 0.5);
-    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
-}
+.dock-bottom .dock-icon::before { bottom: 100%; }
+.dock-top .dock-icon::before { top: 100%; }
 
-.field-input::placeholder {
-    color: #475569;
-}
-
-.field-select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2394a3b8' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 40px;
-}
-
-.field-select option {
-    background: #1e293b;
-}
-
-/* Checkbox Field */
-.checkbox-field {
-    margin-top: 16px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: pointer;
-    padding: 12px 14px;
-    background: rgba(51, 65, 85, 0.3);
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 8px;
-    transition: all 0.15s ease;
-}
-
-.checkbox-label:hover {
-    background: rgba(51, 65, 85, 0.5);
-    border-color: rgba(148, 163, 184, 0.2);
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin: 0;
-    accent-color: #0ea5e9;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.checkbox-text {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: #94a3b8;
-    line-height: 1.4;
-}
-
-.checkbox-text svg {
-    width: 16px;
-    height: 16px;
-    fill: #64748b;
-    flex-shrink: 0;
-}
-
-.checkbox-label:has(input:checked) .checkbox-text {
-    color: #f1f5f9;
-}
-
-.checkbox-label:has(input:checked) .checkbox-text svg {
-    fill: #0ea5e9;
-}
-
-/* Icon Section */
-.icon-section {
-    margin-top: 16px;
-}
-
-.section-label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-}
-
-.section-label svg {
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
-}
-
-/* Modal Footer */
-.modal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: rgba(51, 65, 85, 0.2);
-    border-top: 1px solid rgba(148, 163, 184, 0.1);
-}
-
-/* Delete Button */
-.delete-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    background: transparent;
-    border: none;
-    border-radius: 8px;
-    color: #ef4444;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    margin: 0;
-}
-
-.delete-btn:hover {
-    background: rgba(239, 68, 68, 0.1);
-}
-
-.delete-btn svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-}
-
-/* Save Button */
-.save-btn {
-    padding: 10px 24px;
-    background: #0ea5e9;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    margin-left: auto;
-}
-
-.save-btn:hover {
-    background: #0284c7;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-}
-
-.save-btn svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-}
-
-/* Secondary Button */
-.secondary-btn {
-    padding: 10px 20px;
-    background: transparent;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    border-radius: 8px;
-    color: #94a3b8;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    margin: 0;
-}
-
-.secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
-}
-
-/* Confirm Delete Button (red solid) */
-.confirm-delete {
-    padding: 10px 20px;
-    background: #ef4444;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0;
-}
-
-.confirm-delete:hover {
-    background: #dc2626;
-}
-
-.confirm-delete svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-}
-
-/* Danger Icon for confirm modal */
-.danger-icon {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-}
-
-/* Settings Icon for settings modal */
-.settings-icon {
-    background: rgba(148, 163, 184, 0.1);
-    border-color: rgba(148, 163, 184, 0.2);
-    color: #94a3b8;
-}
-
-/* Settings Modal Specific Styles */
-dialog .settings-section {
-    margin-bottom: 20px;
-}
-
-dialog .settings-section:last-child {
-    margin-bottom: 0;
-}
-
-dialog .settings-section h4 {
-    font-size: 11px;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 0 0 12px 0;
-    font-weight: 500;
-}
-
-dialog .setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 14px;
-    background: rgba(51, 65, 85, 0.3);
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-dialog .setting-item:last-child {
-    margin-bottom: 0;
-}
-
-dialog .setting-item label {
-    color: #f1f5f9;
-    font-size: 14px;
-    margin: 0;
-}
-
-dialog .setting-item select {
-    background: rgba(51, 65, 85, 0.6);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 6px;
-    color: #f1f5f9;
-    padding: 8px 12px;
-    font-size: 13px;
-    width: auto;
-    min-width: 120px;
-}
-
-dialog .manage-btn {
-    width: 100%;
-    padding: 12px;
-    background: #0ea5e9;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    margin: 0;
-}
-
-dialog .manage-btn:hover {
-    background: #0284c7;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+.dock-icon:hover::before {
+    pointer-events: all;
 }
 
 /* ==========================================================================
-   Context Menu
+   Category panel (opens above the dock, below it on a top dock)
+   ========================================================================== */
+
+.bookmark-card {
+    position: absolute;
+    left: 50%;
+    z-index: 1000;
+    width: 480px;
+    max-width: calc(100vw - 2 * var(--space-16));
+    padding: var(--space-24);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-raised);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--transition), transform var(--transition), visibility 0s linear 0.15s;
+}
+
+.dock-bottom .bookmark-card {
+    bottom: calc(100% + 26px);
+    transform: translateX(-50%) translateY(8px);
+}
+
+.dock-top .bookmark-card {
+    top: calc(100% + 26px);
+    transform: translateX(-50%) translateY(-8px);
+}
+
+.dock-icon:hover .bookmark-card {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0.35s, 0.35s, 0s;
+}
+
+.dock-icon.open .bookmark-card,
+.dock-icon .bookmark-card:focus-within {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+    transition-delay: 0s;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    margin-bottom: var(--space-16);
+    padding-bottom: var(--space-16);
+    border-bottom: 1px solid var(--surface-hover);
+}
+
+.card-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--focus-ring);
+}
+
+.card-header-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.card-header-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text);
+    font-size: var(--text-heading);
+    line-height: 24px;
+    font-weight: 600;
+}
+
+.bookmark-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+}
+
+.bookmark-list-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: var(--text-body);
+}
+
+.bookmark-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    min-width: 0;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-small);
+    color: var(--text);
+    font-size: var(--text-body);
+    line-height: 20px;
+    transition: background-color var(--transition);
+}
+
+.bookmark-link:hover {
+    background: var(--surface-hover);
+}
+
+.bookmark-link:active {
+    background: var(--border);
+}
+
+.bookmark-favicon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.bookmark-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ==========================================================================
+   Settings button (icon button, top right)
+   ========================================================================== */
+
+.settings-btn {
+    position: fixed;
+    top: var(--space-24);
+    right: var(--space-24);
+    width: 40px;
+    height: 40px;
+}
+
+.settings-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ==========================================================================
+   First run welcome card (scrim plus card)
+   ========================================================================== */
+
+.welcome-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-16);
+    background: color-mix(in srgb, var(--background) 75%, transparent);
+}
+
+.welcome-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    width: 440px;
+    max-width: 100%;
+    padding: var(--space-32);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-raised);
+    color: var(--text-muted);
+    text-align: left;
+}
+
+.welcome-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+}
+
+.brand-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--accent);
+    border-radius: var(--radius-small);
+    color: var(--text);
+}
+
+.brand-tile svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+}
+
+.welcome-card h2 {
+    color: var(--text);
+    font-size: var(--text-title);
+    line-height: 36px;
+    font-weight: 600;
+}
+
+.welcome-card ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    list-style: none;
+}
+
+.welcome-card li {
+    font-size: var(--text-body);
+    line-height: 20px;
+}
+
+.welcome-card strong {
+    display: block;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.welcome-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-8);
+}
+
+/* ==========================================================================
+   Context menu
    ========================================================================== */
 
 .contextMenu {
-    --menu-border: rgba(255, 255, 255, 0.08);
-    --menu-bg: linear-gradient(
-        45deg,
-        rgba(10, 20, 28, 0.2) 0%,
-        rgba(10, 20, 28, 0.7) 100%
-    );
-    --item-border: rgba(255, 255, 255, 0.1);
-    --item-color: #fff;
-    --item-bg-hover: rgba(255, 255, 255, 0.1);
-
     height: 0;
     overflow: hidden;
-    background: var(--menu-bg);
-    backdrop-filter: blur(5px);
+    background: var(--surface);
     position: fixed;
     top: var(--top);
     left: var(--left);
-    animation: menuAnimation 0.4s 0s both;
+    animation: menuAnimation 0.15s ease both;
     transform-origin: left;
     list-style: none;
     margin: 4px;
@@ -1214,10 +697,7 @@ dialog .manage-btn:hover {
     display: flex;
     flex-direction: column;
     z-index: 999999999;
-    box-shadow: 0 0 0 1px var(--menu-border), 0 2px 2px rgb(0 0 0 / 3%),
-        0 4px 4px rgb(0 0 0 / 4%), 0 10px 8px rgb(0 0 0 / 5%),
-        0 15px 15px rgb(0 0 0 / 6%), 0 30px 30px rgb(0 0 0 / 7%),
-        0 70px 65px rgb(0 0 0 / 9%);
+    box-shadow: 0 0 0 1px var(--border), var(--shadow-raised);
 }
 
 .contextMenu-item {
@@ -1225,54 +705,42 @@ dialog .manage-btn:hover {
 }
 
 .contextMenu-item[data-divider="top"] {
-    border-top: 1px solid;
+    border-top: 1px solid var(--border);
 }
 
 .contextMenu-item[data-divider="bottom"] {
-    border-bottom: 1px solid;
+    border-bottom: 1px solid var(--border);
 }
 
 .contextMenu-item[data-divider="top-bottom"] {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-}
-
-.contextMenu-item[data-divider] {
-    border-color: var(--item-border);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 }
 
 .contextMenu-button {
-    color: var(--item-color);
-    background: 0;
+    color: var(--text);
+    background: transparent;
     border: 0;
     white-space: nowrap;
     width: 100%;
-    border-radius: 4px;
-    padding: 6px 24px 6px 7px;
+    border-radius: var(--radius-small);
+    padding: 8px var(--space-24) 8px 8px;
     text-align: left;
     display: flex;
     align-items: center;
-    font-size: 14px;
-    width: 100%;
-    animation: menuItemAnimation 0.2s 0s both;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-size: var(--text-body);
+    animation: menuItemAnimation 0.15s ease both;
+    font-family: inherit;
     cursor: pointer;
+    transition: background-color var(--transition);
 }
 
 .contextMenu-button:hover {
-    background-color: var(--item-bg-hover);
+    background-color: var(--surface-hover);
 }
 
-.contextMenu[data-theme="light"] {
-    --menu-bg: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.45) 0%,
-        rgba(255, 255, 255, 0.85) 100%
-    );
-    --menu-border: rgba(0, 0, 0, 0.08);
-    --item-border: rgba(0, 0, 0, 0.1);
-    --item-color: rgb(10, 20, 28);
-    --item-bg-hover: rgba(10, 20, 28, 0.09);
+.contextMenu-button:active {
+    background-color: var(--border);
 }
 
 /* ==========================================================================
@@ -1282,12 +750,12 @@ dialog .manage-btn:hover {
 @keyframes menuAnimation {
     0% {
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.9);
     }
     100% {
         height: var(--height);
         opacity: 1;
-        border-radius: 8px;
+        border-radius: var(--radius-small);
         transform: scale(1);
     }
 }
@@ -1295,42 +763,10 @@ dialog .manage-btn:hover {
 @keyframes menuItemAnimation {
     0% {
         opacity: 0;
-        transform: translateX(-10px);
+        transform: translateX(-8px);
     }
     100% {
         opacity: 1;
         transform: translateX(0);
     }
 }
-
-/* Welcome card (first run, no categories yet) */
-.welcome-card {
-  width: min(760px, 92vw);
-  padding: 1.1rem 1.5rem 1.25rem;
-  border-radius: 20px;
-  background: rgba(30, 41, 59, 0.55);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-  color: #94a3b8;
-  text-align: left;
-}
-.welcome-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
-.welcome-card h2 { margin: 0; font-size: 1.25rem; color: #f1f5f9; font-weight: 600; }
-.welcome-card ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-.welcome-card li { font-size: .9rem; line-height: 1.45; }
-.welcome-card strong { display: block; color: #f1f5f9; font-weight: 600; margin-bottom: .15rem; }
-.welcome-btn {
-  display: inline-block;
-  white-space: nowrap;
-  padding: .55rem 1.1rem;
-  border-radius: 999px;
-  background: #0891b2;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-}
-.welcome-btn:hover { background: #0e7490; }
-
-/* Icon search in the quick link modal */
-.icon-search { margin-bottom: .6rem; }

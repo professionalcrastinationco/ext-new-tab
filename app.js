@@ -21,6 +21,13 @@ async function init() {
   });
 }
 
+// Expand or collapse a category and keep aria-expanded in sync
+function toggleCategory(header) {
+  const category = header.closest('.category');
+  const expanded = category.classList.toggle('expanded');
+  header.setAttribute('aria-expanded', String(expanded));
+}
+
 // Attach global event listeners
 function attachGlobalListeners() {
   // Category accordion expand/collapse
@@ -31,8 +38,16 @@ function attachGlobalListeners() {
     // Don't toggle if clicking action buttons
     if (e.target.closest('.category-actions')) return;
 
-    const category = header.closest('.category');
-    category.classList.toggle('expanded');
+    toggleCategory(header);
+  });
+
+  // Keyboard: Enter or Space on a category header expands or collapses it
+  document.getElementById('categories-container').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const header = e.target.closest('.category-header');
+    if (!header || e.target !== header) return;
+    e.preventDefault();
+    toggleCategory(header);
   });
 
   // Add Category button
