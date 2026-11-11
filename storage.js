@@ -16,10 +16,10 @@ const DEFAULT_DATA = {
 
 // Default quick links for new installations
 const DEFAULT_QUICK_LINKS = [
-  { id: 'ql_claude', title: 'Claude', url: 'https://claude.ai', icon: 'claude', order: 0 },
-  { id: 'ql_chatgpt', title: 'ChatGPT', url: 'https://chat.openai.com', icon: 'chatgpt', order: 1 },
-  { id: 'ql_github', title: 'GitHub', url: 'https://github.com', icon: 'github', order: 2 },
-  { id: 'ql_iceberg', title: 'Iceberg', url: 'https://iceberg.pm', icon: 'kanban', order: 3 }
+  { id: 'ql_gmail', title: 'Gmail', url: 'https://mail.google.com', icon: 'gmail', order: 0 },
+  { id: 'ql_calendar', title: 'Calendar', url: 'https://calendar.google.com', icon: 'googlecalendar', order: 1 },
+  { id: 'ql_youtube', title: 'YouTube', url: 'https://www.youtube.com', icon: 'youtube', order: 2 },
+  { id: 'ql_maps', title: 'Maps', url: 'https://maps.google.com', icon: 'googlemaps', order: 3 }
 ];
 
 // Load all data from chrome.storage.sync
@@ -56,7 +56,7 @@ async function loadData() {
         }
         resolve(data);
       } else {
-        resolve(DEFAULT_DATA);
+        resolve({ ...DEFAULT_DATA, quickLinks: DEFAULT_QUICK_LINKS.map(l => ({ ...l })) });
       }
     });
   });

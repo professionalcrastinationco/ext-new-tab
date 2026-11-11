@@ -90,6 +90,7 @@ const ICON_KANBAN = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 25
 
 // Quick Access Icons Map
 const QUICK_ACCESS_ICONS = {
+  ...(typeof BRAND_ICONS !== 'undefined' ? BRAND_ICONS : {}),
   claude: ICON_CLAUDE,
   chatgpt: ICON_CHATGPT,
   github: ICON_GITHUB,

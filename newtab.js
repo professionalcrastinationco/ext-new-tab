@@ -116,6 +116,18 @@ function populateQuickLinkIconPicker(selectedIcon, updatePreview = true) {
             previewIcon.innerHTML = allIcons[item.dataset.icon] || allIcons['globe'] || CATEGORY_ICONS['globe'];
         }
     };
+
+    // Search filter
+    const search = document.getElementById('quick-link-icon-search');
+    if (search) {
+        search.value = '';
+        search.oninput = () => {
+            const q = search.value.trim().toLowerCase();
+            picker.querySelectorAll('.icon-picker-item').forEach(el => {
+                el.style.display = !q || el.dataset.icon.toLowerCase().includes(q) ? '' : 'none';
+            });
+        };
+    }
 }
 
 // Render quick access links
@@ -558,10 +570,19 @@ function renderDock(data) {
     dockElement.innerHTML = '';
 
     if (!data.categories || data.categories.length === 0) {
-        const emptyMessage = document.createElement('div');
-        emptyMessage.className = 'empty-dock';
-        emptyMessage.innerHTML = `<span class="ph-icon" style="margin-right:6px">${ICON_FOLDER_OPEN}</span>No categories yet. Click <span class="ph-icon" style="margin:0 4px">${ICON_GEAR}</span> to get started!`;
-        dockElement.appendChild(emptyMessage);
+        const welcome = document.createElement('div');
+        welcome.className = 'welcome-card';
+        welcome.innerHTML = `
+            <div class="welcome-head">
+                <h2>Welcome to Dockside</h2>
+                <a class="welcome-btn" href="manage.html">Create Your First Category</a>
+            </div>
+            <ol>
+                <li><strong>1. Make a category</strong>Like Work, Learning or Fun.</li>
+                <li><strong>2. Add bookmarks</strong>Save any page from the toolbar button.</li>
+                <li><strong>3. Click its icon</strong>Your links open from this dock.</li>
+            </ol>`;
+        dockElement.appendChild(welcome);
         return;
     }
 

@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Dockside: Bookmarks New Tab Page",
-  "version": "2026.11.11",
-  "description": "Organize quick links into categories on your new tab page",
+  "name": "Dockside: New Tab Page & Bookmarks",
+  "version": "2026.11.12",
+  "description": "A calm new tab page: your bookmarks in tidy categories, a quick links dock and a Google apps menu.",
   "permissions": ["storage", "tabs"],
   "action": {
     "default_popup": "popup.html",
