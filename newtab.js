@@ -157,8 +157,26 @@ function renderQuickLinks(quickLinks, openInNewTab) {
         }
     });
 
+    // Plus button: always the last item, so adding is never hidden behind right-click
+    const appendAddButton = (withHint) => {
+        if (withHint) {
+            const hint = document.createElement('span');
+            hint.className = 'quick-links-empty';
+            hint.textContent = 'No quick links. Click the plus to add.';
+            newContainer.appendChild(hint);
+        }
+        const addBtn = document.createElement('button');
+        addBtn.type = 'button';
+        addBtn.className = 'quick-link-add';
+        addBtn.setAttribute('aria-label', 'Add Quick Link');
+        addBtn.title = 'Add Quick Link';
+        addBtn.innerHTML = ICON_PLUS;
+        addBtn.addEventListener('click', () => showQuickLinkModal(null));
+        newContainer.appendChild(addBtn);
+    };
+
     if (!quickLinks || quickLinks.length === 0) {
-        newContainer.innerHTML = '<span class="quick-links-empty">No quick links. Right-click to add!</span>';
+        appendAddButton(true);
         return;
     }
 
@@ -212,6 +230,8 @@ function renderQuickLinks(quickLinks, openInNewTab) {
         linkEl.appendChild(titleEl);
         newContainer.appendChild(linkEl);
     });
+
+    appendAddButton(false);
 }
 
 async function init() {
@@ -322,9 +342,13 @@ function attachEventListeners() {
         const icon = formData.get('icon')?.trim() || null;
         const categoryId = formData.get('categoryId');
 
-        if (!name || !categoryId) return;
+        if (!name) return;
 
-        await updateCategory(categoryId, { name, ...(icon && { icon }) });
+        if (categoryId) {
+            await updateCategory(categoryId, { name, ...(icon && { icon }) });
+        } else {
+            await createCategory(name, icon);
+        }
         document.getElementById('category-modal').close();
         currentData = await loadData();
         renderDock(currentData);
@@ -659,16 +683,37 @@ function renderDock(data) {
     const hasCategories = data.categories && data.categories.length > 0;
 
     // Update dock position class
-    dockElement.className = `dock dock-${dockPosition}${hasCategories ? '' : ' dock-empty'}`;
+    dockElement.className = `dock dock-${dockPosition}`;
 
     // Clear dock
     dockElement.innerHTML = '';
 
     renderWelcome(!hasCategories);
-    if (!hasCategories) return;
+
+    // Right-click on the dock background also offers Add Category (bound once)
+    if (!dockElement.dataset.addMenu) {
+        dockElement.dataset.addMenu = '1';
+        dockElement.addEventListener('contextmenu', (e) => {
+            if (e.target.closest('.dock-icon')) return;
+            e.preventDefault();
+            showContextMenu(e, [
+                {
+                    content: `${addIcon}Add Category`,
+                    events: { click: () => showCategoryModal(null) }
+                }
+            ], 'dark');
+        });
+    }
 
     // Sort categories by order
-    const sortedCategories = [...data.categories].sort((a, b) => a.order - b.order);
+    const sortedCategories = hasCategories ? [...data.categories].sort((a, b) => a.order - b.order) : [];
+
+    if (!hasCategories) {
+        const hint = document.createElement('span');
+        hint.className = 'dock-empty-hint';
+        hint.textContent = 'No categories yet. Click the plus to add a category.';
+        dockElement.appendChild(hint);
+    }
 
     sortedCategories.forEach(category => {
         const dockIcon = document.createElement('div');
@@ -735,30 +780,41 @@ function renderDock(data) {
         dockIcon.appendChild(card);
         dockElement.appendChild(dockIcon);
     });
+
+    // Plus button: always the last item in the dock
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'dock-add';
+    addBtn.setAttribute('aria-label', 'Add Category');
+    addBtn.title = 'Add Category';
+    addBtn.innerHTML = ICON_PLUS;
+    addBtn.addEventListener('click', () => showCategoryModal(null));
+    dockElement.appendChild(addBtn);
 }
 
-function showCategoryModal(category) {
+function showCategoryModal(category = null) {
     const modal = document.getElementById('category-modal');
     const nameInput = document.getElementById('category-name');
     const idInput = document.getElementById('category-id');
     const previewTitle = document.getElementById('category-preview-title');
     const deleteBtn = document.getElementById('delete-category-btn');
 
-    nameInput.value = category.name;
-    idInput.value = category.id;
+    // category is null when adding a new one
+    nameInput.value = category ? category.name : '';
+    idInput.value = category ? category.id : '';
 
     // Populate preview header
     if (previewTitle) {
-        previewTitle.textContent = category.name || 'Category';
+        previewTitle.textContent = (category && category.name) || (category ? 'Category' : 'New Category');
     }
 
-    // Show delete button (editing existing category)
+    // Delete button only when editing an existing category
     if (deleteBtn) {
-        deleteBtn.style.display = 'flex';
+        deleteBtn.style.display = category ? 'flex' : 'none';
     }
 
     // Populate icon picker with current selection (also updates preview icon)
-    populateIconPicker(category.icon);
+    populateIconPicker(category ? category.icon : null);
 
     modal.showModal();
     nameInput.focus();
