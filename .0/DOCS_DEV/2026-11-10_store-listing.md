@@ -8,7 +8,9 @@ Short description (under 132): Organize your favorite links into clean categorie
 Turn every new tab into a calm, fast launchpad.
 
 - Group bookmarks into your own categories, each with an icon
-- A quick-links dock for the sites you open all day
+- A quick-links row for the sites you open all day, with a panel of popular sites (AI chat, Google, creative and dev tools) you can add in one click
+- Drag and drop to reorder your quick links and categories
+- Use your own icons: paste an image link (it syncs to your other devices) or upload one
 - A Google apps menu in the search box for one-click access to your Google tools
 - Two backgrounds: Spotlight Mesh and an animated Night Sky Aurora with slow shooting stars
 - Save the current page in one click from the toolbar popup
