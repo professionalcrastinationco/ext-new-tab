@@ -5,7 +5,7 @@
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let W, H, dpr; const S = 1; // real speed
   const rnd = (a, b) => a + Math.random() * (b - a);
-  function resize() { dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0); makeStars(); }
+  function resize() { dpr = 1; /* soft haze and tiny stars look the same at 1x, and the canvas uses about a quarter of the memory */ W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0); makeStars(); }
 
   // Aurora haze and horizon bloom drift very slowly
   const blobs = [
@@ -44,7 +44,7 @@
 
   // Occasional events: shooting star, comet, satellite, nebula pulse. Timers run on virtual time.
   const events = [];
-  let vt = 0, nextShoot = 6000, nextComet = 40000, nextSat = 18000, nextPulse = 25000;
+  let vt = 0, nextCross = 6000, nextPulse = 25000;
   function spawnShoot() { const dir = Math.random() < .5 ? 1 : -1; const x = dir > 0 ? rnd(0, W * .6) : rnd(W * .4, W), y = rnd(0, H * .4);
     events.push({ k: 'shoot', x, y, vx: dir * rnd(900, 1300), vy: rnd(250, 450), life: 0, max: rnd(700, 1100), len: rnd(110, 200) }); }
   function spawnComet() { const dir = Math.random() < .5 ? 1 : -1; events.push({ k: 'comet', x: dir > 0 ? -100 : W + 100, y: rnd(H * .08, H * .35), vx: dir * rnd(55, 85), vy: rnd(18, 32), life: 0, max: 1e9 }); }
@@ -53,9 +53,14 @@
 
   function update(dtReal) {
     const dt = dtReal * S; vt += dt;
-    if (vt > nextShoot) { spawnShoot(); nextShoot = vt + rnd(14000, 36000); }
-    if (vt > nextComet) { spawnComet(); nextComet = vt + rnd(90000, 160000); }
-    if (vt > nextSat) { spawnSat(); nextSat = vt + rnd(40000, 80000); }
+    // Only one thing crosses the sky at a time: shooting star, comet or satellite
+    const crossing = events.some(e => e.k !== 'pulse');
+    if (crossing) nextCross = vt + rnd(12000, 30000);
+    else if (vt > nextCross) {
+      const roll = Math.random();
+      if (roll < .6) spawnShoot(); else if (roll < .88) spawnSat(); else spawnComet();
+      nextCross = vt + 1e9; // set again once it has left
+    }
     if (vt > nextPulse) { spawnPulse(); nextPulse = vt + rnd(45000, 90000); }
     for (let i = events.length - 1; i >= 0; i--) {
       const e = events[i]; e.life += dt;
