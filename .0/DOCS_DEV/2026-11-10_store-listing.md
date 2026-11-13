@@ -11,7 +11,7 @@ Turn every new tab into a calm, fast launchpad.
 - A quick-links row for the sites you open all day, with a panel of popular sites (AI chat, Google, creative and dev tools) you can add in one click
 - Drag and drop to reorder your quick links and categories
 - Use your own icons: paste an image link (it syncs to your other devices) or upload one
-- Search with Google, Bing, DuckDuckGo, Brave, Ecosia, Yahoo or Startpage, right from the new tab
+- Search the web from the new tab with the search engine you choose in Settings
 - A short walkthrough on first use shows you everything it can do
 - Two backgrounds: Spotlight Mesh and an animated Night Sky Aurora with slow shooting stars
 - Save the current page in one click from the toolbar popup
