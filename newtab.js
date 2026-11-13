@@ -352,6 +352,7 @@ async function init() {
     // New users (nothing saved yet) get the walkthrough once; others can replay it from Settings
     document.getElementById('tourBtn').addEventListener('click', () => window.DocksideTour.start());
     if (!currentData.settings.tourDone && currentData.categories.length === 0) window.DocksideTour.start();
+    else window.DocksideFooterTip.maybeShow();
 
     // Listen for storage updates
     window.addEventListener('storageUpdated', async (e) => {
