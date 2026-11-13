@@ -980,22 +980,26 @@ function renderPopularLinks() {
             tile.innerHTML = `${renderQuickLinkIcon(item.icon)}<span class="popular-name">${item.title}</span>`;
             tile.classList.toggle('added', !!findQuickLinkByUrl(item.url));
             tile.setAttribute('aria-pressed', tile.classList.contains('added') ? 'true' : 'false');
-            if (!tile.classList.contains('added') && currentData.quickLinks.length >= QUICK_LINK_LIMIT) {
-                tile.classList.add('full');
-                tile.title = 'Quick links are full (20 is the most)';
+            if (tile.classList.contains('added')) {
+                tile.title = 'Already in your quick links';
             }
-            tile.addEventListener('click', async () => {
-                const existing = findQuickLinkByUrl(item.url);
-                if (existing) {
-                    await deleteQuickLink(existing.id);
-                } else if (currentData.quickLinks.length >= QUICK_LINK_LIMIT) {
-                    return;
-                } else {
-                    await addQuickLink({ title: item.title, url: item.url, icon: item.icon });
-                }
-                currentData = await loadData();
-                renderQuickLinks(currentData.quickLinks, currentData.settings.openInNewTab !== false);
-                renderPopularLinks();
+            // Clicking a tile fills in the form on the left. Nothing is added until Save.
+            tile.addEventListener('click', () => {
+                if (tile.classList.contains('added')) return;
+                document.querySelectorAll('.popular-tile.selected').forEach(t => {
+                    t.classList.remove('selected');
+                    t.setAttribute('aria-pressed', 'false');
+                });
+                tile.classList.add('selected');
+                tile.setAttribute('aria-pressed', 'true');
+                document.getElementById('quick-link-title').value = item.title;
+                document.getElementById('quick-link-url').value = item.url;
+                const previewTitle = document.getElementById('quick-link-preview-title');
+                if (previewTitle) previewTitle.textContent = item.title;
+                populateQuickLinkIconPicker(item.icon);
+                const selectedIcon = document.querySelector('#quick-link-icon-picker .icon-picker-item.selected');
+                if (selectedIcon) selectedIcon.scrollIntoView({ block: 'nearest' });
+                document.querySelector('#quick-link-form button[type=submit]').focus();
             });
             tiles.appendChild(tile);
         });

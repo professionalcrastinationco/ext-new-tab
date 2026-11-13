@@ -8,7 +8,7 @@ Short description (under 132): Organize your favorite links into clean categorie
 Turn every new tab into a calm, fast launchpad.
 
 - Group bookmarks into your own categories, each with an icon
-- A quick-links row for the sites you open all day, with a panel of popular sites (AI chat, Google, creative and dev tools) you can add in one click
+- A quick-links row for the sites you open all day, with a panel of popular sites (AI chat, Google, creative and dev tools) you can pick in one click
 - Drag and drop to reorder your quick links and categories
 - Use your own icons: paste an image link (it syncs to your other devices) or upload one
 - Search the web from the new tab with the search engine you choose in Settings

@@ -821,14 +821,19 @@ html:has(body.bg-night-sky) {
     transition: color var(--transition);
 }
 
-.popular-tile.full {
-    opacity: 0.35;
-    cursor: not-allowed;
+.popular-tile.added {
+    cursor: default;
+}
+
+.popular-tile.selected {
+    background: var(--surface-hover);
+    box-shadow: inset 0 0 0 2px var(--focus-ring);
 }
 
 .popular-tile:hover,
 .popular-tile:focus-visible,
-.popular-tile.added {
+.popular-tile.added,
+.popular-tile.selected {
     color: var(--text);
 }
 
@@ -838,7 +843,8 @@ html:has(body.bg-night-sky) {
 }
 
 .popular-tile:hover .popular-name,
-.popular-tile:focus-visible .popular-name {
+.popular-tile:focus-visible .popular-name,
+.popular-tile.selected .popular-name {
     color: #fff;
 }
 
