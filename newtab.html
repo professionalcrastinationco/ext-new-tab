@@ -19,10 +19,9 @@
                 placeholder="Search Google or type a URL"
                 autocomplete="off"
             />
-            <button type="button" class="icon-btn apps-btn" id="appsBtn" aria-label="Google apps" aria-haspopup="true" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+            <button type="button" class="icon-btn search-btn" id="searchBtn" aria-label="Search">
+                <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
             </button>
-            <div class="apps-menu" id="appsMenu" role="menu" hidden></div>
         </div>
     </div>
 
@@ -165,6 +164,14 @@
         </div>
         <div class="modal-body">
             <div class="settings-section">
+                <h4>Search</h4>
+                <div class="setting-item">
+                    <label for="searchEngineSelect">Search Engine</label>
+                    <select class="field-select" id="searchEngineSelect"></select>
+                </div>
+            </div>
+
+            <div class="settings-section">
                 <h4>Appearance</h4>
                 <div class="setting-item">
                     <label for="dockPositionSelect">Dock Position</label>
@@ -197,6 +204,17 @@
                         <span class="setting-hint">Add, Rename And Reorder</span>
                     </div>
                     <button type="button" class="btn btn-primary" id="manageCategoriesBtn">Manage Categories</button>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4>Help</h4>
+                <div class="setting-item">
+                    <div>
+                        <span class="setting-name">Walkthrough</span>
+                        <span class="setting-hint">A Quick Tour Of Everything</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="tourBtn">Take The Tour</button>
                 </div>
             </div>
     </dialog>
@@ -293,6 +311,7 @@
     <script src="import-export.js"></script>
     <script src="context-menu.js"></script>
     <script src="background.js"></script>
+    <script src="tour.js"></script>
     <script src="newtab.js"></script>
 </body>
 </html>

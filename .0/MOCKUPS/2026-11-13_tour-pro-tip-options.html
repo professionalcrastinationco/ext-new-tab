@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Pro Tip Box Options</title>
+<style>
+:root{--surface:#0f172a;--surface-hover:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;--cyan:#22d3ee;--accent:#0e7490}
+*{box-sizing:border-box;margin:0}
+body{background:#0b1224;color:var(--text);font-family:Inter,system-ui,sans-serif;padding:32px;display:grid;grid-template-columns:repeat(3,360px);gap:32px 28px;justify-content:center}
+.col{display:flex;flex-direction:column;gap:12px}
+.label{color:var(--muted);font-size:13px;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.count{color:var(--muted);font-size:12px;font-weight:500}
+h2{font-size:18px;line-height:28px;font-weight:600}
+.body{color:var(--muted);font-size:14px;line-height:21px}
+.tip p{font-size:14px;line-height:21px;color:var(--text)}
+.actions{display:flex;align-items:center;gap:8px;margin-top:16px}
+.sp{flex:1}.skip{color:var(--muted);font-size:14px;font-weight:600;padding:0 12px}
+.next{background:var(--accent);color:#fff;border-radius:10px;padding:10px 18px;font-weight:600;font-size:14px}
+svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+/* A current */
+.a{margin-top:8px;padding:12px 16px;background:var(--surface-hover);border-left:3px solid var(--cyan);border-radius:8px}
+.a b{display:block;color:var(--cyan);font-size:12px;font-weight:600;margin-bottom:4px}
+/* B icon + soft box */
+.b{margin-top:8px;padding:14px 16px;background:var(--surface-hover);border:1px solid var(--border);border-radius:12px;display:flex;gap:12px}
+.b .ic{width:28px;height:28px;border-radius:50%;background:#164e63;color:#67e8f9;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.b b{display:block;color:#67e8f9;font-size:12px;font-weight:600;margin-bottom:2px}
+/* C badge on dashed border */
+.c{margin-top:16px;position:relative;padding:20px 16px 14px;border:1px dashed #475569;border-radius:12px}
+.c b{position:absolute;top:-10px;left:12px;background:var(--cyan);color:#083344;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px}
+/* D divider, no box */
+.d{margin-top:12px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
+.d svg{color:var(--cyan);margin-top:3px}
+.d b{color:var(--cyan)}
+.d p{color:var(--muted)}
+/* E solid cyan-tinted */
+.e{margin-top:8px;padding:14px 16px;background:#083344;border-radius:12px}
+.e b{display:flex;align-items:center;gap:6px;color:#67e8f9;font-size:12px;font-weight:700;margin-bottom:4px}
+.e p{color:#cffafe}
+/* F top-aligned pill label then text, slate */
+.f{margin-top:8px;padding:14px 16px;background:var(--surface-hover);border-radius:12px}
+.f b{display:inline-block;background:#164e63;color:#67e8f9;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:6px}
+</style></head><body>
+<div class="col"><span class="label">A. Left accent bar (current)</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip a"><b>Pro Tip</b><p>Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+
+<div class="col"><span class="label">B. Round icon, soft box</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip b"><span class="ic"><svg viewBox="0 0 256 256"><path d="M128 24l22 82 82 22-82 22-22 82-22-82-82-22 82-22z"/></svg></span><div><b>Pro Tip</b><p>Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+
+<div class="col"><span class="label">C. Pill badge on a dashed outline</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip c"><b>Pro Tip</b><p>Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+
+<div class="col"><span class="label">D. Divider line, no box</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip d"><svg viewBox="0 0 256 256"><path d="M128 24l22 82 82 22-82 22-22 82-22-82-82-22 82-22z"/></svg><p><b>Pro Tip:</b> Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+
+<div class="col"><span class="label">E. Solid dark cyan box</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip e"><b><svg viewBox="0 0 256 256"><path d="M128 24l22 82 82 22-82 22-22 82-22-82-82-22 82-22z"/></svg>Pro Tip</b><p>Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+
+<div class="col"><span class="label">F. Small tag above the text</span><div class="card"><span class="count">1 of 5</span><h2>Search Anything</h2><p class="body">Type a search or a web address and press Enter.</p>
+<div class="tip f"><b>PRO TIP</b><p>Want a different search engine? Change it in Settings, the gear icon in the top right corner.</p></div>
+<div class="actions"><span class="skip">Skip Tour</span><span class="sp"></span><span class="next">Next</span></div></div></div>
+</body></html>

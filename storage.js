@@ -10,7 +10,8 @@ const DEFAULT_DATA = {
     defaultCategoryId: null,
     openInNewTab: true,
     dockPosition: 'bottom', // 'top' or 'bottom'
-    background: 'spotlight' // 'spotlight' or 'night-sky'
+    background: 'spotlight', // 'spotlight' or 'night-sky'
+    searchEngine: 'google'
   }
 };
 
@@ -260,8 +261,11 @@ async function getSettings() {
 
 // Quick Link CRUD Operations
 
+const QUICK_LINK_MAX = 20; // two rows of ten
+
 async function addQuickLink(linkData) {
   const data = await loadData();
+  if (data.quickLinks.length >= QUICK_LINK_MAX) return null;
   const newLink = {
     id: generateId('ql'),
     title: linkData.title,

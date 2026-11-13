@@ -2,7 +2,7 @@
 
 Name: Dockside: New Tab Page & Bookmarks
 Category: Productivity
-Short description (under 132): Organize your favorite links into clean categories on every new tab, with a Google apps menu and calm animated backgrounds.
+Short description (under 132): Organize your favorite links into clean categories on every new tab, with your choice of search engine and calm animated backgrounds.
 
 ## Long description
 Turn every new tab into a calm, fast launchpad.
@@ -11,7 +11,8 @@ Turn every new tab into a calm, fast launchpad.
 - A quick-links row for the sites you open all day, with a panel of popular sites (AI chat, Google, creative and dev tools) you can add in one click
 - Drag and drop to reorder your quick links and categories
 - Use your own icons: paste an image link (it syncs to your other devices) or upload one
-- A Google apps menu in the search box for one-click access to your Google tools
+- Search with Google, Bing, DuckDuckGo, Brave, Ecosia, Yahoo or Startpage, right from the new tab
+- A short walkthrough on first use shows you everything it can do
 - Two backgrounds: Spotlight Mesh and an animated Night Sky Aurora with slow shooting stars
 - Save the current page in one click from the toolbar popup
 - Import and export your bookmarks as a file

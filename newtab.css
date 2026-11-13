@@ -66,7 +66,7 @@ html:has(body.bg-night-sky) {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 20;
-    width: min(520px, calc(100vw - 2 * var(--space-16)));
+    width: min(var(--search-w, 600px), calc(100vw - 2 * var(--space-16))); /* at least 600px; grows to the widest quick link row plus 30px each side (set in newtab.js) */
 }
 
 .search-box {
@@ -99,99 +99,50 @@ html:has(body.bg-night-sky) {
     font-size: var(--text-heading);
     line-height: 24px;
     outline: none;
+    caret-color: transparent; /* no text cursor unless the box is focused */
+}
+
+.search-input:focus {
+    caret-color: var(--text);
 }
 
 .search-input::placeholder {
     color: var(--text-muted);
 }
 
-/* Google apps button (icon button) */
-.apps-btn {
+/* Search button (right side of the bar) */
+.search-btn {
     margin-right: var(--space-16);
 }
 
-.apps-btn svg { width: 22px; height: 22px; }
-
-.apps-btn[aria-expanded="true"] {
-    background: var(--border);
-    color: var(--text);
-}
-
-/* Google apps menu: opens below the bar, never reaches the dock */
-.apps-menu {
-    position: absolute;
-    top: calc(100% + var(--space-8));
-    right: 0;
-    z-index: 50;
-    display: grid;
-    grid-template-columns: repeat(3, 96px);
-    gap: var(--space-8);
-    padding: var(--space-16);
-    max-height: calc(50vh - 134px);
-    overflow-y: auto;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
-    box-shadow: var(--shadow-raised);
-}
-
-.apps-menu::before {
-    content: "Google Apps";
-    grid-column: 1 / -1;
-    color: var(--text-muted);
-    font-size: var(--text-label);
-    line-height: 16px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
-.apps-menu[hidden] { display: none; }
-
-.apps-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-8);
-    height: 62px;
-    color: var(--text-muted);
-    font-size: var(--text-label);
-    line-height: 16px;
-    transition: color var(--transition);
-}
-
-.apps-item img {
-    width: 32px;
-    height: 32px;
-    opacity: 0.85;
-    transition: opacity var(--transition), transform var(--transition);
-}
-
-.apps-item:hover,
-.apps-item:focus-visible {
-    color: var(--text);
-}
-
-.apps-item:hover img,
-.apps-item:focus-visible img {
-    opacity: 1;
-}
-
-.apps-item:focus-visible {
-    border-radius: var(--radius-small);
-}
+.search-btn svg { width: 22px; height: 22px; }
 
 /* ==========================================================================
    Quick links: icon only, label on hover, siblings dim
    ========================================================================== */
 
 .quick-links {
+    --ql-rest: 0.7;   /* resting brightness */
+    --ql-dim: 0.35;   /* the others while one is hovered */
+    --ql-fade: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: absolute;
-    top: calc(50% + 68px);
+    top: calc(50% + 84px);
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: var(--space-24);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--space-16));
+}
+
+/* Up to 10 quick links per row and 2 rows. The plus button does not count. */
+.quick-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-8);
 }
 
 .quick-link {
@@ -199,12 +150,13 @@ html:has(body.bg-night-sky) {
     flex-direction: column;
     align-items: center;
     gap: var(--space-8);
-    width: 80px;
+    width: 72px;
     height: 72px;
     padding-top: 4px;
     color: var(--text-muted);
+    opacity: var(--ql-rest);
     cursor: pointer;
-    transition: color var(--transition), transform var(--transition), opacity var(--transition);
+    transition: color var(--ql-fade), transform var(--ql-fade), opacity var(--ql-fade);
 }
 
 .quick-link-icon {
@@ -223,20 +175,27 @@ html:has(body.bg-night-sky) {
 
 /* The label slot is always reserved so nothing shifts */
 .quick-link-title {
-    max-width: 80px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    width: 128px; /* wider than the 72px cell, centered under the icon, so most names fit on two lines */
+    flex-shrink: 0;
+    height: 32px; /* room for two lines, so a long name never pushes the next row down */
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    text-align: center;
+    text-wrap: balance;
     color: var(--text-muted);
     font-size: var(--text-label);
     line-height: 16px;
     opacity: 0;
-    transition: opacity var(--transition);
+    transition: opacity var(--ql-fade);
 }
 
 .quick-link:hover,
 .quick-link:focus-visible {
     color: var(--text);
+    opacity: 1;
     transform: translateY(-2px);
 }
 
@@ -251,7 +210,7 @@ html:has(body.bg-night-sky) {
 
 .quick-links:has(.quick-link:hover) .quick-link:not(:hover),
 .quick-links:has(.quick-link:focus-visible) .quick-link:not(:focus-visible) {
-    opacity: 0.35;
+    opacity: var(--ql-dim);
 }
 
 .quick-links-empty {
@@ -270,7 +229,7 @@ html:has(body.bg-night-sky) {
 /* Plus button after the last quick link */
 .quick-link-add {
     align-self: flex-start;
-    width: 80px;
+    width: 72px;
     height: 72px;
     display: flex;
     align-items: flex-start;
@@ -279,8 +238,9 @@ html:has(body.bg-night-sky) {
     background: transparent;
     border: 0;
     color: var(--text-muted);
+    opacity: var(--ql-rest);
     cursor: pointer;
-    transition: color var(--transition), transform var(--transition);
+    transition: color var(--ql-fade), transform var(--ql-fade), opacity var(--ql-fade);
 }
 
 .quick-link-add svg {
@@ -292,11 +252,12 @@ html:has(body.bg-night-sky) {
 .quick-link-add:hover,
 .quick-link-add:focus-visible {
     color: var(--text);
+    opacity: 1;
     transform: translateY(-2px);
 }
 
 .quick-links:has(.quick-link-add:hover) .quick-link {
-    opacity: 1;
+    opacity: var(--ql-rest);
 }
 
 /* ==========================================================================
@@ -674,92 +635,6 @@ html:has(body.bg-night-sky) {
 }
 
 /* ==========================================================================
-   First run welcome card (scrim plus card)
-   ========================================================================== */
-
-.welcome-scrim {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-16);
-    background: color-mix(in srgb, var(--background) 75%, transparent);
-}
-
-.welcome-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-    width: 440px;
-    max-width: 100%;
-    padding: var(--space-32);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-medium);
-    box-shadow: var(--shadow-raised);
-    color: var(--text-muted);
-    text-align: left;
-}
-
-.welcome-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-16);
-}
-
-.brand-tile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    background: var(--accent);
-    border-radius: var(--radius-small);
-    color: var(--text);
-}
-
-.brand-tile svg {
-    width: 26px;
-    height: 26px;
-    fill: currentColor;
-}
-
-.welcome-card h2 {
-    color: var(--text);
-    font-size: var(--text-title);
-    line-height: 36px;
-    font-weight: 600;
-}
-
-.welcome-card ol {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-    list-style: none;
-}
-
-.welcome-card li {
-    font-size: var(--text-body);
-    line-height: 20px;
-}
-
-.welcome-card strong {
-    display: block;
-    color: var(--text);
-    font-weight: 600;
-}
-
-.welcome-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-8);
-}
-
-/* ==========================================================================
    Context menu
    ========================================================================== */
 
@@ -946,6 +821,11 @@ html:has(body.bg-night-sky) {
     transition: color var(--transition);
 }
 
+.popular-tile.full {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
 .popular-tile:hover,
 .popular-tile:focus-visible,
 .popular-tile.added {
@@ -1035,3 +915,119 @@ html:has(body.bg-night-sky) {
     font-size: var(--text-label);
     line-height: 16px;
 }
+
+
+/* ==========================================================================
+   Walkthrough: dimmed page, one lit area, a small card
+   ========================================================================== */
+
+.tour {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+}
+
+.tour-block {
+    position: absolute;
+    inset: 0;
+}
+
+.tour-spot,
+.tour-spot-2 {
+    position: fixed;
+    border-radius: var(--radius-medium);
+    pointer-events: none;
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1), top 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.35s cubic-bezier(0.4, 0, 0.2, 1), height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tour-spot {
+    box-shadow: 0 0 0 2px var(--accent), 0 0 0 100vmax rgba(2, 6, 23, 0.72);
+}
+
+.tour-spot-2 {
+    backdrop-filter: brightness(3.4); /* lifts the second item out of the dimming */
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.tour-spot-2[hidden] { display: none; }
+
+.tour-card {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    width: 400px;
+    max-width: calc(100vw - 32px);
+    padding: var(--space-24);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-raised);
+    text-align: left;
+}
+
+.tour-count {
+    color: var(--text-muted);
+    font-size: var(--text-label);
+    line-height: 16px;
+    font-weight: 500;
+}
+
+.tour-title {
+    color: var(--text);
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.tour-body {
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 21px;
+    text-wrap: pretty;
+}
+
+.tour-tip {
+    position: relative;
+    margin-top: var(--space-16);
+    padding: 18px var(--space-16) 12px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+.tour-tip[hidden] { display: none; }
+
+/* Quiet label: small, dark cyan, so the headline and main text are seen first */
+.tour-tip-label {
+    position: absolute;
+    top: -9px;
+    left: 12px;
+    padding: 1px 8px;
+    background: #164e63;
+    border-radius: 999px;
+    color: #a5f3fc;
+    font-size: 10px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.tour-tip p {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 19px;
+    text-wrap: pretty;
+}
+
+.tour-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    margin-top: var(--space-16);
+}
+
+.tour-spacer { flex: 1; }
+
+.tour-actions [hidden] { display: none; }

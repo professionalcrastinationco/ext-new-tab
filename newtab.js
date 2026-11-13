@@ -161,17 +161,23 @@ function makeSortable(container, itemSelector, addSelector, onDone) {
     });
 
     container.addEventListener('dragover', (e) => {
-        if (!sortingItem || sortingItem.parentElement !== container) return;
+        if (!sortingItem || !container.contains(sortingItem)) return;
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
+        const rows = container.id === 'quickLinks'; // several rows: also compare vertical position
         const others = [...container.querySelectorAll(itemSelector)].filter(el => el !== sortingItem);
         const next = others.find(el => {
             const r = el.getBoundingClientRect();
+            if (rows) {
+                if (e.clientY < r.top) return true;
+                if (e.clientY > r.bottom) return false;
+            }
             return e.clientX < r.left + r.width / 2;
         });
         const end = container.querySelector(addSelector);
         const anchor = next || end || null;
-        if (anchor !== sortingItem.nextSibling) container.insertBefore(sortingItem, anchor);
+        const parent = anchor ? anchor.parentNode : sortingItem.parentNode;
+        if (anchor !== sortingItem.nextSibling || parent !== sortingItem.parentNode) parent.insertBefore(sortingItem, anchor);
     });
 
     container.addEventListener('drop', (e) => {
@@ -186,6 +192,23 @@ function makeSortable(container, itemSelector, addSelector, onDone) {
         container.classList.remove('sorting');
         await onDone(ids);
     });
+}
+
+// Quick links: at most 10 per row and 2 rows (the plus button does not count)
+const QUICK_LINKS_PER_ROW = 10;
+const QUICK_LINK_LIMIT = 20;
+
+// The search bar is at least 600px and grows with the quick links: 30px wider than
+// the widest row on each side
+const SEARCH_MIN_WIDTH = 600;
+const SEARCH_SIDE_SPACE = 30;
+function sizeSearchToQuickLinks() {
+    let widest = 0;
+    document.querySelectorAll('#quickLinks .quick-links-row').forEach(row => {
+        widest = Math.max(widest, row.scrollWidth);
+    });
+    const width = Math.max(SEARCH_MIN_WIDTH, widest + 2 * SEARCH_SIDE_SPACE);
+    document.documentElement.style.setProperty('--search-w', width + 'px');
 }
 
 // Render quick access links
@@ -217,12 +240,12 @@ function renderQuickLinks(quickLinks, openInNewTab) {
     });
 
     // Plus button: always the last item, so adding is never hidden behind right-click
-    const appendAddButton = (withHint) => {
+    const appendAddButton = (withHint, row) => {
         if (withHint) {
             const hint = document.createElement('span');
             hint.className = 'quick-links-empty';
             hint.textContent = 'No quick links. Click the plus to add.';
-            newContainer.appendChild(hint);
+            row.appendChild(hint);
         }
         const addBtn = document.createElement('button');
         addBtn.type = 'button';
@@ -231,18 +254,28 @@ function renderQuickLinks(quickLinks, openInNewTab) {
         addBtn.title = 'Add Quick Link';
         addBtn.innerHTML = ICON_PLUS;
         addBtn.addEventListener('click', () => showQuickLinkModal(null));
-        newContainer.appendChild(addBtn);
+        row.appendChild(addBtn);
+    };
+
+    const newRow = () => {
+        const row = document.createElement('div');
+        row.className = 'quick-links-row';
+        newContainer.appendChild(row);
+        return row;
     };
 
     if (!quickLinks || quickLinks.length === 0) {
-        appendAddButton(true);
+        appendAddButton(true, newRow());
+        sizeSearchToQuickLinks();
         return;
     }
 
-    // Sort by order
-    const sortedLinks = [...quickLinks].sort((a, b) => a.order - b.order);
+    // Sort by order, show at most 2 rows of 10
+    const sortedLinks = [...quickLinks].sort((a, b) => a.order - b.order).slice(0, QUICK_LINK_LIMIT);
+    let currentRow = null;
 
-    sortedLinks.forEach(link => {
+    sortedLinks.forEach((link, index) => {
+        if (index % QUICK_LINKS_PER_ROW === 0) currentRow = newRow();
         const linkEl = document.createElement('a');
         linkEl.className = 'quick-link';
         linkEl.href = link.url;
@@ -289,10 +322,12 @@ function renderQuickLinks(quickLinks, openInNewTab) {
 
         linkEl.appendChild(iconEl);
         linkEl.appendChild(titleEl);
-        newContainer.appendChild(linkEl);
+        currentRow.appendChild(linkEl);
     });
 
-    appendAddButton(false);
+    // The plus button joins the last row and does not count toward the 10. Gone when full.
+    if (sortedLinks.length < QUICK_LINK_LIMIT) appendAddButton(false, currentRow);
+    sizeSearchToQuickLinks();
 
     makeSortable(newContainer, '.quick-link', '.quick-link-add', async (ids) => {
         await reorderQuickLinks(ids);
@@ -314,6 +349,10 @@ async function init() {
     loadSettings(currentData.settings);
     attachEventListeners();
 
+    // New users (nothing saved yet) get the walkthrough once; others can replay it from Settings
+    document.getElementById('tourBtn').addEventListener('click', () => window.DocksideTour.start());
+    if (!currentData.settings.tourDone && currentData.categories.length === 0) window.DocksideTour.start();
+
     // Listen for storage updates
     window.addEventListener('storageUpdated', async (e) => {
         currentData = e.detail || await loadData();
@@ -323,61 +362,44 @@ async function init() {
     });
 }
 
-// Handle search input
-// Google apps menu
-const GOOGLE_APPS = [
-    { name: 'Gmail', url: 'https://mail.google.com', img: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico' },
-    { name: 'Docs', url: 'https://docs.google.com/document', img: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico' },
-    { name: 'Sheets', url: 'https://docs.google.com/spreadsheets', img: 'https://ssl.gstatic.com/docs/spreadsheets/favicon_jfk2.png' },
-    { name: 'Drive', url: 'https://drive.google.com', img: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
-    { name: 'Cloud', url: 'https://console.cloud.google.com', icon: 'cloud.google.com' },
-    { name: 'Gemini', url: 'https://gemini.google.com', icon: 'gemini.google.com' },
-    { name: 'Calendar', url: 'https://calendar.google.com', img: 'https://calendar.google.com/googlecalendar/images/favicons_2020q4/calendar_31.ico' },
-    { name: 'Maps', url: 'https://maps.google.com', icon: 'maps.google.com' },
-    { name: 'Photos', url: 'https://photos.google.com', img: 'https://www.gstatic.com/images/branding/product/2x/photos_96dp.png' }
-];
+// Search engines the user can choose in Settings
+const SEARCH_ENGINES = {
+    google: { name: 'Google', url: 'https://www.google.com/search?q=' },
+    bing: { name: 'Bing', url: 'https://www.bing.com/search?q=' },
+    duckduckgo: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+    brave: { name: 'Brave Search', url: 'https://search.brave.com/search?q=' },
+    ecosia: { name: 'Ecosia', url: 'https://www.ecosia.org/search?q=' },
+    yahoo: { name: 'Yahoo', url: 'https://search.yahoo.com/search?p=' },
+    startpage: { name: 'Startpage', url: 'https://www.startpage.com/do/search?q=' }
+};
+let searchEngineKey = 'google';
 
-function initAppsMenu() {
-    const btn = document.getElementById('appsBtn');
-    const menu = document.getElementById('appsMenu');
-    GOOGLE_APPS.forEach(app => {
-        const a = document.createElement('a');
-        a.className = 'apps-item';
-        a.href = app.url;
-        a.setAttribute('role', 'menuitem');
-        const img = document.createElement('img');
-        img.src = app.img || `https://www.google.com/s2/favicons?domain=${app.icon}&sz=64`;
-        img.alt = '';
-        const label = document.createElement('span');
-        label.textContent = app.name;
-        a.append(img, label);
-        menu.appendChild(a);
-    });
-    const setOpen = (open) => {
-        menu.hidden = !open;
-        btn.setAttribute('aria-expanded', String(open));
-    };
-    btn.addEventListener('click', (e) => { e.stopPropagation(); setOpen(menu.hidden); });
-    document.addEventListener('click', (e) => { if (!menu.contains(e.target)) setOpen(false); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+function applySearchEngine(key) {
+    searchEngineKey = SEARCH_ENGINES[key] ? key : 'google';
+    document.getElementById('searchInput').placeholder = `Search ${SEARCH_ENGINES[searchEngineKey].name} or type a URL`;
+}
+
+function runSearch() {
+    const query = document.getElementById('searchInput').value.trim();
+    if (!query) return;
+    if (query.includes('.') && !query.includes(' ')) {
+        window.location.href = query.startsWith('http') ? query : `https://${query}`;
+    } else {
+        window.location.href = SEARCH_ENGINES[searchEngineKey].url + encodeURIComponent(query);
+    }
 }
 
 function attachEventListeners() {
-    initAppsMenu();
     initDockPanels();
     const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const query = searchInput.value.trim();
-            if (query) {
-                if (query.includes('.') && !query.includes(' ')) {
-                    const url = query.startsWith('http') ? query : `https://${query}`;
-                    window.location.href = url;
-                } else {
-                    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                }
-            }
-        }
+    searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') runSearch(); });
+    document.getElementById('searchBtn').addEventListener('click', runSearch);
+
+    // Search engine choice
+    const engineSelect = document.getElementById('searchEngineSelect');
+    engineSelect.addEventListener('change', async (e) => {
+        await updateSetting('searchEngine', e.target.value);
+        applySearchEngine(e.target.value);
     });
 
     // Category modal handlers
@@ -572,6 +594,17 @@ function applyBackground(name) {
 }
 
 function loadSettings(settings) {
+    const engineSelect = document.getElementById('searchEngineSelect');
+    if (!engineSelect.options.length) {
+        Object.entries(SEARCH_ENGINES).forEach(([key, engine]) => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = engine.name;
+            engineSelect.appendChild(opt);
+        });
+    }
+    document.getElementById('searchEngineSelect').value = SEARCH_ENGINES[settings.searchEngine] ? settings.searchEngine : 'google';
+    applySearchEngine(settings.searchEngine);
     document.getElementById('backgroundSelect').value = settings.background || 'spotlight';
     applyBackground(settings.background || 'spotlight');
     document.getElementById('dockPositionSelect').value = settings.dockPosition || 'bottom';
@@ -710,42 +743,6 @@ function initDockPanels() {
     });
 }
 
-// First run: scrim plus welcome card (shown while there are no categories)
-let welcomeDismissed = false;
-
-function renderWelcome(show) {
-    let scrim = document.getElementById('welcome');
-    if (!show || welcomeDismissed) {
-        if (scrim) scrim.remove();
-        return;
-    }
-    if (scrim) return;
-    scrim = document.createElement('div');
-    scrim.id = 'welcome';
-    scrim.className = 'welcome-scrim';
-    scrim.innerHTML = `
-        <div class="welcome-card" role="dialog" aria-label="Welcome To Dockside">
-            <div class="welcome-brand">
-                <span class="brand-tile">${ICON_BOOKMARK_SIMPLE}</span>
-                <h2>Welcome To Dockside</h2>
-            </div>
-            <ol>
-                <li><strong>1. Make A Category</strong>Like Work, Learning or Fun.</li>
-                <li><strong>2. Add Bookmarks</strong>Save any page from the toolbar button.</li>
-                <li><strong>3. Click Its Icon</strong>Your links open from this dock.</li>
-            </ol>
-            <div class="welcome-actions">
-                <button type="button" class="btn btn-ghost" id="welcomeDismiss">Start Empty</button>
-                <a class="btn btn-primary" href="manage.html">Create Your First Category</a>
-            </div>
-        </div>`;
-    document.body.appendChild(scrim);
-    document.getElementById('welcomeDismiss').addEventListener('click', () => {
-        welcomeDismissed = true;
-        scrim.remove();
-    });
-}
-
 function renderDock(data) {
     const dockElement = document.getElementById('dock');
     const dockPosition = data.settings.dockPosition || 'bottom';
@@ -757,8 +754,6 @@ function renderDock(data) {
 
     // Clear dock
     dockElement.innerHTML = '';
-
-    renderWelcome(!hasCategories);
 
     // Right-click on the dock background also offers Add Category (bound once)
     if (!dockElement.dataset.addMenu) {
@@ -984,10 +979,16 @@ function renderPopularLinks() {
             tile.innerHTML = `${renderQuickLinkIcon(item.icon)}<span class="popular-name">${item.title}</span>`;
             tile.classList.toggle('added', !!findQuickLinkByUrl(item.url));
             tile.setAttribute('aria-pressed', tile.classList.contains('added') ? 'true' : 'false');
+            if (!tile.classList.contains('added') && currentData.quickLinks.length >= QUICK_LINK_LIMIT) {
+                tile.classList.add('full');
+                tile.title = 'Quick links are full (20 is the most)';
+            }
             tile.addEventListener('click', async () => {
                 const existing = findQuickLinkByUrl(item.url);
                 if (existing) {
                     await deleteQuickLink(existing.id);
+                } else if (currentData.quickLinks.length >= QUICK_LINK_LIMIT) {
+                    return;
                 } else {
                     await addQuickLink({ title: item.title, url: item.url, icon: item.icon });
                 }
@@ -1003,6 +1004,10 @@ function renderPopularLinks() {
 }
 
 function showQuickLinkModal(link = null) {
+    if (!link && currentData && currentData.quickLinks.length >= QUICK_LINK_LIMIT) {
+        window.alert('Quick links are full. You can have up to 20 (two rows of ten). Delete one to add another.');
+        return;
+    }
     const modal = document.getElementById('quick-link-modal');
     // Popular links only when adding; editing keeps the single-column dialog
     modal.classList.toggle('ql-edit', !!link);
