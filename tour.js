@@ -24,6 +24,14 @@
     settings: Object.assign({}, currentData.settings)
   });
 
+  // Bounding box of the icons themselves (not the empty label space under them)
+  function unionRect(selector) {
+    const rects = [...document.querySelectorAll(selector)].map(n => n.getBoundingClientRect());
+    const left = Math.min(...rects.map(r => r.left)), right = Math.max(...rects.map(r => r.right));
+    const top = Math.min(...rects.map(r => r.top)), bottom = Math.max(...rects.map(r => r.bottom));
+    return { left, top, right, bottom, width: right - left, height: bottom - top };
+  }
+
   const STEPS = [
     {
       target: '.search-box',
@@ -35,17 +43,22 @@
     {
       target: '#quickLinks',
       title: 'Quick Links',
-      body: 'The sites you open all day, one click away. Drag them to reorder, or right-click one to edit or delete it.'
+      area: () => unionRect('#quickLinks .quick-link-icon, #quickLinks .quick-link-add svg'),
+      body: 'The sites you open all day, one click away.',
+      tip: 'Drag them to reorder, or right-click one to edit or delete it.'
     },
     {
       target: '.quick-link-add',
+      area: () => unionRect('.quick-link-add svg'),
       title: 'Add A Quick Link',
-      body: 'Click the plus. Pick a popular site in one click, or add your own link with a name and an icon. You can even use your own image as the icon.'
+      body: 'Click the plus. Pick a popular site in one click, or add your own link with a name and an icon.',
+      tip: 'You can even use your own image as the icon.'
     },
     {
       target: '#dock',
       title: 'Categories',
-      body: 'Group your bookmarks into categories like Work, Learn and Fun. Click a category to see what is inside. Add your own with the plus on the dock. These are examples, nothing is saved.',
+      body: 'Group your bookmarks into categories like Work, Learn and Fun. Click a category to see what is inside. These are examples, nothing is saved.',
+      tip: 'Add your own with the plus on the dock.',
       before: () => {
         renderDock(SAMPLE_DATA());
         // Open the first category after this click has finished, or the page's own
@@ -74,7 +87,8 @@
     {
       target: '#settingsBtn',
       title: 'Settings',
-      body: 'Choose your search engine, background, dock position and where links open. You can replay this tour any time from Settings.'
+      body: 'Choose your search engine, background, dock position and where links open.',
+      tip: 'You can replay this tour any time from Settings.'
     }
   ];
 
